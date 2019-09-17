@@ -1,5 +1,6 @@
-\documentclass[12pt,twoside,a4paper]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[12pt,a4paper]{article}
+\usepackage{graphicx}
+\usepackage{gensymb}
  
 \title{Case Study Modelling an Electronic Component}
 \author{
@@ -19,19 +20,34 @@
 
 \renewcommand{\abstractname}{Executive Summary}
 \begin{abstract}
-Hello
+Write Abstract Here
 \end{abstract}
+
+\pagebreak
 
 \tableofcontents
 
+\pagebreak
+
 \section{Introduction}
 
-\subsection{Purpose of the report}
+\subsection{Purpose of the Report}
 The following report investigates the steady-state heat distribution in a newly designed component. 
+
+The report will discuss the mathematical model of the heat distribution in the component and the numerical methods used to solve it in MATLAB. 
 
 \subsection{Issues to be discussed and their significance}
 
+\begin{figure}[h!]
+	\includegraphics[width=\linewidth]{images/Component.png}
+	\caption{Schematic of electronic component.}
+	\label{fig:componentSchematic}
+\end{figure}
+
+The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to 70\degree C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be 40\degree C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
+
 \subsection{Research methods}
+
 
 \subsection{Limitations and assumptions}
 
