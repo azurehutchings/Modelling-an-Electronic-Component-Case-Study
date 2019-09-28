@@ -4,13 +4,15 @@ if nargin == 2
     divide = true;
 end
 
-[m,n] = size(A);
+[n,~] = size(A);
 
 x = b;
 
 for i = 1:n
     for j = 1:i-1
-        x(i) = x(i) - A(j,i-j+1) * x(j);
+        if((i-j+1)<8)
+            x(i) = x(i) - A(j,i-j+1) * x(j);
+        end
     end
     if divide
         x(i) = x(i) / A(i,1);

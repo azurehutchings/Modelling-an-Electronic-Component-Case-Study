@@ -8,7 +8,7 @@ A_BAND = zeros(n,m);
 
 for i = 1:n
     for j = 1:m
-        if (i + j < 35)
+        if (i + j < n+2)
             A_BAND(i,j) = A(i,j+i-1);
         end
     end
