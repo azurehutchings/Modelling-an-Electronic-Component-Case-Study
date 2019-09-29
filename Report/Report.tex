@@ -1,7 +1,12 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage{graphicx}
 \usepackage{gensymb}
- 
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{tikz}
+\tikzset{
+    node distance=2cm, % specifies the minimum distance between two nodes. Change if necessary.
+    }
 \title{Case Study Modelling an Electronic Component}
 \author{
   Azure Hutchings
@@ -36,7 +41,7 @@ The following report investigates the steady-state heat distribution in a newly 
 
 The report will discuss the mathematical model of the heat distribution in the component and the numerical methods used to solve it in MATLAB. 
 
-\subsection{Issues to be discussed and their significance}
+\subsection{The Maths of the Problem}
 
 \begin{figure}[h!]
 	\includegraphics[width=\linewidth]{images/Component.png}
@@ -45,42 +50,80 @@ The report will discuss the mathematical model of the heat distribution in the c
 \end{figure}
 
 The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to 70\degree C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be 40\degree C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
+\\\\
+This type of model can be described with Laplace's equation. Letting $T(x,y)$ represent the temperature of the component at point $(x, y)$, the model is as follows	
 
-\subsection{Research methods}
+\begin{center}
+\begin{tabular}{c c}
+$\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2 T}{\partial y^2}=0$ & in the interior\\
+$T = 70$ & on boundary A-B \\
+$T = 40$ & on boundary C-D \\
+$\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$ & on boundary A-E-D\\
+$k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)$ & on boundary B-C
+\end{tabular}
+\end{center}
+Where the thermal conductivity is $k=3Wm^{-1}C^{-1}$, and the heat transfer coefficient is $h=20 Wm^{-2}C^{-1}$. To begin with, we will assume the ambient termperature is $T_\infty = 20$.
+\section{Discretising the Problem}
+To numerically solve this problem, we must construct a finite difference mesh and create a matrix to represent this information.\\\\
+By splitting the component up into intervals of 0.01, we can split the component into a 7x7 grid. Given the previous mesh
+\subsection*{Finite Difference Mesh}
+There are 3 different types of mesh that need to be created. These are for the A-E-D boundary, the inside of the mesh, and on the B-C boundary.\\\\On the interior of the mesh, each node contains 4 other nodes adjacent to it, and the change in temperature at that node is given by the equation
+\begin{center}
+$\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2 T}{\partial y^2}=0$
+\\
+$\frac{\partial}{\partial x}(\frac{\partial T}{\partial x}) + \frac{\partial}{\partial x}(\frac{\partial T}{\partial y}) = 0$
+\\
+\end{center}
+$\frac{\partial T}{\partial x}$ 
+\begin{tikzpicture}[
+roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=10mm},
+]
+\node[roundnode] (center) {T};
+\node[roundnode] (left) [left of=center] {T$_\text{W}$};
+\node[roundnode] (right) [right of=center] {T$_\text{E}$};
+\node[roundnode] (above) [above of=center] {T$_\text{N}$};
+\node[roundnode] (below) [below of=center] {T$_\text{S}$};
 
-
-\subsection{Limitations and assumptions}
-
-\section{Discussion}
-
-\subsection{Method}
-
-\subsubsection{Procedures}
-
-\subsubsection{Sample Size}
-
-\subsubsection{Selection Criteria}
-
-\subsection{Discussion and analysis of data}
-
-\subsubsection{Issue 1}
-
-\subsubsection{Issue 2}
-
-\subsubsection{Issue 3}
-
-\subsubsection{Reliability and accuracy of data}
-
-\section{Conclusions}
-
-\section{Recommendations}
-
-\subsection{Recommendation 1}
-
-\subsection{Recommendation 2}
-
-\section{References}
-
-\section{Appendices}
+\draw[ultra thick,-] (left.east) -- (center.west);
+\draw[ultra thick,-] (above.south) -- (center.north);
+\draw[ultra thick,-] (right.west) -- (center.east);
+\draw[ultra thick,-] (below.north) -- (center.south);
+\end{tikzpicture}
+%\subsection{Research methods}
+%
+%
+%\subsection{Limitations and assumptions}
+%
+%\section{Discussion}
+%
+%\subsection{Method}
+%
+%\subsubsection{Procedures}
+%
+%\subsubsection{Sample Size}
+%
+%\subsubsection{Selection Criteria}
+%
+%\subsection{Discussion and analysis of data}
+%
+%\subsubsection{Issue 1}
+%
+%\subsubsection{Issue 2}
+%
+%\subsubsection{Issue 3}
+%
+%\subsubsection{Reliability and accuracy of data}
+%
+%\section{Conclusions}
+%
+%\section{Recommendations}
+%
+%\subsection{Recommendation 1}
+%
+%\subsection{Recommendation 2}
+%
+%\section{References}
+%
+%\section{Appendices}
  
 \end{document}
