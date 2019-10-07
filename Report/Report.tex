@@ -63,7 +63,27 @@ $k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)$ & on boundary B
 \end{tabular}
 \end{center}
 Where the thermal conductivity is $k=3Wm^{-1}C^{-1}$, and the heat transfer coefficient is $h=20 Wm^{-2}C^{-1}$. To begin with, we will assume the ambient termperature is $T_\infty = 20$.
+\clearpage
 \section{Discretising the Problem}
+If this was left as a continuous partial differential equation, we would need to analytically solve it. However, it can be much quicker to numerically solve this problem and still retain a high degree of accuracy with the final answers. In this section we will show how we converted the analytical problem to a numerical problem, how the mesh was constructed, the node ordering used, the linear system we dervied from the mesh and discuss the matrix that was created from it.
+
+\subsection{Analytical approach}
+To build a numerical approach, we must first understand the basics of the analytical method for solving heat distributions. \\\\The Heat Equation is a partial differential equation which states that the change in temperature over time is proportional to the double derivative of temperature with repsect to its spacial variables
+\begin{center}
+$\frac{\partial u}{\partial t} \propto \bigg(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\bigg)$
+\\
+$\frac{\partial u}{\partial t} = D\bigg{(}\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\bigg{)}$
+\end{center}
+
+\subsection{Numerical approach}
+Suppose we had a function $\phi(x,y,t)$ which gives the temperature at the point (x,y) on a 2-dimensional plane where t is the time since the start of the initial conditions. If the function has a steady-state solution, then it means at some point in time, any increase in time will not result in a change of temperature. This means that 
+\begin{center}
+$\frac{d\phi}{dx}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-\phi(x_i)}{\Delta x}$,
+\end{center}
+where the change in $x$ along $\phi$ at the point $x_i$ is approximately the functions forward difference over the distance between nodes. We can then take the derivative of this again using backwards difference to get the second derivative centered around $x_i$.
+\begin{center}
+$\frac{d^2\phi}{dx^2}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-2\phi(x_i)+\phi(x_i-\Delta x)}{(\Delta x)^2}$,
+\end{center}
 To numerically solve this problem, we must construct a finite difference mesh and create a matrix to represent this information.\\\\
 By splitting the component up into intervals of 0.01, we can split the component into a 7x7 grid. Given the previous mesh
 \subsection*{Finite Difference Mesh}
@@ -73,8 +93,9 @@ $\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2 T}{\partial y^2}=0$
 \\
 $\frac{\partial}{\partial x}(\frac{\partial T}{\partial x}) + \frac{\partial}{\partial x}(\frac{\partial T}{\partial y}) = 0$
 \\
+$\frac{\partial T}{\partial x}=\frac{T_{i+1}-T_i}{\delta}$ 
 \end{center}
-$\frac{\partial T}{\partial x}$ 
+\begin{center}
 \begin{tikzpicture}[
 roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=10mm},
 ]
@@ -89,6 +110,7 @@ roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=10mm},
 \draw[ultra thick,-] (right.west) -- (center.east);
 \draw[ultra thick,-] (below.north) -- (center.south);
 \end{tikzpicture}
+\end{center}
 %\subsection{Research methods}
 %
 %
