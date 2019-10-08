@@ -75,7 +75,7 @@ $\frac{\partial u}{\partial t} \propto \bigg(\frac{\partial^2 u}{\partial x^2} +
 $\frac{\partial u}{\partial t} = D\bigg{(}\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\bigg{)}$
 \end{center}
 
-\subsection{Numerical approach}
+\subsection{Numerical approach and Finite Difference Mesh}
 Suppose we had a function $\phi(x,y,t)$ which gives the temperature at the point (x,y) on a 2-dimensional plane where t is the time since the start of the initial conditions. If the function has a steady-state solution, then it means at some point in time, any increase in time will not result in a change of temperature. This means that 
 \begin{center}
 $\frac{d\phi}{dx}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-\phi(x_i)}{\Delta x}$,
@@ -84,9 +84,17 @@ where the change in $x$ along $\phi$ at the point $x_i$ is approximately the fun
 \begin{center}
 $\frac{d^2\phi}{dx^2}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-2\phi(x_i)+\phi(x_i-\Delta x)}{(\Delta x)^2}$,
 \end{center}
+If we do the same for the change in y, we arrive at an analogous equation
+\begin{center}
+$\frac{d^2\phi}{dy^2}|_{x_i}\approx\frac{\phi(y_i+\Delta y)-2\phi(y_i)+\phi(y_i-\Delta y)}{(\Delta y)^2}$,
+\end{center}
+
 To numerically solve this problem, we must construct a finite difference mesh and create a matrix to represent this information.\\\\
-By splitting the component up into intervals of 0.01, we can split the component into a 7x7 grid. Given the previous mesh
-\subsection*{Finite Difference Mesh}
+By splitting the component up into intervals of 0.01 in both the x and y direction, we can split the component into a 7x7 grid. Because we know that the temperature on the upper and right hand boundaries are fixed temperatures, we can ignore them in our discretisation as nodes. They will come into effect later as the right hand side matrix. Given the previous mesh from the introduction, we can label each node u$_{i,j}$ for i,j = 0 to 6 where i, j are given by the row and column of the node starting from the bottom left hand corne. Replacing $\phi(x,y,t)$ with $u_{i,j}(t)$ and noting that $\Delta x = \Delta y$, we arrive at the set of equations for the change in $u_{i,j}(t)$.
+\begin{center}
+$u'_{i,j}(t)\approx\frac{D}{\Delta x^2}\big{(}u_{i+1,j}(t)+u_{i,j+1}(t)-4u_{i,j}(t)+u_{i-1,j}(t)+u_{i,j-1}(t)\big{)}$
+\end{center}
+As noted earlier, this will be equal to zero 
 There are 3 different types of mesh that need to be created. These are for the A-E-D boundary, the inside of the mesh, and on the B-C boundary.\\\\On the interior of the mesh, each node contains 4 other nodes adjacent to it, and the change in temperature at that node is given by the equation
 \begin{center}
 $\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2 T}{\partial y^2}=0$
