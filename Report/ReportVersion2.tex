@@ -9,7 +9,7 @@
 \tikzset{
     node distance=2cm, % specifies the minimum distance between two nodes. Change if necessary.
     }
-\title{Base Study Modelling an Electronic Component}
+\title{Case Study Modelling an Electronic Component}
 \author{
   Azure Hutchings
   \and
@@ -44,7 +44,7 @@ The following report investigates the steady-state heat distribution in a newly 
 The report will discuss the mathematical model of the heat distribution in the component and the numerical methods used to solve it in MATLAB, along with different ways to store the data.
 
 \subsection{The Maths of the Problem}
-The component schematic is shown in Appenix A. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to 70\degree C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be 40\degree C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
+The component schematic is shown in Appendix A. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to 70\degree C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be 40\degree C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
 \\\\
 This type of model can be described with Laplace's equation. Letting $T(x,y)$ represent the temperature of the component at point $(x, y)$, the model is as follows	
 
@@ -75,6 +75,23 @@ As discussed earlier, we can replace the double partial derivative of u with res
 $ $
 \end{center}
 
+\section{Discussion}
+
+\subsection{Efficiency Comparison}
+
+\subsubsection{Bandwidth and level of fill-in for each different node ordering}
+
+\subsubsection{Memory (for direct methods)}
+
+\subsubsection{Iterations (for iterative methods)}
+
+\subsection{Runtime (direct and iterative)}
+
+\subsubsection{Floating Point Operations (direct and iterative)}
+
+\subsubsection{Residual Norm}
+
+\subsection{Effect of Ambient Temperature}
 
 \clearpage
 \section{Appendix}

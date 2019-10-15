@@ -1,4 +1,4 @@
-function visualisation(temperatures)
+function visualisation(temperatures, graphTitle)
 %visualisation framework
 
 %temperatures = A\b;
@@ -41,5 +41,6 @@ shading interp
 colormap hot
 colorbar
 axis image
+title([graphTitle], 'Interpreter', 'latex')
 
 end
