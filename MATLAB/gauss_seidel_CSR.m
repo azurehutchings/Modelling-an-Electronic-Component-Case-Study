@@ -1,11 +1,4 @@
 function [x, converged, k, res_total] = gauss_seidel_CSR(rb, c, v, b, x0, tol, maxiters)
-% JACOBI Jacobi method
-% [x, converged, k] = jacobi(A, b, x0, tol, maxiters) performs Jacobi
-% iteration iteration to solve A*x=b, starting with x = x0 and iterating
-% until either the number of iterations k equals maxiters, or until
-% norm(b-A*x)/norm(b) <= tol. The value of converged is true if the method
-% converged, or false otherwise.
-
 %% Initialise
 n = length(rb) - 1;
 k = 0;
