@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.9.28)  11 OCT 2019 17:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.9.28)  16 OCT 2019 15:52
 entering extended mode
-**d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/ReportVersion2.tex
-(d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/ReportVersion2.tex
+**d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/Report.tex
+(d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/Report.tex
 LaTeX2e <2018-12-01>
 ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\article.cls"
 Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
@@ -295,41 +295,45 @@ File: pgfmodulematrix.code.tex 2019/08/03 v3.1.4b (3.1.4b)
 \tikz@expandcount=\count120
  ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytopaths.code.tex"
 File: tikzlibrarytopaths.code.tex 2019/08/03 v3.1.4b (3.1.4b)
-))) ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/latex/float\float.sty"
-Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count121
-\float@exts=\toks32
-\float@box=\box40
-\@float@everytoks=\toks33
-\@floatcapt=\box41
-) (d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\ReportVersion2.aux)
-\openout1 = `ReportVersion2.aux'.
+))) ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/latex/titlesec\titlesec.sty"
+Package: titlesec 2019/09/09 v2.12 Sectioning titles
+\ttl@box=\box40
+\beforetitleunit=\skip46
+\aftertitleunit=\skip47
+\ttl@plus=\dimen164
+\ttl@minus=\dimen165
+\ttl@toksa=\toks32
+\titlewidth=\dimen166
+\titlewidthlast=\dimen167
+\titlewidthfirst=\dimen168
+) (d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\Report.aux)
+\openout1 = `Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
  ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count122
-\scratchdimen=\dimen164
-\scratchbox=\box42
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\everyMPshowfont=\toks34
-\MPscratchCnt=\count125
-\MPscratchDim=\dimen165
-\MPnumerator=\count126
-\makeMPintoPDFobject=\count127
-\everyMPtoPDFconversion=\toks35
+\scratchcounter=\count121
+\scratchdimen=\dimen169
+\scratchbox=\box41
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\everyMPshowfont=\toks33
+\MPscratchCnt=\count124
+\MPscratchDim=\dimen170
+\MPnumerator=\count125
+\makeMPintoPDFobject=\count126
+\everyMPtoPDFconversion=\toks34
 ) ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf-base.sty"
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
  ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\infwarerr.sty"
@@ -364,60 +368,61 @@ Package grfext Info: Graphics extension search list:
 (grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-LaTeX Info: Redefining \celsius on input line 22.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 22.
+LaTeX Info: Redefining \celsius on input line 23.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 23.
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 22.
-Package gensymb Info: Using \Omega for \ohm on input line 22.
+LaTeX Info: Redefining \ohm on input line 23.
+Package gensymb Info: Using \Omega for \ohm on input line 23.
 
 Package gensymb Warning: Not defining \micro.
 
 ABD: EveryShipout initializing macros [1
 
-{C:/Users/Jean-Luc/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [1] (d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\ReportVersion2.toc)
+{C:/Users/Jean-Luc/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [1] (d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\Report.toc)
 \tf@toc=\write4
-\openout4 = `ReportVersion2.toc'.
+\openout4 = `Report.toc'.
 
  [2]
-Underfull \hbox (badness 10000) in paragraph at lines 47--50
+<images/Component.png, id=19, 450.483pt x 436.029pt>
+File: images/Component.png Graphic file (type png)
+<use images/Component.png>
+Package pdftex.def Info: images/Component.png  used on input line 48.
+(pdftex.def)             Requested size: 390.0pt x 377.49255pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--56
 
  []
 
-[3] [4
+[3 <d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/images/Component.png>] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 85--87
 
-]
-<images/Component.png, id=33, 450.483pt x 436.029pt>
-File: images/Component.png Graphic file (type png)
-<use images/Component.png>
-Package pdftex.def Info: images/Component.png  used on input line 83.
-(pdftex.def)             Requested size: 390.0pt x 377.49255pt.
-<images/ComponentNodesOrdering.png, id=35, 450.483pt x 436.029pt>
-File: images/ComponentNodesOrdering.png Graphic file (type png)
-<use images/ComponentNodesOrdering.png>
-Package pdftex.def Info: images/ComponentNodesOrdering.png  used on input line 90.
-(pdftex.def)             Requested size: 390.0pt x 377.49255pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+ []
 
 [5
 
- <d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/images/Component.png>] [6 <d:/Documents/University/MXB226/Modelling-an-Electronic-Component-Case-Study/Report/images/ComponentNodesOrdering.png>] (d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\ReportVersion2.aux) ) 
+] [6] [7] [8] [9]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 241.
+ ("C:\Users\Jean-Luc\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\omscmr.fd"
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 241.
+ [10] (d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\Report.aux) ) 
 Here is how much of TeX's memory you used:
- 12470 strings out of 492895
- 253594 string characters out of 3122334
- 293437 words of memory out of 3000000
- 16131 multiletter control sequences out of 15000+200000
+ 12836 strings out of 492895
+ 259262 string characters out of 3122334
+ 300765 words of memory out of 3000000
+ 16495 multiletter control sequences out of 15000+200000
  15457 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,13n,48p,627b,231s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\ReportVersion2.pdf (7 pages, 211620 bytes).
+ 55i,13n,60p,798b,682s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Jean-Luc/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on d:/Documents\University\MXB226\Modelling-an-Electronic-Component-Case-Study\Report\Report.pdf (11 pages, 222221 bytes).
 PDF statistics:
- 86 PDF objects out of 1000 (max. 8388607)
+ 100 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

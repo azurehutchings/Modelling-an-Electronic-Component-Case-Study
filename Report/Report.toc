@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}Introduction}{3}% 
+\contentsline {subsection}{\numberline {1.1}Purpose of the Report}{3}% 
+\contentsline {subsection}{\numberline {1.2}The Maths of the Problem}{3}% 
+\contentsline {section}{\numberline {2}Method for Discretising the Problem}{5}% 
+\contentsline {subsection}{\numberline {2.1}Constructing the Finite Difference Mesh}{5}% 
+\contentsline {subsubsection}{\numberline {2.1.1}Interior Nodes}{6}% 
+\contentsline {subsection}{\numberline {2.2}Node Ordering}{10}% 
+\contentsline {subsection}{\numberline {2.3}Matrix Construction}{10}% 
