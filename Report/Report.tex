@@ -235,6 +235,14 @@ Using this in our finite difference equation, we get the following equation for 
   \[4T-T-T_N-T_W-T_E=0\]
   \[3T-T_N-T_W-T_E=0.\]
 \end{center}
+As an example, let us look at node $T_{(3,0)}$.
+\begin{center}
+  $3T_{(3,0)}-T_{(3,1)}-T_{(2,0)}-T_{(4,0)}=0$.
+\end{center}
+Each other node along the boundary will be similar to this node.
+\subsubsection*{Boundary B-C}
+There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually.
+\paragraph*{Node (3,5):} At this node, the normal vector is going to be facing directly east. Even though the boundary's normal looks like it would be facing an angle above due east, it just faces directly east 
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors x and b in the linear equation $Ax=b$.
 \\
