@@ -80,13 +80,13 @@ where the change in $x$ along $\phi$ at the point $x_i$ is approximately the fun
 \begin{center}
 $\frac{d^2\phi}{dx^2}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-2\phi(x_i)+\phi(x_i-\Delta x)}{(\Delta x)^2}$,
 \end{center}
-If we do the same for the change in y, we arrive at an analogous equation
+If we do the same for the change in $y$, we arrive at an analogous equation
 \begin{center}
 $\frac{d^2\phi}{dy^2}|_{y_i}\approx\frac{\phi(y_i+\Delta y)-2\phi(y_i)+\phi(y_i-\Delta y)}{(\Delta y)^2}$,
 \end{center}
 To numerically solve this problem, a finite difference mesh must be constructed and a matrix must be created to represent this information.
 \\
-By splitting the component up into intervals of 0.01 in both the x and y direction, the component can be split into a 7 \times 7 grid. Because we know that the temperature on the upper and right hand boundaries are fixed temperatures, we can ignore them in our discretisation as nodes. They will come into effect later as the right hand side matrix. Given the previous mesh from the introduction, we can label each node u$_{i,j}$ for i,j = 0 to 6 where i, j are given by the row and column of the node starting from the bottom left hand corner. Replacing $\phi(x,y,t)$ with $u_{i,j}(t)$ and noting that $\Delta x = \Delta y$, we arrive at the set of equations for the change in $u_{i,j}(t)$.
+By splitting the component up into intervals of 0.01 in both the $x$ and $y$ direction, the component can be split into a $7 \times 7$ grid. Because we know that the temperature on the upper and right hand boundaries are fixed temperatures, we can ignore them in our discretisation as nodes. They will come into effect later as the right hand side matrix. Given the previous mesh from the introduction, we can label each node u$_{i,j}$ for $i,j = 0$ to 6 where $i, j$ are given by the row and column of the node starting from the bottom left hand corner. Replacing $\phi(x,y,t)$ with $u_{i,j}(t)$ and noting that $\Delta x = \Delta y$, we arrive at the set of equations for the change in $u_{i,j}(t)$.
 \begin{center}
 $u'_{i,j}(t)\approx\frac{D}{\Delta x^2}\big{(}-u_{i+1,j}(t)-u_{i,j+1}(t)+4u_{i,j}(t)-u_{i-1,j}(t)-u_{i,j-1}(t)\big{)}.$
 \end{center}
@@ -247,12 +247,12 @@ Each other node along the boundary will be similar to this node.
 There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually.
 \paragraph*{Node (3,5):} At this node, the normal vector is going to be facing directly east. Even though the boundary's normal looks like it would be facing an angle above due east, it just faces directly east 
 \subsection{Node Ordering}
-One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors x and b in the linear equation $Ax=b$.
+One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors $x$ and $b$ in the linear equation $Ax=b$.
 \\
-Because we have a 6 \times 6 array (ignoring the missing or null nodes in the top right corner) we can transform this into a 1D array with 36 values. We can use the following assumptions to construct the map \begin{itemize}
-\item Our index is (i,j) with i being the horizontal coordinate and j being the vertical coordinate 
+Because we have a $6 \times 6$ array (ignoring the missing or null nodes in the top right corner) we can transform this into a 1D array with 36 values. We can use the following assumptions to construct the map \begin{itemize}
+\item Our index is $(i,j)$ with $i$ being the horizontal coordinate and $j$ being the vertical coordinate 
 \item (0,0) is the bottom left node 
-\item (i+1,j) is to the right of (i,j) and (i,j+1) is above (i,j)
+\item ($i+1$,$j$) is to the right of ($i$,$j$) and ($i$,$j+1$) is above ($i$,$j$)
 \end{itemize}
 From this we can deduce that every time we move across the 2D array, we are moving 1 unit across in the 1D array, and every time we move up in the 2D array, we are moving 6 across in the 1D array. Therefore,
 \begin{center}
