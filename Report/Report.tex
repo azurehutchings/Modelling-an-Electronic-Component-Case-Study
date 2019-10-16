@@ -40,7 +40,9 @@ Write Abstract Here
 \section{Introduction}
 
 \subsection{Purpose of the Report}
-The following report investigates the steady-state heat distribution in a newly designed component. We dicuss how to numerically solve for the steady-state heat districution, the efficient of different methods and the effect of different ambient temperatures.
+The following report investigates the steady-state heat distribution in a newly designed component. 
+
+The report will discuss how to numerically solve for the steady-state heat distribution, the efficient of different methods and the effect of different ambient temperatures.
 
 \subsection{The Maths of the Problem}
 
@@ -63,10 +65,10 @@ $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$ & on boundary A-E-D\\
 $k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)$ & on boundary B-C
 \end{tabular}
 \end{center}
-Where the thermal conductivity is $k=3Wm^{-1}C^{-1}$, and the heat transfer coefficient is $h=20 Wm^{-2}C^{-1}$. To begin with, we will assume the ambient termperature is $T_\infty = 20$.
+Where the thermal conductivity is $k=3Wm^{-1}C^{-1}$, and the heat transfer coefficient is $h=20 Wm^{-2}C^{-1}$. To begin with, we will assume the ambient temperature is $T_\infty = 20$.
 \clearpage
 \section{Method for Discretising the Problem}
-If this was left as a continuous partial differential equation, we would need to analytically solve it. However, it can be much quicker to numerically solve this problem and still retain a high degree of accuracy with the final answers. In this section we will show how we converted the analytical problem to a numerical problem, how the mesh was constructed, the node ordering used, the linear system we dervied from the mesh and discuss the matrix that was created from it.
+If this was left as a continuous partial differential equation, we would need to analytically solve it. However, it can be much quicker to numerically solve this problem and still retain a high degree of accuracy with the final answers. In this section we will show how we converted the analytical problem to a numerical problem, how the mesh was constructed, the node ordering used, the linear system we derived from the mesh and discuss the matrix that was created from it.
 
 
 \subsection{Constructing the Finite Difference Mesh}
@@ -74,7 +76,7 @@ Suppose we had a function $\phi(x,y,t)$ which gives the temperature at the point
 \begin{center}
 $\frac{d\phi}{dx}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-\phi(x_i)}{\Delta x}$,
 \end{center}
-where the change in $x$ along $\phi$ at the point $x_i$ is approximately the functions forward difference over the distance between nodes. We can then take the derivative of this again using backwards difference to get the second derivative centered around $x_i$.
+where the change in $x$ along $\phi$ at the point $x_i$ is approximately the functions forward difference over the distance between nodes. We can then take the derivative of this again using backwards difference to get the second derivative centred around $x_i$.
 \begin{center}
 $\frac{d^2\phi}{dx^2}|_{x_i}\approx\frac{\phi(x_i+\Delta x)-2\phi(x_i)+\phi(x_i-\Delta x)}{(\Delta x)^2}$,
 \end{center}
@@ -82,8 +84,9 @@ If we do the same for the change in y, we arrive at an analogous equation
 \begin{center}
 $\frac{d^2\phi}{dy^2}|_{y_i}\approx\frac{\phi(y_i+\Delta y)-2\phi(y_i)+\phi(y_i-\Delta y)}{(\Delta y)^2}$,
 \end{center}
-To numerically solve this problem, we must construct a finite difference mesh and create a matrix to represent this information.\\\\
-By splitting the component up into intervals of 0.01 in both the x and y direction, we can split the component into a 7x7 grid. Because we know that the temperature on the upper and right hand boundaries are fixed temperatures, we can ignore them in our discretisation as nodes. They will come into effect later as the right hand side matrix. Given the previous mesh from the introduction, we can label each node u$_{i,j}$ for i,j = 0 to 6 where i, j are given by the row and column of the node starting from the bottom left hand corne. Replacing $\phi(x,y,t)$ with $u_{i,j}(t)$ and noting that $\Delta x = \Delta y$, we arrive at the set of equations for the change in $u_{i,j}(t)$.
+To numerically solve this problem, a finite difference mesh must be constructed and a matrix must be created to represent this information.
+\\
+By splitting the component up into intervals of 0.01 in both the x and y direction, the component can be split into a 7 \times 7 grid. Because we know that the temperature on the upper and right hand boundaries are fixed temperatures, we can ignore them in our discretisation as nodes. They will come into effect later as the right hand side matrix. Given the previous mesh from the introduction, we can label each node u$_{i,j}$ for i,j = 0 to 6 where i, j are given by the row and column of the node starting from the bottom left hand corner. Replacing $\phi(x,y,t)$ with $u_{i,j}(t)$ and noting that $\Delta x = \Delta y$, we arrive at the set of equations for the change in $u_{i,j}(t)$.
 \begin{center}
 $u'_{i,j}(t)\approx\frac{D}{\Delta x^2}\big{(}-u_{i+1,j}(t)-u_{i,j+1}(t)+4u_{i,j}(t)-u_{i-1,j}(t)-u_{i,j-1}(t)\big{)}.$
 \end{center}
@@ -115,12 +118,12 @@ roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=10mm},
 \draw[ultra thick,-] (below.north) -- (center.south);
 \end{tikzpicture}
 \end{center}
-As an example, we can examine the node $T_{(1,1)}$.
+As an example, the node $T_{(1,1)}$ can be examined.
 \begin{center}
   $4T_{(1,1)}-T_{(0,1)}-T_{(2,1)}-T_{(1,2)}-T_{(1,0)}=0$
 \end{center}
 \subsubsection*{Boundary A-E-D Nodes}
-On the boundary A-E-D, there are no nodes outside of the matrix. We can approximate them using first order forward differences (to keep the A matrix SPD). This approximation can be done using the rule $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$, where ${\hat{\textbf{n}}}$ is the normal unit vector at the node T and $\boldsymbol{\nabla} T$ is the directional gradient at T. The first order differences are then used to contruct a finite difference equations for each node on the boundary.\\We will provide 3 examples that show all the unique cases along the boundary A-E-D, namely on the border A-E (not including A or E), the border E-D (not inlcuding E or D) and the node E.
+On the boundary A-E-D, there are no nodes outside of the matrix. We can approximate them using first order forward differences (to keep the A matrix SPD). This approximation can be done using the rule $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$, where ${\hat{\textbf{n}}}$ is the normal unit vector at the node T and $\boldsymbol{\nabla} T$ is the directional gradient at T. The first order differences are then used to construct a finite difference equations for each node on the boundary.\\We will provide 3 examples that show all the unique cases along the boundary A-E-D, namely on the border A-E (not including A or E), the border E-D (not including E or D) and the node E.
 \paragraph*{Nodes A-E}
 On the A-E nodes, the normal unit vector will face directly west.
 \begin{center}
@@ -140,7 +143,7 @@ ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
 \draw[ultra thick,-] (below.north) -- (center.south);
 \end{tikzpicture}
 \end{center}
-Therefore $\hat{\textbf{n}} = (-1,0)^T$. We can construct a first order forawrd difference approximation for $T_W$.
+Therefore $\hat{\textbf{n}} = (-1,0)^T$. We can construct a first order forward difference approximation for $T_W$.
 \begin{center}
 \[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot (-1,0)^T = 0\]
 \[-\frac{\partial T}{\partial x} = 0\]
@@ -162,7 +165,7 @@ As an example, let's look at node $T_{(0, 3)}$.
 \end{center}
 
 \paragraph*{The Node E:}
-On the node E, or (0,0) the unit normal vector will be facing southwest.
+On the node E, or (0,0) the unit normal vector will be facing south-west.
 \begin{center}
 \begin{tikzpicture}[
 roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=10mm},
@@ -185,7 +188,7 @@ As a normalised vector, it will be
 \begin{center}
     $\hat{\textbf{n}} = \frac{1}{\sqrt{2}}(-1,-1)^T$.
 \end{center}
-We can use this in our bounadry condition to create a first order difference approximation for $T_W + T_S$.
+We can use this in our boundary condition to create a first order difference approximation for $T_W + T_S$.
 \begin{center}
   \[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot \frac{1}{\sqrt{2}}(-1,-1)^T = 0\]
   \[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot (-1,-1)^T = 0\]
@@ -246,7 +249,11 @@ There are three nodes that we care about on the boundary B-C. These are nodes (3
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors x and b in the linear equation $Ax=b$.
 \\
-Because we have a 6x6 array (ignoring the missing or null nodes in the top right corner) we can transform this into a 1D array with 36 values. We can use the following assumptions to construct the map \begin{itemize}\item Our index is (i,j) with i being the horizontal coordinate and j being the vertical coordinate \item (0,0) is the bottom left node \item (i+1,j) is to the right of (i,j) and (i,j+1) is above (i,j)\end{itemize}
+Because we have a 6 \times 6 array (ignoring the missing or null nodes in the top right corner) we can transform this into a 1D array with 36 values. We can use the following assumptions to construct the map \begin{itemize}
+\item Our index is (i,j) with i being the horizontal coordinate and j being the vertical coordinate 
+\item (0,0) is the bottom left node 
+\item (i+1,j) is to the right of (i,j) and (i,j+1) is above (i,j)
+\end{itemize}
 From this we can deduce that every time we move across the 2D array, we are moving 1 unit across in the 1D array, and every time we move up in the 2D array, we are moving 6 across in the 1D array. Therefore,
 \begin{center}
 $(i,j) \to i+6j$.
