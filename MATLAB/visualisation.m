@@ -42,5 +42,5 @@ colormap hot
 colorbar
 axis image
 title([graphTitle], 'Interpreter', 'latex')
-
+set(gca,'TickLabelInterpreter','latex')
 end
