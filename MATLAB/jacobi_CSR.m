@@ -1,4 +1,4 @@
-function [x, converged, k, res_total] = jacobi_CSR(rb, c, v, b, x0, tol, maxiters)
+function [x, converged, k, res_total, flops] = jacobi_CSR(rb, c, v, b, x0, tol, maxiters, current_flops)
 % JACOBI Jacobi method
 % [x, converged, k] = jacobi(A, b, x0, tol, maxiters) performs Jacobi
 % iteration iteration to solve A*x=b, starting with x = x0 and iterating
@@ -12,8 +12,13 @@ k = 0;
 x = x0;
 A_x = zeros(n,1);
 normb = norm(b);
+
+%flop count
+flops = current_flops;
+
 for i = 1:n
     A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
+    flops = flops + 1;
 end
 res = norm(b - A_x) / normb;
 res_total = res;
@@ -25,19 +30,23 @@ while res > tol && k < maxiters
         for j = rb(i):(rb(i + 1) - 1)
             if c(j) ~= i
                x(i) = x(i) - v(j) * xold(c(j));
+               flops = flops + 2;
             else
                 center = j;
             end
         end
         x(i) = x(i) / v(center);
+        flops = flops + 1;
     end
     k = k + 1;
     
     for i = 1:n
         A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
+        flops = flops + 1;
     end
     res = norm(b - A_x) / normb;
     res_total(k + 1) = res;
+    flops = flops + 2;
 end
 
 %% Check whether we converged

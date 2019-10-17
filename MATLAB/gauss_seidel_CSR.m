@@ -1,12 +1,17 @@
-function [x, converged, k, res_total] = gauss_seidel_CSR(rb, c, v, b, x0, tol, maxiters)
+function [x, converged, k, res_total, flops] = gauss_seidel_CSR(rb, c, v, b, x0, tol, maxiters, current_flops)
 %% Initialise
 n = length(rb) - 1;
 k = 0;
 x = x0;
 A_x = zeros(n,1);
 normb = norm(b);
+
+%flop count
+flops = current_flops;
+
 for i = 1:n
     A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
+    flops = flops + 1;
 end
 res = norm(b - A_x) / normb;
 res_total = res;
@@ -18,18 +23,22 @@ while res > tol && k < maxiters
         for j = rb(i):(rb(i + 1) - 1)
             if c(j) ~= i
                x(i) = x(i) - v(j) * x(c(j));
+               flops = flops + 3;
             else
                 center = j;
             end
         end
         x(i) = x(i) / v(center);
+        flops = flops + 1;
     end
     k = k + 1;
     for i = 1:n
         A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
+        flops = flops + 1;
     end
     res = norm(b - A_x) / normb;
     res_total(k + 1) = res;
+    flops = flops + 2;
 end
 
 %% Check whether we converged
