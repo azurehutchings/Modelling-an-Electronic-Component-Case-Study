@@ -6,7 +6,7 @@
 \usepackage{tikz}
 \usepackage{titlesec}
 \usepackage{float}
-
+\usepackage{mathtools}
 \setcounter{secnumdepth}{4}
 \tikzset{
     node distance=2cm, % specifies the minimum distance between two nodes. Change if necessary.
@@ -246,8 +246,9 @@ As an example, let us look at node $T_{(3,0)}$.
 Each other node along the boundary will be similar to this node.
 \subsubsection*{Boundary B-C}
 There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually. However, they all have the same boundary condition 
-\[k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T).\]
-\paragraph*{Node (3,5):} At this node, the normal vector is going to be facing directly east. This can be seen by analysing the mesh around the point $T_{(3,5)}$.
+\[k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)\]
+where $k=3\text{Wm}^{-1}\text{C}^{-1}, h=20\text{Wm}^{-2}\text{C}^{-1}, T_\infty=20$.
+\paragraph*{Node (3,5):} At this node, the normal vector points directly at the node to the east. This can be seen by analysing the mesh around the point $T_{(3,5)}$.
 \begin{center}
 \begin{tikzpicture}[
 roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=15mm},
@@ -283,24 +284,65 @@ The second order central difference at T$_{(3,5)}$ will therefore be
 \[\frac{9.2}{3}T_{(3,5)}-T_{(3,4)}-T_{(2,5)}=70+\frac{4}{3}.\]
 \paragraph*{Node (5,3):} The case at this node is isomorphic to the node at (3,5), as $\Delta x = \Delta y$ and the normal vector is $(0,1)^T$ rather than $(1,0)^T$. So instead of getting a value for T$_E$ in terms of T$_{(3,5)}$, we will get a value for T$_S$ in terms of T$_{(5,3)}$ for the boundary condition.
 \[T_S=\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}.\]
-Substituting this in our second order central difference for T$_{(5,3)}$ yeilds
+Substituting this in our second order central difference for T$_{(5,3)}$ yields
 \[4T_{(5,3)}-T_N-T_S-T_W-T_E=0\]
 \[4T_{(5,3)}-\bigg{(}\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}\bigg{)}-T_{(5,2)}-T_{(4,3)}-40=0\]
 \[\frac{9.2}{3}T_{(5,3)}-T_{(5,2)}-T_{(4,3)}=40+\frac{4}{3}.\]
+\paragraph*{Node (4,4):} The node laying in the middle of the boundary B-C is T$_{(4,4)}$. The unit normal will be facing northeast.
+\begin{center}
+\begin{tikzpicture}[
+roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=14mm},
+ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
+]
+\node[roundnode] (center) {T$_{(3,5)}$};
+\node[roundnode] (left) [left of=center] {T$_\text{(2,5)}$};
+\node[ghostnode] (right) [right of=center] {T$_\text{E}$};
+\node[ghostnode] (above) [above of=center] {70};
+\node[roundnode] (below) [below of=center] {T$_\text{(3,4)}$};
+
+\draw[ultra thick,-] (left.east) -- (center.west);
+\draw[ultra thick,->] (0.5,0.5) -- (1.5,1.5);
+\draw[ultra thick,-] (below.north) -- (center.south);
+\end{tikzpicture}
+\end{center}
+Therefore $\hat{{\textbf{n}}}$ will be
+\[\hat{\textbf{n}}=\frac{1}{\sqrt{2}}\big{(}1,1\big{)}^T.\]
+Using this in our boundary condition yields
+\[3\bigg{(}\frac{\partial T_{(4,4)}}{\partial x},\frac{\partial T_{(4,4)}}{\partial y}\bigg{)}\cdot\frac{1}{\sqrt{2}}\big{(}1,1\big{)}^T=20\big{(}20-T_{(4,4)}\big{)}\]
+Using first order forward differences for $\frac{\partial T_{(4,4)}}{\partial x}$ and $\frac{\partial T_{(4,4)}}{\partial y}$ and rearranging to solve for $\text{T}_\text{N}+\text{T}_\text{E}$
+\[\frac{3}{\sqrt{2}}\bigg(\frac{T_E-T_{(4,4)}}{0.01}+\frac{T_N-T_{(4,4)}}{0.01}\bigg)=400-20T_{(4,4)}\]
+\[T_E+T_N-2T_{(4,4)}=\frac{\sqrt{2}}{3}\big(4-0.2T_{(4,4)}\big)\]
+\[T_E+T_N=\frac{4\sqrt{2}}{3}+\frac{6-0.2\sqrt{2}}{3}T_{(4,4)}.\]
+We can use this in our second order finite difference equation 
+\[4T_{(4,4)}-T_N-T_S-T_E-T_W=0\]
+\[4T_{(4,4)}-T_S-T_W-\bigg(\frac{4\sqrt{2}}{3}+\frac{6-0.2\sqrt{2}}{3}T_{(4,4)}\bigg)=0\]
+\[\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)T_{(4,4)}-T_S-T_W=\frac{4\sqrt{2}}{3}\]
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors $x$ and $b$ in the linear equation $Ax=b$.
 \\
 Because we have a $6 \times 6$ array (ignoring the missing or null nodes in the top right corner) we can transform this into a 1D array with 36 values. We can use the following assumptions to construct the map \begin{itemize}
 \item Our index is $(i,j)$ with $i$ being the horizontal coordinate and $j$ being the vertical coordinate 
 \item (0,0) is the bottom left node 
-\item ($i+1$,$j$) is to the right of ($i$,$j$) and ($i$,$j+1$) is above ($i$,$j$)
+\item ($i+1$, $j$) is to the right of ($i$,$j$) and ($i$,$j+1$) is above ($i$, $j$)
 \end{itemize}
 From this we can deduce that every time we move across the 2D array, we are moving 1 unit across in the 1D array, and every time we move up in the 2D array, we are moving 6 across in the 1D array. Therefore,
 \begin{center}
 $(i,j) \to i+6j$.
 \end{center}
-
+For example, the equation
+\[2T_{(0,0)}-T_{(1,0)}-T_{(0,1)}=0\]
+will transform into
+\[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
+Using our node ordering, we can write out all the equations in a certain ordering. 
+\begin{align*}
+2T_0-T_1-T_6       & =0\\
+3T_1-T_0-T_2-T_7   & =0\\
+                   &\vdotswithin{=} \notag \\
+3T_6-T_0-T_7-T_{12}& =0\\
+4T_7-T_1-T_6-T_{13}& =0\\
+                   &\vdotswithin{=} \notag
+\end{align*}
 %\subsection{Research methods}
 %
 %
