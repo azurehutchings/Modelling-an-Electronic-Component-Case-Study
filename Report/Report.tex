@@ -5,6 +5,7 @@
 \usepackage{bm}
 \usepackage{tikz}
 \usepackage{titlesec}
+\usepackage{float}
 
 \setcounter{secnumdepth}{4}
 \tikzset{
@@ -46,7 +47,7 @@ The report will discuss how to numerically solve for the steady-state heat distr
 
 \subsection{The Maths of the Problem}
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/Component.png}
 	\caption{Schematic of electronic component.}
 	\label{fig:componentSchematic}
@@ -265,7 +266,125 @@ $(i,j) \to i+6j$.
 %
 %\subsection{Limitations and assumptions}
 %
-%\section{Discussion}
+
+\section{Discussion}
+
+\subsection{Efficiency Comparison}
+The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component.
+
+\subsubsection{Bandwidth and level of fill-in for Each Different Node Ordering}
+
+
+\subsubsection{Memory (for Direct Methods)}
+\begin{center}
+\begin{tabular}{c c c c c}
+Name & Size & Bytes & Class & Attributes \\
+\hline
+$A$ & $33 \times 33$ & $8712$ & double & \\
+$A$ Banded Storage & $33 \times 7$ & $1848$ & double & \\
+$A$ Packed Storage & $1 \times 561$ & $4488$ & double & \\
+$A$ Sparse Storage & $33 \times 33$ & $2528$ & double & sparse \\
+$b$ & $33 \times 1$ & $264$ & double & \\
+\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/MemoryGraph.png}
+	\caption{Memory of each of the A and b which are stored for each Direct Method.}
+	\label{fig:memory}
+\end{figure}
+
+\subsubsection{Iterations (for Iterative Methods)}
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/IterationsGraph.png}
+	\caption{Number of Iterations for each Iterative Method}
+	\label{fig:iterations}
+\end{figure}
+
+
+\subsubsection{Runtime (Direct and Iterative)}
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/RuntimeGraph.png}
+	\caption{Runtime for solving each of the Direct and Iterative Methods.}
+	\label{fig:runtime}
+\end{figure}
+
+\subsubsection{Floating Point Operations (Direct and Iterative)}
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/FlopsGraph.png}
+	\caption{Flops for each Direct and Iterative Methods.}
+	\label{fig:flops}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/ResidualNormGraph.png}
+	\caption{Residual Norm for each Iterative Methods}
+	\label{fig:res}
+\end{figure}
+
+\subsubsection{Tolerance Required for Iterative Methods)}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontole-10.png}
+	\caption{Tolerance of $10^{-10}$.}
+	\label{fig:tole-10}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontole-05.png}
+	\caption{Tolerance of $10^{-5}$.}
+	\label{fig:tole-05}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontol0-001.png}
+	\caption{Tolerance of $10^{-3}$.}
+	\label{fig:tol0.001}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontol0-002.png}
+	\caption{Tolerance of $2 \times 10^{-3}$.}
+	\label{fig:tol0.002}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontol0-01.png}
+	\caption{Tolerance of $10^{-2}$.}
+	\label{fig:tol0.01}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontol0-1.png}
+	\caption{Tolerance of $10^{-1}$.}
+	\label{fig:tol0.1}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontol0-5.png}
+	\caption{Tolerance of $0.5$.}
+	\label{fig:tol0.5}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/Comparisontol1.png}
+	\caption{Tolerance of $1$.}
+	\label{fig:tol1}
+\end{figure}
+
+\subsubsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method)}
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/omegaGraph1.png}
+	\caption{Omega.}
+	\label{fig:omega1}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/omegaGraph2.png}
+	\caption{Number of Iterations against different values of $\omega$.}
+	\label{fig:omega2}
+\end{figure}
+
 %
 %\subsection{Method}
 %
