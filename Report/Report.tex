@@ -142,7 +142,7 @@ ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
 \end{center}
 Therefore $\hat{\textbf{n}} = (-1,0)^T$. We can construct a first order forawrd difference approximation for $T_W$.
 \begin{center}
-\[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot (-1,0)^T = 0\]
+\[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (-1,0)^T = 0\]
 \[-\frac{\partial T}{\partial x} = 0\]
 \[\frac{T-T_W}{0.01} = 0\]
 \[T_W = T.\]
@@ -187,9 +187,9 @@ As a normalised vector, it will be
 \end{center}
 We can use this in our bounadry condition to create a first order difference approximation for $T_W + T_S$.
 \begin{center}
-  \[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot \frac{1}{\sqrt{2}}(-1,-1)^T = 0\]
-  \[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot (-1,-1)^T = 0\]
-  \[\big{(}\frac{\partial T}{\partial x}+\frac{\partial T}{\partial y}\big{)} = 0\]
+  \[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot \frac{1}{\sqrt{2}}(-1,-1)^T = 0\]
+  \[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (-1,-1)^T = 0\]
+  \[\bigg{(}\frac{\partial T}{\partial x}+\frac{\partial T}{\partial y}\bigg{)} = 0\]
   \[\frac{T-T_W}{0.01}+\frac{T-T_S}{0.01} = 0\]
   \[T_W+T_S=2T.\]
 \end{center}
@@ -224,7 +224,7 @@ This can be written as
 \end{center}
 Using the same boundary rule for the edge A-E-D (which contains the edge E-D) we can find a first order forward difference for $T_S$.
 \begin{center}
-\[\big{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\big{)}\cdot (0,-1)^T = 0\]
+\[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (0,-1)^T = 0\]
 \[-\frac{\partial T}{\partial y}=0\]
 \[\frac{T-T_S}{0.01}=0\]
 \[T_S=T\]
@@ -241,8 +241,48 @@ As an example, let us look at node $T_{(3,0)}$.
 \end{center}
 Each other node along the boundary will be similar to this node.
 \subsubsection*{Boundary B-C}
-There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually.
-\paragraph*{Node (3,5):} At this node, the normal vector is going to be facing directly east. Even though the boundary's normal looks like it would be facing an angle above due east, it just faces directly east 
+There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually. However, they all have the same boundary condition 
+\[k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T).\]
+\paragraph*{Node (3,5):} At this node, the normal vector is going to be facing directly east. This can be seen by analysing the mesh around the point $T_{(3,5)}$.
+\begin{center}
+\begin{tikzpicture}[
+roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=15mm},
+ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
+]
+\node[roundnode] (center) {T$_{(3,5)}$};
+\node[roundnode] (left) [left of=center] {T$_\text{(2,5)}$};
+\node[ghostnode] (right) [right of=center] {T$_\text{E}$};
+\node[roundnode] (above) [above of=center] {70};
+\node[roundnode] (below) [below of=center] {T$_\text{(3,4)}$};
+
+\draw[ultra thick,-] (left.east) -- (center.west);
+\draw[ultra thick,-] (above.south) -- (center.north);
+\draw[ultra thick,<-] (right.west) -- (center.east);
+\draw[ultra thick,-] (below.north) -- (center.south);
+\end{tikzpicture}
+\end{center}
+Therefore the normal unit vector is 
+\begin{center}
+  $\hat{\textbf{n}}=(1,0)^T$.
+\end{center}
+A first order backward difference is used here because the node we are estimating, T$_\text{E}$, is to the right of the node T$_{(3,5)}$.
+\[
+  k\boldsymbol{\nabla}T_{(3,5)}\cdot(1,0)^T = h(T_{\infty} - T_{(3,5)})
+\]
+\[ 3\bigg{(}\frac{\partial T_{(3,5)}}{\partial x},\frac{\partial T_{(3,5)}}{\partial y}\bigg{)}\cdot(1,0)^T = 20(20 - T_{(3,5)})\]
+\[3\frac{T_E-T_{(3,5)}}{0.01} = 400-20T_{(3,5)}\]
+\[3T_E-3T_{(3,5)}=4-0.2T_{(3,5)}\]
+\[T_E=\frac{4}{3}+\frac{2.8}{3}T_{(3,5)}.\]
+The second order central difference at T$_{(3,5)}$ will therefore be 
+\[4T_{(3,5)}-T_N-T_S-T_W-T_E=0\]
+\[4T_{(3,5)}-70-T_{(3,4)}-T_{(2,5)}-\bigg{(}\frac{4}{3}+\frac{2.8}{3}T_{(3,5)}\bigg{)}=0\]
+\[\frac{9.2}{3}T_{(3,5)}-T_{(3,4)}-T_{(2,5)}=70+\frac{4}{3}.\]
+\paragraph*{Node (5,3):} The case at this node is isomorphic to the node at (3,5), as $\Delta x = \Delta y$ and the normal vector is $(0,1)^T$ rather than $(1,0)^T$. So instead of getting a value for T$_E$ in terms of T$_{(3,5)}$, we will get a value for T$_S$ in terms of T$_{(5,3)}$ for the boundary condition.
+\[T_S=\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}.\]
+Substituting this in our second order central difference for T$_{(5,3)}$ yeilds
+\[4T_{(5,3)}-T_N-T_S-T_W-T_E=0\]
+\[4T_{(5,3)}-\bigg{(}\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}\bigg{)}-T_{(5,2)}-T_{(4,3)}-40=0\]
+\[\frac{9.2}{3}T_{(5,3)}-T_{(5,2)}-T_{(4,3)}=40+\frac{4}{3}.\]
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors x and b in the linear equation $Ax=b$.
 \\
