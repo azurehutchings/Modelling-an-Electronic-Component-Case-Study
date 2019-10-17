@@ -334,14 +334,44 @@ For example, the equation
 will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
-Using our node ordering, we can write out all the equations in a certain ordering. 
+Using our node ordering, we can write out all the equations in a certain ordering (See Appendix ...). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix ...). 
 \begin{align*}
-2T_0-T_1-T_6       & =0\\
-3T_1-T_0-T_2-T_7   & =0\\
-                   &\vdotswithin{=} \notag \\
-3T_6-T_0-T_7-T_{12}& =0\\
-4T_7-T_1-T_6-T_{13}& =0\\
-                   &\vdotswithin{=} \notag
+  2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
+  3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
+  3\text{T}_2-\text{T}_1-\text{T}_3-\text{T}_8          & =0\\
+  3\text{T}_3-\text{T}_2-\text{T}_4-\text{T}_9          & =0\\
+  3\text{T}_4-\text{T}_3-\text{T}_5-\text{T}_{10}       & =0\\
+  3\text{T}_5-\text{T}_4-\text{T}_{11}           & =40\\
+  3\text{T}_6-\text{T}_0-\text{T}_7-\text{T}_{12}       & =0\\
+  4\text{T}_7-\text{T}_8-\text{T}_1-\text{T}_6-\text{T}_{13}   & =0\\
+  4\text{T}_8-\text{T}_7-\text{T}_2-\text{T}_9-\text{T}_{14}   & =0\\
+  4\text{T}_9-\text{T}_8-\text{T}_3-\text{T}_{10}-\text{T}_{15}& =0\\
+  4\text{T}_{10}-\text{T}_9-\text{T}_4-\text{T}_{11}-\text{T}_{16} & =0\\
+  4\text{T}_{11}-\text{T}_{10}-\text{T}_5-\text{T}_{17} & =40\\
+  3\text{T}_{12}-\text{T}_6-\text{T}_{16}-\text{T}_{13} & =0\\
+  4\text{T}_{13}-\text{T}_{12}-\text{T}_{14}-\text{T}_{7}-\text{T}_{19} & =0\\
+  4\text{T}_{14}-\text{T}_{13}-\text{T}_{15}-\text{T}_{8}-\text{T}_{20} & =0\\
+  4\text{T}_{15}-\text{T}_{14}-\text{T}_{16}-\text{T}_{9}-\text{T}_{21} & =0\\
+  4\text{T}_{16}-\text{T}_{15}-\text{T}_{17}-\text{T}_{10}-\text{T}_{22}& =0\\
+  4\text{T}_{17}-\text{T}_{16}-\text{T}_{11}-\text{T}_{23} & =40\\
+  3\text{T}_{18}-\text{T}_{12}-\text{T}_{24}-\text{T}_{19} & =0\\
+  4\text{T}_{19}-\text{T}_{18}-\text{T}_{20}-\text{T}_{13}-\text{T}_{25} & =0\\
+  4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
+  4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
+  4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
+  \frac{9.2}{3}\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =40+\frac{4}{3}\\
+  3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
+  4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
+  4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
+  4\text{T}_{27}-\text{T}_{26}-\text{T}_{28}-\text{T}_{21}-\text{T}_{33} & =0\\
+  \bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{28}-\text{T}_{27}-\text{T}_{22} & =\frac{4\sqrt{2}}{3}\\
+  \text{T}_{29} \text{ is null}\\
+  3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
+  4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
+  4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
+  \frac{9.2}{3}\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =70+\frac{4}{3}\\
+  \text{T}_{34} \text{ is null}\\
+  \text{T}_{35} \text{ is null}
 \end{align*}
 %\subsection{Research methods}
 %
