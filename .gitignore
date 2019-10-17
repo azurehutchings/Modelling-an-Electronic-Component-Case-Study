@@ -273,3 +273,7 @@ TSWLatexianTemp*
 *.asv
 
 *.gz
+
+Report/ReportVersion2.pdf
+
+Report/Report.pdf
