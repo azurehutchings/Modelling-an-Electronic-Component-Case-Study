@@ -25,7 +25,7 @@ A(31,31) = 3;
 
 %changes along convective boundary
 A(24,24) = (3+0.2/3); 
-A(29,29) = (2+0.2*sqrt(2)/3);
+A(29,29) = (2-0.2*sqrt(2)/3);
 A(34,34) = (3+0.2/3);
 
 %nothing should rely on u(4,5) which is row and column 30

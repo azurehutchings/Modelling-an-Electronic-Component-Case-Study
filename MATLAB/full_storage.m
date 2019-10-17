@@ -7,7 +7,7 @@ T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
 I = -1*eye(6);
 Z = zeros(6,6);
 A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
-b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; -sqrt(2)*4/3; 70; 70; 70; 70+4/3];
+b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
 
 %make changes for insulated boundary
 A(1,1) = 2;
