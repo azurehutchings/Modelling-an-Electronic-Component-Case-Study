@@ -7,6 +7,8 @@
 \usepackage{titlesec}
 \usepackage{float}
 \usepackage{mathtools}
+\usepackage{caption}
+\usepackage{subcaption}
 \setcounter{secnumdepth}{4}
 \tikzset{
     node distance=2cm, % specifies the minimum distance between two nodes. Change if necessary.
@@ -42,13 +44,14 @@ Write Abstract Here
 
 \subsection{Purpose of the Report}
 The following report investigates the steady-state heat distribution in a newly designed component. 
-
+\\\\
 The report will discuss how to numerically solve for the steady-state heat distribution, the efficient of different methods and the effect of different ambient temperatures.
 
 \subsection{The Maths of the Problem}
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Component.png}
+	\center
+	\includegraphics[width=0.9\linewidth]{images/Component.png}
 	\caption{Schematic of electronic component.}
 	\label{fig:componentSchematic}
 \end{figure}
@@ -86,7 +89,7 @@ If we do the same for the change in $y$, we arrive at an analogous equation
 $\frac{d^2\phi}{dy^2}|_{y_i}\approx\frac{\phi(y_i+\Delta y)-2\phi(y_i)+\phi(y_i-\Delta y)}{(\Delta y)^2}$,
 \end{center}
 To numerically solve this problem, a finite difference mesh must be constructed and a matrix must be created to represent this information.
-\\
+\\\\
 By splitting the component up into intervals of 0.01 in both the $x$ and $y$ direction, the component can be split into a $7 \times 7$ grid. Because we know that the temperature on the upper and right hand boundaries are fixed temperatures, we can ignore them in our discretisation as nodes. They will come into effect later as the right hand side matrix. Given the previous mesh from the introduction, we can label each node u$_{i,j}$ for $i,j = 0$ to 6 where $i, j$ are given by the row and column of the node starting from the bottom left hand corner. Replacing $\phi(x,y,t)$ with $u_{i,j}(t)$ and noting that $\Delta x = \Delta y$, we arrive at the set of equations for the change in $u_{i,j}(t)$.
 \begin{center}
 $u'_{i,j}(t)\approx\frac{D}{\Delta x^2}\big{(}-u_{i+1,j}(t)-u_{i,j+1}(t)+4u_{i,j}(t)-u_{i-1,j}(t)-u_{i,j-1}(t)\big{)}.$
@@ -319,7 +322,7 @@ We can use this in our second order finite difference equation
 \[\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)T_{(4,4)}-T_S-T_W=\frac{4\sqrt{2}}{3}\]
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors $x$ and $b$ in the linear equation $Ax=b$.
-\\
+\\\\
 Because we have a $6 \times 6$ array (ignoring the missing or null nodes in the top right corner) we can transform this into a 1D array with 36 values. We can use the following assumptions to construct the map \begin{itemize}
 \item Our index is $(i,j)$ with $i$ being the horizontal coordinate and $j$ being the vertical coordinate 
 \item (0,0) is the bottom left node 
@@ -435,61 +438,24 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 \end{figure}
 
 \subsubsection{Tolerance Required for Iterative Methods)}
+The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method.
+\\\\
+\subsubsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
+The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
+\\\\
+For matrices that arise from finite difference discretisations of Laplace's equation, the value of $\omega$ that minimises the spectral radius $\rho(T_{SOR})$ is 
+\begin{center}
+$\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$.
+\end{center}
+The Figure \ref{fig:omega1} compares the value of $\omega$ against $\rho(T_{SOR})$ to visually see what $\omega$ value has the least $\rho(T_{SOR})$. The theoretical optimal value of $\omega$ is $\omega_{opt}$.
 
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontole-10.png}
-	\caption{Tolerance of $10^{-10}$.}
-	\label{fig:tole-10}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontole-05.png}
-	\caption{Tolerance of $10^{-5}$.}
-	\label{fig:tole-05}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontol0-001.png}
-	\caption{Tolerance of $10^{-3}$.}
-	\label{fig:tol0.001}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontol0-002.png}
-	\caption{Tolerance of $2 \times 10^{-3}$.}
-	\label{fig:tol0.002}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontol0-01.png}
-	\caption{Tolerance of $10^{-2}$.}
-	\label{fig:tol0.01}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontol0-1.png}
-	\caption{Tolerance of $10^{-1}$.}
-	\label{fig:tol0.1}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontol0-5.png}
-	\caption{Tolerance of $0.5$.}
-	\label{fig:tol0.5}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/Comparisontol1.png}
-	\caption{Tolerance of $1$.}
-	\label{fig:tol1}
-\end{figure}
-
-\subsubsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method)}
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/omegaGraph1.png}
 	\caption{Omega.}
 	\label{fig:omega1}
 \end{figure}
+
+The effect of $\omega$ was explored on the number of iterations taken to converge. In Figure \ref{fig:omega2} it can be seen that the $\omega$ that had the least iterations to converge was $\omega_{opt}$. Thus, the $\omega$ that will result with the least amount of iterations is approximately $1.605$.
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/omegaGraph2.png}
@@ -526,6 +492,67 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 %
 %\section{References}
 %
-%\section{Appendices}
+\section{Appendices}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/Comparisontole-10.png}
+		\caption{Tolerance of $10^{-10}$.}
+		\label{fig:tole-10}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontole-05.png}
+		\caption{Tolerance of $10^{-5}$.}
+		\label{fig:tole-05}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontol0-001.png}
+		\caption{Tolerance of $10^{-3}$.}
+		\label{fig:tol0.001}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontol0-002.png}
+		\caption{Tolerance of $2 \times 10^{-3}$.}
+		\label{fig:tol0.002}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontol0-01.png}
+		\caption{Tolerance of $10^{-2}$.}
+		\label{fig:tol0.01}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontol0-1.png}
+		\caption{Tolerance of $10^{-1}$.}
+		\label{fig:tol0.1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontol0-5.png}
+		\caption{Tolerance of $0.5$.}
+		\label{fig:tol0.5}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/Comparisontol1.png}
+		\caption{Tolerance of $1$.}
+		\label{fig:tol1}
+	\end{subfigure}
+	\caption{Varying tolerances for solving $x$ using the SOR Method.}
+    \label{fig:tolerance}
+\end{figure}
  
 \end{document}
