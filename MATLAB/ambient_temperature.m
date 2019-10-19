@@ -1,10 +1,10 @@
-for ambient_temp = 10:0.5:50
+for ambient_temp = 0:50
     
     [A, b] = ambient_temperature_matrix(ambient_temp);
     
-    A = cholesky(A);
-    temperatures = forward_substitution(A', b);
-    temperatures = backward_substitution(A, temperatures);
+    [A,~] = cholesky(A, 0);
+    [temperatures,~] = forward_substitution(A', b, 0);
+    [temperatures,~] = backward_substitution(A, temperatures, 0);
     
 
    %Use ambient_temperature variable to reconstruct A matrix and b vector accordingly
