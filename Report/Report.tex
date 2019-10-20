@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage{gensymb}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{bm}
 \usepackage{tikz}
 \usepackage{titlesec}
@@ -128,7 +129,7 @@ As an example, the node $T_{(1,1)}$ can be examined.
 \begin{center}
   $4T_{(1,1)}-T_{(0,1)}-T_{(2,1)}-T_{(1,2)}-T_{(1,0)}=0$
 \end{center}
-\subsubsection*{Boundary A-E-D Nodes}
+\subsubsection{Boundary A-E-D Nodes}
 On the boundary A-E-D, there are no nodes outside of the matrix. We can approximate them using first order forward differences (to keep the A matrix SPD). This approximation can be done using the rule $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$, where ${\hat{\textbf{n}}}$ is the normal unit vector at the node T and $\boldsymbol{\nabla} T$ is the directional gradient at T. The first order differences are then used to construct a finite difference equations for each node on the boundary.\\We will provide 3 examples that show all the unique cases along the boundary A-E-D, namely on the border A-E (not including A or E), the border E-D (not including E or D) and the node E.
 \paragraph*{Nodes A-E}
 On the A-E nodes, the normal unit vector will face directly west.
@@ -249,7 +250,7 @@ As an example, let us look at node $T_{(3,0)}$.
   $3T_{(3,0)}-T_{(3,1)}-T_{(2,0)}-T_{(4,0)}=0$.
 \end{center}
 Each other node along the boundary will be similar to this node.
-\subsubsection*{Boundary B-C}
+\subsubsection{Boundary B-C}
 There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually. However, they all have the same boundary condition 
 \[k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)\]
 where $k=3\text{Wm}^{-1}\text{C}^{-1}, h=20\text{Wm}^{-2}\text{C}^{-1}, T_\infty=20$.
@@ -340,59 +341,92 @@ will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
 Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\
-The following code was used to generate the A matrix in matlab.
-\pagebreak
-\begin{minted}{matlab}
-n = 6;
-nOnes = ones(n,1);
-T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
-I = -1*eye(6);
-Z = zeros(6,6);
-A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
-b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
-%make changes for insulated boundary
-A(1,1) = 2;
-A(2,2) = 3;
-A(3,3) = 3;
-A(4,4) = 3;
-A(5,5) = 3;
-A(6,6) = 3;
-A(7,7) = 3;
-A(13,13) = 3;
-A(19,19) = 3;
-A(25,25) = 3;
-A(31,31) = 3;
-%changes along convective boundary
-A(24,24) = (9.2/3);
-A(29,29) = (2-sqrt(2)*0.2/3);
-A(34,34) = (9.2/3);
-%nothing should rely on u(4,5) which is row and column 30
-A(:,30) = [];
-A(30,:) = [];
-%same for columns/rows 35 and 36 (but because we've already deleted
-%values, they're now rows 34 then 34 again)
-A(:,34) = [];
-A(34,:) = [];
-A(:,34) = [];
-A(34,:) = [];
-\end{minted}
+The code to generate this matrix is in Appendix A3.\\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
 \subsection{Checking SPD}
-The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i,j)$\in$ dim(A), A(i,j) = A(j,i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
+The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
 \begin{minted}{matlab}
 	spy(A-A')
 \end{minted}
+\includegraphics{images/spySymmetric.png}
 The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. This can be done simply with the eig() command.
 \begin{minted}{matlab}
 	eig(A)
 \end{minted}
-The results of this are in Appendix A3. Because they are all positive, A is postive definite. 
+The results of this are in Appendix A4. Because they are all positive, A is postive definite. 
 \section{Storage and Solutions}
 \subsection{Full Storage}
 
 \subsection{Packed Storage}
 
 \subsection{Band Storage}
-A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficent manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM 
+A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficent manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. To use this in Matlab, the following code is used
+\begin{minted}{matlab}
+%RCM Storage
+load full_storage
+%Create a new matrix to work with
+A_RCM = A;
+%create ordering vector
+p= symrcm(A_RCM);
+%order the A matrix and b vector according the RCM storage
+A_RCM = A_RCM(p,p);
+b_rcm = b(p);
+reorder = reorder_vector(p);
+\end{minted}
+The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ the same. A reorder vector is created from p to reverse the rcm ordering for when the system of equations is solved for the steady state temperatures. The code for the reorder\_vector() function is
+\begin{minted}{matlab}
+function p = reorder_vector(b)
+%Takes a reordering vector and outputs the reverse reordering vector
+[~,n] = size(b);
+p = zeros(n,1);
+for i = 1:n
+	p(b(i)) = i;
+end
+end
+\end{minted}
+The reordered A matrix using RCM ordering will look like\\
+\includegraphics{images/ARCM.png}
+The bandwidth of this matrix is also 13. However, more elements are closer to the main diagonal.
+\\\\The next step is to convert the RCM ordering to a banded storage matrix, denoted $B$. Because $A$ is symmetric, we can get away with only storing the upper or lower part of the matrix. The dimensions of this matrix are $\mathbb{R}^{n\times p}$, where n is the row or column count of $A$, and p is the upper bandwidth of $A$. To change the storage, we must create a new mapping from the elements of the upper portion of $A$ to $B$.
+\begin{align*}
+A(i,j)\to B(i,j-i+1), \text{ where } i,j < \text{dim}(A).
+\end{align*}
+The Matlab code to implement this is
+\begin{minted}{matlab}
+function B = band(A)
+[n,~] = size(A);
+m = bandwidth(A)+1;
+B = zeros(n,m);
+for i = 1:n
+	for j = 1:m
+		if (i + j < n+2)
+			B(i,j) = A(i,j+i-1);
+		end
+	end
+end
+end
+\end{minted}
+The (transposed) resulting matrix will look like \\\includegraphics{images/band.png}
+To perform Cholesky factorisation on this matrix, and keeping the factorised matrix in the same dimension, the regular Cholesky factorisation method can be retooled using the previously mentioned mapping for band storage. The new Band Cholesky factorisation method will be
+\begin{minted}{matlab}
+function [A, flops] = cholesky_band(A, current_flops)
+[n,width] = size(A);
+for j = 1:n
+	for i = 1:j-1
+		for k = 1:i-1
+			if((j-i+1) < width+1 && (i-k+1) < width+1 && (j-k+1) < width+1)
+				A(i,j-i+1) = A(i,j-i+1) - A(k,i-k+1) * A(k,j-k+1);
+			end
+		end
+		if(j-i+1<(width+1))
+			A(i,j-i+1) = A(i,j-i+1) / A(i,1);
+			A(j,1) = A(j,1) - A(i,j-i+1)^2;
+		end
+	end
+	A(j,1) = sqrt(A(j,1));
+end	
+\end{minted}
+The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields (as a transposed figure) \\\includegraphics{images/cholband.png}
+To use this factorised matrix, a new forward and backward method must be constructed. Luckily, the previous mapping can still be used. Care must be taken when working in a non-square matrix in both forward and backward substitution as well.
 \subsection{Sparse Storage}
 
 \subsection{CSR Storage}
@@ -548,8 +582,43 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 \text{T}_{35} \text{ is null}
 \end{align*}
 \subsection*{Appendix A2}
-
+\pagebreak
 \subsection*{Appendix A3}
+\begin{minted}{matlab}
+n = 6;
+nOnes = ones(n,1);
+T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
+I = -1*eye(6);
+Z = zeros(6,6);
+A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
+b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
+%make changes for insulated boundary
+A(1,1) = 2;
+A(2,2) = 3;
+A(3,3) = 3;
+A(4,4) = 3;
+A(5,5) = 3;
+A(6,6) = 3;
+A(7,7) = 3;
+A(13,13) = 3;
+A(19,19) = 3;
+A(25,25) = 3;
+A(31,31) = 3;
+%changes along convective boundary
+A(24,24) = (9.2/3);
+A(29,29) = (2-sqrt(2)*0.2/3);
+A(34,34) = (9.2/3);
+%nothing should rely on u(4,5) which is row and column 30
+A(:,30) = [];
+A(30,:) = [];
+%same for columns/rows 35 and 36 (but because we've already deleted
+%values, they're now rows 34 then 34 again)
+A(:,34) = [];
+A(34,:) = [];
+A(:,34) = [];
+A(34,:) = [];
+\end{minted}
+\subsection*{Appendix A4}
 \begin{minted}{matlab}
 >> eig(A)
 ans =
