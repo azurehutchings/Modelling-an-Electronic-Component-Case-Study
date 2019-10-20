@@ -9,6 +9,8 @@
 \usepackage{mathtools}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{minted}
+\setminted{frame=single,framesep=10pt,breaklines,linenos}
 \setcounter{secnumdepth}{4}
 \tikzset{
     node distance=2cm, % specifies the minimum distance between two nodes. Change if necessary.
@@ -337,54 +339,67 @@ For example, the equation
 will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
-Using our node ordering, we can write out all the equations in a certain ordering (See Appendix ...). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix ...). 
-\begin{align*}
-  2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
-  3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
-  3\text{T}_2-\text{T}_1-\text{T}_3-\text{T}_8          & =0\\
-  3\text{T}_3-\text{T}_2-\text{T}_4-\text{T}_9          & =0\\
-  3\text{T}_4-\text{T}_3-\text{T}_5-\text{T}_{10}       & =0\\
-  3\text{T}_5-\text{T}_4-\text{T}_{11}           & =40\\
-  3\text{T}_6-\text{T}_0-\text{T}_7-\text{T}_{12}       & =0\\
-  4\text{T}_7-\text{T}_8-\text{T}_1-\text{T}_6-\text{T}_{13}   & =0\\
-  4\text{T}_8-\text{T}_7-\text{T}_2-\text{T}_9-\text{T}_{14}   & =0\\
-  4\text{T}_9-\text{T}_8-\text{T}_3-\text{T}_{10}-\text{T}_{15}& =0\\
-  4\text{T}_{10}-\text{T}_9-\text{T}_4-\text{T}_{11}-\text{T}_{16} & =0\\
-  4\text{T}_{11}-\text{T}_{10}-\text{T}_5-\text{T}_{17} & =40\\
-  3\text{T}_{12}-\text{T}_6-\text{T}_{16}-\text{T}_{13} & =0\\
-  4\text{T}_{13}-\text{T}_{12}-\text{T}_{14}-\text{T}_{7}-\text{T}_{19} & =0\\
-  4\text{T}_{14}-\text{T}_{13}-\text{T}_{15}-\text{T}_{8}-\text{T}_{20} & =0\\
-  4\text{T}_{15}-\text{T}_{14}-\text{T}_{16}-\text{T}_{9}-\text{T}_{21} & =0\\
-  4\text{T}_{16}-\text{T}_{15}-\text{T}_{17}-\text{T}_{10}-\text{T}_{22}& =0\\
-  4\text{T}_{17}-\text{T}_{16}-\text{T}_{11}-\text{T}_{23} & =40\\
-  3\text{T}_{18}-\text{T}_{12}-\text{T}_{24}-\text{T}_{19} & =0\\
-  4\text{T}_{19}-\text{T}_{18}-\text{T}_{20}-\text{T}_{13}-\text{T}_{25} & =0\\
-  4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
-  4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
-  4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
-  \frac{9.2}{3}\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =40+\frac{4}{3}\\
-  3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
-  4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
-  4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
-  4\text{T}_{27}-\text{T}_{26}-\text{T}_{28}-\text{T}_{21}-\text{T}_{33} & =0\\
-  \bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{28}-\text{T}_{27}-\text{T}_{22} & =\frac{4\sqrt{2}}{3}\\
-  \text{T}_{29} \text{ is null}\\
-  3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
-  4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
-  4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
-  \frac{9.2}{3}\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =70+\frac{4}{3}\\
-  \text{T}_{34} \text{ is null}\\
-  \text{T}_{35} \text{ is null}
-\end{align*}
-%\subsection{Research methods}
-%
-%
-%\subsection{Limitations and assumptions}
-%
+Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\
+The following code was used to generate the A matrix in matlab.
+\pagebreak
+\begin{minted}{matlab}
+n = 6;
+nOnes = ones(n,1);
+T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
+I = -1*eye(6);
+Z = zeros(6,6);
+A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
+b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
+%make changes for insulated boundary
+A(1,1) = 2;
+A(2,2) = 3;
+A(3,3) = 3;
+A(4,4) = 3;
+A(5,5) = 3;
+A(6,6) = 3;
+A(7,7) = 3;
+A(13,13) = 3;
+A(19,19) = 3;
+A(25,25) = 3;
+A(31,31) = 3;
+%changes along convective boundary
+A(24,24) = (9.2/3);
+A(29,29) = (2-sqrt(2)*0.2/3);
+A(34,34) = (9.2/3);
+%nothing should rely on u(4,5) which is row and column 30
+A(:,30) = [];
+A(30,:) = [];
+%same for columns/rows 35 and 36 (but because we've already deleted
+%values, they're now rows 34 then 34 again)
+A(:,34) = [];
+A(34,:) = [];
+A(:,34) = [];
+A(34,:) = [];
+\end{minted}
+\subsection{Checking SPD}
+The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i,j)$\in$ dim(A), A(i,j) = A(j,i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
+\begin{minted}{matlab}
+	spy(A-A')
+\end{minted}
+The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. This can be done simply with the eig() command.
+\begin{minted}{matlab}
+	eig(A)
+\end{minted}
+The results of this are in Appendix A3. Because they are all positive, A is postive definite. 
+\section{Storage and Solutions}
+\subsection{Full Storage}
 
-\section{Discussion}
+\subsection{Packed Storage}
 
-\subsection{Efficiency Comparison}
+\subsection{Band Storage}
+A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficent manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM 
+\subsection{Sparse Storage}
+
+\subsection{CSR Storage}
+
+\subsection{Visualtion}
+
+\section{Efficiency Comparison}
 The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component.
 
 \subsubsection{Bandwidth and level of fill-in for Each Different Node Ordering}
@@ -493,7 +508,86 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 %\section{References}
 %
 \section{Appendices}
+\subsection*{Appendix A1}
+\begin{align*}
+2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
+3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
+3\text{T}_2-\text{T}_1-\text{T}_3-\text{T}_8          & =0\\
+3\text{T}_3-\text{T}_2-\text{T}_4-\text{T}_9          & =0\\
+3\text{T}_4-\text{T}_3-\text{T}_5-\text{T}_{10}       & =0\\
+3\text{T}_5-\text{T}_4-\text{T}_{11}           & =40\\
+3\text{T}_6-\text{T}_0-\text{T}_7-\text{T}_{12}       & =0\\
+4\text{T}_7-\text{T}_8-\text{T}_1-\text{T}_6-\text{T}_{13}   & =0\\
+4\text{T}_8-\text{T}_7-\text{T}_2-\text{T}_9-\text{T}_{14}   & =0\\
+4\text{T}_9-\text{T}_8-\text{T}_3-\text{T}_{10}-\text{T}_{15}& =0\\
+4\text{T}_{10}-\text{T}_9-\text{T}_4-\text{T}_{11}-\text{T}_{16} & =0\\
+4\text{T}_{11}-\text{T}_{10}-\text{T}_5-\text{T}_{17} & =40\\
+3\text{T}_{12}-\text{T}_6-\text{T}_{16}-\text{T}_{13} & =0\\
+4\text{T}_{13}-\text{T}_{12}-\text{T}_{14}-\text{T}_{7}-\text{T}_{19} & =0\\
+4\text{T}_{14}-\text{T}_{13}-\text{T}_{15}-\text{T}_{8}-\text{T}_{20} & =0\\
+4\text{T}_{15}-\text{T}_{14}-\text{T}_{16}-\text{T}_{9}-\text{T}_{21} & =0\\
+4\text{T}_{16}-\text{T}_{15}-\text{T}_{17}-\text{T}_{10}-\text{T}_{22}& =0\\
+4\text{T}_{17}-\text{T}_{16}-\text{T}_{11}-\text{T}_{23} & =40\\
+3\text{T}_{18}-\text{T}_{12}-\text{T}_{24}-\text{T}_{19} & =0\\
+4\text{T}_{19}-\text{T}_{18}-\text{T}_{20}-\text{T}_{13}-\text{T}_{25} & =0\\
+4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
+4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
+4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
+\frac{9.2}{3}\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =40+\frac{4}{3}\\
+3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
+4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
+4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
+4\text{T}_{27}-\text{T}_{26}-\text{T}_{28}-\text{T}_{21}-\text{T}_{33} & =0\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{28}-\text{T}_{27}-\text{T}_{22} & =\frac{4\sqrt{2}}{3}\\
+\text{T}_{29} \text{ is null}\\
+3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
+4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
+4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
+\frac{9.2}{3}\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =70+\frac{4}{3}\\
+\text{T}_{34} \text{ is null}\\
+\text{T}_{35} \text{ is null}
+\end{align*}
+\subsection*{Appendix A2}
 
+\subsection*{Appendix A3}
+\begin{minted}{matlab}
+>> eig(A)
+ans =
+	0.1048
+	0.4817
+	0.5562
+	0.9046
+	1.3068
+	1.3496
+	1.7281
+	1.7301
+	2.2381
+	2.2695
+	2.4054
+	2.7139
+	2.8889
+	3.1828
+	3.2022
+	3.3147
+	3.5501
+	3.7661
+	3.7971
+	3.8616
+	4.0796
+	4.3184
+	4.3600
+	4.4231
+	4.7871
+	4.9909
+	5.2876
+	5.5551
+	5.8494
+	6.0934
+	6.6159
+	6.8698
+	7.4565
+\end{minted}
+\subsection*{Appendix B}
 \begin{figure}
 	\centering
 	\begin{subfigure}[b]{0.4\textwidth}
