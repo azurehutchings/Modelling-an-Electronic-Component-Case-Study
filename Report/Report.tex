@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage{gensymb}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{bm}
 \usepackage{tikz}
 \usepackage{titlesec}
@@ -293,7 +294,7 @@ Substituting this in our second order central difference for T$_{(5,3)}$ yields
 \[4T_{(5,3)}-T_N-T_S-T_W-T_E=0\]
 \[4T_{(5,3)}-\bigg{(}\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}\bigg{)}-T_{(5,2)}-T_{(4,3)}-40=0\]
 \[\frac{9.2}{3}T_{(5,3)}-T_{(5,2)}-T_{(4,3)}=40+\frac{4}{3}.\]
-\paragraph*{Node (4,4):} The node laying in the middle of the boundary B-C is T$_{(4,4)}$. The unit normal will be facing northeast.
+\paragraph*{Node (4,4):} The node laying in the middle of the boundary B-C is T$_{(4,4)}$. The unit normal will be facing north-east.
 \begin{center}
 \begin{tikzpicture}[
 roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=14mm},
@@ -339,8 +340,8 @@ For example, the equation
 will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
-Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\
-The following code was used to generate the A matrix in matlab.
+Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\
+The following code was used to generate the A matrix in Matlab.
 \pagebreak
 \begin{minted}{matlab}
 n = 6;
@@ -377,35 +378,106 @@ A(:,34) = [];
 A(34,:) = [];
 \end{minted}
 \subsection{Checking SPD}
-The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i,j)$\in$ dim(A), A(i,j) = A(j,i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
+The matrix A is both symmetric and positive definite. This can be verified with Matlab.\\If A is symmetric, then for all (i,j)$\in$ dim(A), A(i,j) = A(j,i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
 \begin{minted}{matlab}
 	spy(A-A')
 \end{minted}
-The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. This can be done simply with the eig() command.
+The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all positive. This can be done simply with the eig() command.
 \begin{minted}{matlab}
 	eig(A)
 \end{minted}
-The results of this are in Appendix A3. Because they are all positive, A is postive definite. 
+The results of this are in Appendix A3. Because they are all positive, A is positive definite. 
 \section{Storage and Solutions}
+In this section, iterative methods and direct methods are used to solve for $x$, such that:
+\\
+\begin{center}
+$Ax=b$.
+\\
+\end{center}
+
 \subsection{Full Storage}
 
 \subsection{Packed Storage}
 
 \subsection{Band Storage}
-A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficent manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM 
+A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM 
 \subsection{Sparse Storage}
 
-\subsection{CSR Storage}
+\subsection{Compressed Sparse Row Format Storage}
+\textbf{Coordinate format} consists of three arrays: \textbf{r} which contains the row indices of non-zero elements, \textbf{c} which consists of the column indices, and \textbf{v} which contains the value of these elements.
+\\
+We can consider the following matrix $A \in \mathbb{R}^{4 \times 4}$.
 
-\subsection{Visualtion}
+$$
+\textbf{A} = \begin{bmatrix}
+a_{11} & & a_{13} &\\
+a_{21} & a_{22} & &\\
+& & a_{33} & \\
+& a_{42} & & a_{44}
+\end{bmatrix}
+$$
+\\
+Therefore, \textbf{r}, \textbf{c}, \textbf{v} would be represented as, 
+$$
+\textbf{r} = \begin{bmatrix}
+1 & 1 & 2 & 2 & 3 & 4 & 4 
+\end{bmatrix}
+$$
+$$
+\textbf{c} = \begin{bmatrix}
+1 & 3 & 1 & 2 & 3 & 2 & 4
+\end{bmatrix}
+$$
+$$
+\textbf{v} = \begin{bmatrix}
+a_{11} & a_{13} & a_{21} & a_{22} & a_{33} & a_{42} & a_{44}
+\end{bmatrix}
+$$
+\\
+\textbf{Compressed sparse row format} (CSR), replaces \textbf{r} with \textbf{rb}, where \textbf{rb} stores the index of where each row begins in both \textbf{c} and \textbf{v}. Thus,
+$$
+\textbf{rb} = \begin{bmatrix}
+1 & 3 & 5 & 6 & 8
+\end{bmatrix}
+$$
+$$
+\textbf{c} = \begin{bmatrix}
+1 & 3 & 1 & 2 & 3 & 2 & 4
+\end{bmatrix}
+$$
+$$
+\textbf{v} = \begin{bmatrix}
+a_{11} & a_{13} & a_{21} & a_{22} & a_{33} & a_{42} & a_{44}
+\end{bmatrix}
+$$
+
+$\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
+\\
+CSR storage was used to factorise $A$ and Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
+\\
+To factorise $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ using Matlab's built in function: 
+\begin{minted}{matlab} 
+[r, c, v] = find(A) 
+\end{minted}
+This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ needed to ordered so the row indices were in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ needed to be converted to $\textbf{rb}$.
+
+\subsubsection{The Jacobi Method}
+
+\subsubsection{The Gauss-Seidel Method}
+
+\subsubsection{The Successive Over-relaxation Method}
+
+\subsubsection{The Conjugate Gradient Method}
+
+\subsection{Visualisation}
 
 \section{Efficiency Comparison}
 The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component.
 
-\subsubsection{Bandwidth and level of fill-in for Each Different Node Ordering}
+\subsection{Bandwidth and level of fill-in for Each Different Node Ordering}
 
 
-\subsubsection{Memory (for Direct Methods)}
+\subsection{Memory (for Direct Methods)}
 \begin{center}
 \begin{tabular}{c c c c c}
 Name & Size & Bytes & Class & Attributes \\
@@ -424,7 +496,7 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 	\label{fig:memory}
 \end{figure}
 
-\subsubsection{Iterations (for Iterative Methods)}
+\subsection{Iterations (for Iterative Methods)}
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/IterationsGraph.png}
 	\caption{Number of Iterations for each Iterative Method}
@@ -432,14 +504,14 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 \end{figure}
 
 
-\subsubsection{Runtime (Direct and Iterative)}
+\subsection{Runtime (Direct and Iterative)}
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/RuntimeGraph.png}
 	\caption{Runtime for solving each of the Direct and Iterative Methods.}
 	\label{fig:runtime}
 \end{figure}
 
-\subsubsection{Floating Point Operations (Direct and Iterative)}
+\subsection{Floating Point Operations (Direct and Iterative)}
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/FlopsGraph.png}
 	\caption{Flops for each Direct and Iterative Methods.}
@@ -452,10 +524,10 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 	\label{fig:res}
 \end{figure}
 
-\subsubsection{Tolerance Required for Iterative Methods)}
+\subsection{Tolerance Required for Iterative Methods)}
 The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method.
 \\\\
-\subsubsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
+\subsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
 The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
 \\\\
 For matrices that arise from finite difference discretisations of Laplace's equation, the value of $\omega$ that minimises the spectral radius $\rho(T_{SOR})$ is 
