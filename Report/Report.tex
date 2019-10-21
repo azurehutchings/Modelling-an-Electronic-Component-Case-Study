@@ -280,7 +280,8 @@ Using first order forward differences for $\frac{\partial T}{\partial x}$ and $\
 \[\frac{3}{\sqrt{2}}\bigg(\frac{T_E-T}{0.01}+\frac{T_N-T}{0.01}\bigg)=20T_\infty-20T\]
 \[T_E+T_N-2T=\frac{\sqrt{2}}{3}\big(0.2T_\infty-0.2T\big)\]
 \[T_E+T_N=\frac{0.2T_\infty\sqrt{2}}{3}+\frac{6-0.2\sqrt{2}}{3}T.\]
-For two of the nodes along the B-C boundary, either $T_E$ or $T_N$ will be constant. 
+For two of the nodes along the B-C boundary, either $T_E$ or $T_N$ will be constant. This results in all nodes along the border having the following equation for their rate of change
+\[\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}-\text{T}_{S}-\text{T}_{W} =\frac{0.2T_\infty\sqrt{2}}{3}\]
  
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors $x$ and $b$ in the linear equation $Ax=b$.
@@ -299,101 +300,32 @@ For example, the equation
 will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
-Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
+Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations.\\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
 \subsection{Checking SPD}
-The matrix A is both symmetric and positive definite. This can be verified with Matlab.\\If A is symmetric, then for all (i,j)$\in$ dim(A), A(i,j) = A(j,i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
-The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
-\begin{minted}{matlab}
-	spy(A-A')
-\end{minted}
-The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all positive. This can be done simply with the eig() command.
-\includegraphics{images/spySymmetric.png}
-The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. This can be done simply with the eig() command.
-\begin{minted}{matlab}
-	eig(A)
-\end{minted}
-The results of this are in Appendix A3. Because they are all positive, A is positive definite. 
-The results of this are in Appendix A4. Because they are all positive, A is postive definite. 
+The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.\\\includegraphics{images/spySymmetric.png}
+The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.
+\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. Plotting the values of the eigenvalues along an axis representing the $n$th eigenvalue yields\\\includegraphics{images/eigenvaluePlot.png}
+
+
 \section{Storage and Solutions}
-In this section, iterative methods and direct methods are used to solve for $x$, such that:
-\\
-\begin{center}
-$Ax=b$.
-\\
-\end{center}
+In this section, iterative methods and direct methods are used to solve for the vector $x$, such that:
+\[Ax=b\]
 
 \subsection{Full Storage}
 
 \subsection{Packed Storage}
 
 \subsection{Band Storage}
-A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM 
-A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficent manner, as the bandwidth is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. To use this in Matlab, the following code is used
-\begin{minted}{matlab}
-%RCM Storage
-load full_storage
-%Create a new matrix to work with
-A_RCM = A;
-%create ordering vector
-p= symrcm(A_RCM);
-%order the A matrix and b vector according the RCM storage
-A_RCM = A_RCM(p,p);
-b_rcm = b(p);
-reorder = reorder_vector(p);
-\end{minted}
-The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ the same. A reorder vector is created from p to reverse the rcm ordering for when the system of equations is solved for the steady state temperatures. The code for the reorder\_vector() function is
-\begin{minted}{matlab}
-function p = reorder_vector(b)
-%Takes a reordering vector and outputs the reverse reordering vector
-[~,n] = size(b);
-p = zeros(n,1);
-for i = 1:n
-	p(b(i)) = i;
-end
-end
-\end{minted}
-The reordered A matrix using RCM ordering will look like\\
+A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. 
+\\Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering will look like\\
 \includegraphics{images/ARCM.png}
-The bandwidth of this matrix is also 13. However, more elements are closer to the main diagonal.
+The bandwidth of this matrix is not changed. However, the fill in
 \\\\The next step is to convert the RCM ordering to a banded storage matrix, denoted $B$. Because $A$ is symmetric, we can get away with only storing the upper or lower part of the matrix. The dimensions of this matrix are $\mathbb{R}^{n\times p}$, where n is the row or column count of $A$, and p is the upper bandwidth of $A$. To change the storage, we must create a new mapping from the elements of the upper portion of $A$ to $B$.
 \begin{align*}
 A(i,j)\to B(i,j-i+1), \text{ where } i,j < \text{dim}(A).
 \end{align*}
-The Matlab code to implement this is
-\begin{minted}{matlab}
-function B = band(A)
-[n,~] = size(A);
-m = bandwidth(A)+1;
-B = zeros(n,m);
-for i = 1:n
-	for j = 1:m
-		if (i + j < n+2)
-			B(i,j) = A(i,j+i-1);
-		end
-	end
-end
-end
-\end{minted}
 The (transposed) resulting matrix will look like \\\includegraphics{images/band.png}
-To perform Cholesky factorisation on this matrix, and keeping the factorised matrix in the same dimension, the regular Cholesky factorisation method can be retooled using the previously mentioned mapping for band storage. The new Band Cholesky factorisation method will be
-\begin{minted}{matlab}
-function [A, flops] = cholesky_band(A, current_flops)
-[n,width] = size(A);
-for j = 1:n
-	for i = 1:j-1
-		for k = 1:i-1
-			if((j-i+1) < width+1 && (i-k+1) < width+1 && (j-k+1) < width+1)
-				A(i,j-i+1) = A(i,j-i+1) - A(k,i-k+1) * A(k,j-k+1);
-			end
-		end
-		if(j-i+1<(width+1))
-			A(i,j-i+1) = A(i,j-i+1) / A(i,1);
-			A(j,1) = A(j,1) - A(i,j-i+1)^2;
-		end
-	end
-	A(j,1) = sqrt(A(j,1));
-end	
-\end{minted}
+To perform Cholesky factorisation on this matrix, and keeping the factorised matrix in the same dimension, the regular Cholesky factorisation method can be retooled using the previously mentioned mapping for band storage.
 The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields (as a transposed figure) \\\includegraphics{images/cholband.png}
 To use this factorised matrix, a new forward and backward method must be constructed. Luckily, the previous mapping can still be used. Care must be taken when working in a non-square matrix in both forward and backward substitution as well.
 \subsection{Sparse Storage}
@@ -554,7 +486,7 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
 4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
 4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
-\frac{9.2}{3}\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =40+\frac{4}{3}\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =\frac{4\sqrt{2}}{3}\\
 3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
 4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
 4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
@@ -564,7 +496,7 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
 4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
 4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
-\frac{9.2}{3}\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =70+\frac{4}{3}\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =\frac{4\sqrt{2}}{3}\\
 \text{T}_{34} \text{ is null}\\
 \text{T}_{35} \text{ is null}
 \end{align*}
