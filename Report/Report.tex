@@ -310,23 +310,34 @@ The spy command produces a plot graph with plots in coordinates where the value 
 \section{Storage and Solutions}
 In this section, iterative methods and direct methods are used to solve for the vector $x$, such that:
 \[Ax=b\]
-
+This vector will be the approximate final temperatures at the discrete points along the electronic component.
 \subsection{Full Storage}
 
 \subsection{Packed Storage}
 
 \subsection{Band Storage}
 A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. 
-\\Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering will look like\\
-\includegraphics{images/ARCM.png}
-The bandwidth of this matrix is not changed. However, the fill in
+\\Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering and the banded matrix B will look like\\
+\hspace{-8mm}
+\begin{figure}
+	\hspace{-8mm}
+	\begin{subfigure}[b]{0.79\textwidth}
+		\hspace{-8mm}
+		\includegraphics[width=\textwidth]{images/ARCM.png}
+	\end{subfigure}
+	\hspace{-10mm}
+	\begin{subfigure}[b]{0.21\textwidth}
+		\hspace{-10mm}
+		\includegraphics[width=\textwidth]{images/band.png}
+	\end{subfigure}
+\end{figure}
 \\\\The next step is to convert the RCM ordering to a banded storage matrix, denoted $B$. Because $A$ is symmetric, we can get away with only storing the upper or lower part of the matrix. The dimensions of this matrix are $\mathbb{R}^{n\times p}$, where n is the row or column count of $A$, and p is the upper bandwidth of $A$. To change the storage, we must create a new mapping from the elements of the upper portion of $A$ to $B$.
 \begin{align*}
 A(i,j)\to B(i,j-i+1), \text{ where } i,j < \text{dim}(A).
 \end{align*}
-The (transposed) resulting matrix will look like \\\includegraphics{images/band.png}
 To perform Cholesky factorisation on this matrix, and keeping the factorised matrix in the same dimension, the regular Cholesky factorisation method can be retooled using the previously mentioned mapping for band storage.
-The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields (as a transposed figure) \\\includegraphics{images/cholband.png}
+The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields\\\includegraphics{images/cholband.png}
+
 To use this factorised matrix, a new forward and backward method must be constructed. Luckily, the previous mapping can still be used. Care must be taken when working in a non-square matrix in both forward and backward substitution as well.
 \subsection{Sparse Storage}
 
