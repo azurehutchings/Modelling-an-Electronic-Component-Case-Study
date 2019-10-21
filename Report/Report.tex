@@ -316,10 +316,8 @@ This vector will be the approximate final temperatures at the discrete points al
 \subsection{Packed Storage}
 
 \subsection{Band Storage}
-A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. 
-\\Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering and the banded matrix B will look like\\
-\hspace{-8mm}
-\begin{figure}
+A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. \\\\Using a technique called RCM ordering, the empty space between the outer and inner diagonals can be greatly reduced. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering and the banded matrix B will look like
+\begin{figure}[H]
 	\hspace{-8mm}
 	\begin{subfigure}[b]{0.79\textwidth}
 		\hspace{-8mm}
@@ -331,14 +329,13 @@ A banded system is a matrix where all non-zero elements are within a certain dis
 		\includegraphics[width=\textwidth]{images/band.png}
 	\end{subfigure}
 \end{figure}
-\\\\The next step is to convert the RCM ordering to a banded storage matrix, denoted $B$. Because $A$ is symmetric, we can get away with only storing the upper or lower part of the matrix. The dimensions of this matrix are $\mathbb{R}^{n\times p}$, where n is the row or column count of $A$, and p is the upper bandwidth of $A$. To change the storage, we must create a new mapping from the elements of the upper portion of $A$ to $B$.
+The next step is to convert the RCM ordering to a banded storage matrix, denoted $B$. Because $A$ is symmetric, we can get away with only storing the upper or lower part of the matrix. The dimensions of this matrix are $\mathbb{R}^{n\times p}$, where n is the row or column count of $A$, and p is the upper bandwidth of $A$. To change the storage, we must create a new mapping from the elements of the upper portion of $A$ to $B$.
 \begin{align*}
 A(i,j)\to B(i,j-i+1), \text{ where } i,j < \text{dim}(A).
 \end{align*}
 To perform Cholesky factorisation on this matrix, and keeping the factorised matrix in the same dimension, the regular Cholesky factorisation method can be retooled using the previously mentioned mapping for band storage.
-The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields\\\includegraphics{images/cholband.png}
-
-To use this factorised matrix, a new forward and backward method must be constructed. Luckily, the previous mapping can still be used. Care must be taken when working in a non-square matrix in both forward and backward substitution as well.
+The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields\\\includegraphics{images/cholband.png}\\
+To use this factorised matrix, a new forward and backward method must be constructed. Luckily, the previous mapping can still be used. Care must be taken when working in a non-square matrix in both forward and backward substitution, as it is still possible to access elements outside of the new array. Adding checks before accessing the array to make sure the given index is within the bounds of the array solves the problem, as any element outside of the array would just be zero, and performing no operation results in the same outcome. The heatmap of the component is\\\includegraphics{images/bandsolution.png}
 \subsection{Sparse Storage}
 
 \subsection{Compressed Sparse Row Format Storage}
@@ -360,8 +357,6 @@ The first iterative method that is used to solve CSR is the Jacobi method.
 \subsubsection{The Successive Over-relaxation Method}
 
 \subsubsection{The Conjugate Gradient Method}
-
-\subsection{Visualisation}
 
 \section{Efficiency Comparison}
 The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component.
@@ -442,6 +437,10 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 	\label{fig:omega2}
 \end{figure}
 
+\section{Effect of Ambient Temperature} The electronic component will only function if the temperature at the point (0.03, 0.03) is within 50-55$\degree$C. This temperature could change depending on what the ambient air temperature is. Earlier in the model, we have assumed that it is 20$\degree$C. To find the affect of different ambient temperatures, we can run the model through a loop, changing the value of the ambient temperature from 0$\degree$C to 60$\degree$C in increments of 0.01$\degree$C. Printing a value of the ambient temperature and the inner component temperature when the inner component temperature is within a tolerane of 0.001$\degree$C, we can find rough estimates of the lower and upper bounds of the ambient temperature. These come out to be 
+\[\text{Lower bound }\approx 1.72\degree\text{C},\]
+\[\text{Upper bound }= 55\degree\text{C}.\]
+The algorithm can then be refined to search finer values around the lower bound. Searching within a tolerance of 1e-6, the ambient temperature comes out to around 1.727406$\degree$C. Because this is a very specific temperature, and the real world is not perfect, we can think of the lower bound as just being 2$\degree$C. \\\\We recommend that the component only be deployed in locations with a temperature that never goes below 2$\degree$C or above 55$\degree$C.
 %
 %\subsection{Method}
 %
