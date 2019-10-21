@@ -251,78 +251,37 @@ As an example, let us look at node $T_{(3,0)}$.
 \end{center}
 Each other node along the boundary will be similar to this node.
 \subsubsection{Boundary B-C}
-There are three nodes that we care about on the boundary B-C. These are nodes (3,5), (4,4) and (5,3). Each of these nodes will have a different normal vector and so must all be calculated individually. However, they all have the same boundary condition 
+There are three nodes that we care about on the boundary B-C. The boundary condition along these nodes are
 \[k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)\]
 where $k=3\text{Wm}^{-1}\text{C}^{-1}, h=20\text{Wm}^{-2}\text{C}^{-1}, T_\infty=20$.
-\paragraph*{Node (3,5):} At this node, the normal vector points directly at the node to the east. This can be seen by analysing the mesh around the point $T_{(3,5)}$.
-\begin{center}
-\begin{tikzpicture}[
-roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=15mm},
-ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
-]
-\node[roundnode] (center) {T$_{(3,5)}$};
-\node[roundnode] (left) [left of=center] {T$_\text{(2,5)}$};
-\node[ghostnode] (right) [right of=center] {T$_\text{E}$};
-\node[roundnode] (above) [above of=center] {70};
-\node[roundnode] (below) [below of=center] {T$_\text{(3,4)}$};
 
-\draw[ultra thick,-] (left.east) -- (center.west);
-\draw[ultra thick,-] (above.south) -- (center.north);
-\draw[ultra thick,<-] (right.west) -- (center.east);
-\draw[ultra thick,-] (below.north) -- (center.south);
-\end{tikzpicture}
-\end{center}
-Therefore the normal unit vector is 
-\begin{center}
-  $\hat{\textbf{n}}=(1,0)^T$.
-\end{center}
-A first order backward difference is used here because the node we are estimating, T$_\text{E}$, is to the right of the node T$_{(3,5)}$.
-\[
-  k\boldsymbol{\nabla}T_{(3,5)}\cdot(1,0)^T = h(T_{\infty} - T_{(3,5)})
-\]
-\[ 3\bigg{(}\frac{\partial T_{(3,5)}}{\partial x},\frac{\partial T_{(3,5)}}{\partial y}\bigg{)}\cdot(1,0)^T = 20(20 - T_{(3,5)})\]
-\[3\frac{T_E-T_{(3,5)}}{0.01} = 400-20T_{(3,5)}\]
-\[3T_E-3T_{(3,5)}=4-0.2T_{(3,5)}\]
-\[T_E=\frac{4}{3}+\frac{2.8}{3}T_{(3,5)}.\]
-The second order central difference at T$_{(3,5)}$ will therefore be 
-\[4T_{(3,5)}-T_N-T_S-T_W-T_E=0\]
-\[4T_{(3,5)}-70-T_{(3,4)}-T_{(2,5)}-\bigg{(}\frac{4}{3}+\frac{2.8}{3}T_{(3,5)}\bigg{)}=0\]
-\[\frac{9.2}{3}T_{(3,5)}-T_{(3,4)}-T_{(2,5)}=70+\frac{4}{3}.\]
-\paragraph*{Node (5,3):} The case at this node is isomorphic to the node at (3,5), as $\Delta x = \Delta y$ and the normal vector is $(0,1)^T$ rather than $(1,0)^T$. So instead of getting a value for T$_E$ in terms of T$_{(3,5)}$, we will get a value for T$_S$ in terms of T$_{(5,3)}$ for the boundary condition.
-\[T_S=\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}.\]
-Substituting this in our second order central difference for T$_{(5,3)}$ yields
-\[4T_{(5,3)}-T_N-T_S-T_W-T_E=0\]
-\[4T_{(5,3)}-\bigg{(}\frac{4}{3}+\frac{2.8}{3}T_{(5,3)}\bigg{)}-T_{(5,2)}-T_{(4,3)}-40=0\]
-\[\frac{9.2}{3}T_{(5,3)}-T_{(5,2)}-T_{(4,3)}=40+\frac{4}{3}.\]
-\paragraph*{Node (4,4):} The node laying in the middle of the boundary B-C is T$_{(4,4)}$. The unit normal will be facing north-east.
+
 \begin{center}
 \begin{tikzpicture}[
 roundnode/.style={circle, draw=black!60, ultra thick,  minimum size=14mm},
-ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
+ghostnode/.style={circle, draw=green!60, thick, minimum size = 14mm},
 ]
-\node[roundnode] (center) {T$_{(3,5)}$};
-\node[roundnode] (left) [left of=center] {T$_\text{(2,5)}$};
+\node[roundnode] (center) {T};
+\node[roundnode] (left) [left of=center] {T$_\text{W}$};
 \node[ghostnode] (right) [right of=center] {T$_\text{E}$};
 \node[ghostnode] (above) [above of=center] {T$_\text{N}$};
-\node[roundnode] (below) [below of=center] {T$_\text{(3,4)}$};
+\node[roundnode] (below) [below of=center] {T$_\text{S}$};
 
 \draw[ultra thick,-] (left.east) -- (center.west);
 \draw[ultra thick,->] (0.5,0.5) -- (1.5,1.5);
 \draw[ultra thick,-] (below.north) -- (center.south);
 \end{tikzpicture}
 \end{center}
-Therefore $\hat{{\textbf{n}}}$ will be
-\[\hat{\textbf{n}}=\frac{1}{\sqrt{2}}\big{(}1,1\big{)}^T.\]
-Using this in our boundary condition yields
-\[3\bigg{(}\frac{\partial T_{(4,4)}}{\partial x},\frac{\partial T_{(4,4)}}{\partial y}\bigg{)}\cdot\frac{1}{\sqrt{2}}\big{(}1,1\big{)}^T=20\big{(}20-T_{(4,4)}\big{)}\]
-Using first order forward differences for $\frac{\partial T_{(4,4)}}{\partial x}$ and $\frac{\partial T_{(4,4)}}{\partial y}$ and rearranging to solve for $\text{T}_\text{N}+\text{T}_\text{E}$
-\[\frac{3}{\sqrt{2}}\bigg(\frac{T_E-T_{(4,4)}}{0.01}+\frac{T_N-T_{(4,4)}}{0.01}\bigg)=400-20T_{(4,4)}\]
-\[T_E+T_N-2T_{(4,4)}=\frac{\sqrt{2}}{3}\big(4-0.2T_{(4,4)}\big)\]
-\[T_E+T_N=\frac{4\sqrt{2}}{3}+\frac{6-0.2\sqrt{2}}{3}T_{(4,4)}.\]
-We can use this in our second order finite difference equation 
-\[4T_{(4,4)}-T_N-T_S-T_E-T_W=0\]
-\[4T_{(4,4)}-T_S-T_W-\bigg(\frac{4\sqrt{2}}{3}+\frac{6-0.2\sqrt{2}}{3}T_{(4,4)}\bigg)=0\]
-\[\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)T_{(4,4)}-T_S-T_W=\frac{4\sqrt{2}}{3}\]
+The unit normal on each node will be facing directly northeast as the boundary is diagonal. Therefore
+\[\hat{\textbf{n}} = \frac{1}{\sqrt{2}}(1,1)^T.\]
+Using this in our boundary condition (along with leaving the ambient temperature as a variable) yields
+\[3\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot\frac{1}{\sqrt{2}}\big{(}1,1\big{)}^T=20\big{(}T_\infty-T\big{)}\]
+Using first order forward differences for $\frac{\partial T}{\partial x}$ and $\frac{\partial T}{\partial y}$ and rearranging to solve for $\text{T}_\text{N}+\text{T}_\text{E}$
+\[\frac{3}{\sqrt{2}}\bigg(\frac{T_E-T}{0.01}+\frac{T_N-T}{0.01}\bigg)=20T_\infty-20T\]
+\[T_E+T_N-2T=\frac{\sqrt{2}}{3}\big(0.2T_\infty-0.2T\big)\]
+\[T_E+T_N=\frac{0.2T_\infty\sqrt{2}}{3}+\frac{6-0.2\sqrt{2}}{3}T.\]
+For two of the nodes along the B-C boundary, either $T_E$ or $T_N$ will be constant. 
+ 
 \subsection{Node Ordering}
 One last thing we must do is construct a mapping from the 2D array of nodes to a 1D array of nodes. This is useful when creating the vectors $x$ and $b$ in the linear equation $Ax=b$.
 \\\\
@@ -340,45 +299,7 @@ For example, the equation
 will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
-Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\
-The following code was used to generate the A matrix in Matlab.
-\pagebreak
-\begin{minted}{matlab}
-n = 6;
-nOnes = ones(n,1);
-T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
-I = -1*eye(6);
-Z = zeros(6,6);
-A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
-b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
-%make changes for insulated boundary
-A(1,1) = 2;
-A(2,2) = 3;
-A(3,3) = 3;
-A(4,4) = 3;
-A(5,5) = 3;
-A(6,6) = 3;
-A(7,7) = 3;
-A(13,13) = 3;
-A(19,19) = 3;
-A(25,25) = 3;
-A(31,31) = 3;
-%changes along convective boundary
-A(24,24) = (9.2/3);
-A(29,29) = (2-sqrt(2)*0.2/3);
-A(34,34) = (9.2/3);
-%nothing should rely on u(4,5) which is row and column 30
-A(:,30) = [];
-A(30,:) = [];
-%same for columns/rows 35 and 36 (but because we've already deleted
-%values, they're now rows 34 then 34 again)
-A(:,34) = [];
-A(34,:) = [];
-A(:,34) = [];
-A(34,:) = [];
-\end{minted}
-Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\
-The code to generate this matrix is in Appendix A3.\\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
+Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A). This can then be rewritten as a linear system, Ax=b, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations (See Appendix A2). \\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
 \subsection{Checking SPD}
 The matrix A is both symmetric and positive definite. This can be verified with Matlab.\\If A is symmetric, then for all (i,j)$\in$ dim(A), A(i,j) = A(j,i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
 The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, we can use the spy() command on A minus A transpose.
@@ -654,7 +575,7 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 %\section{References}
 %
 \section{Appendices}
-\subsection*{Appendix A1}
+\subsection*{Appendix A}
 \begin{align*}
 2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
 3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
@@ -693,81 +614,6 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 \text{T}_{34} \text{ is null}\\
 \text{T}_{35} \text{ is null}
 \end{align*}
-\subsection*{Appendix A2}
-\pagebreak
-\subsection*{Appendix A3}
-\begin{minted}{matlab}
-n = 6;
-nOnes = ones(n,1);
-T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
-I = -1*eye(6);
-Z = zeros(6,6);
-A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
-b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
-%make changes for insulated boundary
-A(1,1) = 2;
-A(2,2) = 3;
-A(3,3) = 3;
-A(4,4) = 3;
-A(5,5) = 3;
-A(6,6) = 3;
-A(7,7) = 3;
-A(13,13) = 3;
-A(19,19) = 3;
-A(25,25) = 3;
-A(31,31) = 3;
-%changes along convective boundary
-A(24,24) = (9.2/3);
-A(29,29) = (2-sqrt(2)*0.2/3);
-A(34,34) = (9.2/3);
-%nothing should rely on u(4,5) which is row and column 30
-A(:,30) = [];
-A(30,:) = [];
-%same for columns/rows 35 and 36 (but because we've already deleted
-%values, they're now rows 34 then 34 again)
-A(:,34) = [];
-A(34,:) = [];
-A(:,34) = [];
-A(34,:) = [];
-\end{minted}
-\subsection*{Appendix A4}
-\begin{minted}{matlab}
->> eig(A)
-ans =
-	0.1048
-	0.4817
-	0.5562
-	0.9046
-	1.3068
-	1.3496
-	1.7281
-	1.7301
-	2.2381
-	2.2695
-	2.4054
-	2.7139
-	2.8889
-	3.1828
-	3.2022
-	3.3147
-	3.5501
-	3.7661
-	3.7971
-	3.8616
-	4.0796
-	4.3184
-	4.3600
-	4.4231
-	4.7871
-	4.9909
-	5.2876
-	5.5551
-	5.8494
-	6.0934
-	6.6159
-	6.8698
-	7.4565
-\end{minted}
 \subsection*{Appendix B}
 \begin{figure}
 	\centering
