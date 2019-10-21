@@ -7,11 +7,7 @@ n = length(rb) - 1;
 k = 0;
 x = x0;
 normb = norm(b);
-A_x = zeros(n,1);
-for i = 1:n
-    A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
-    flops = flops + 1;
-end
+[A_x, flops] = multiAx(v, rb, c, x, flops);
 res = norm(b - A_x) / normb;
 res_total = res;
 
@@ -33,10 +29,7 @@ while res > tol && k < maxiters
         flops = flops + 5;
     end
     k = k + 1;
-    for i = 1:n
-        A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
-        flops = flops + 1;
-    end
+    [A_x, flops] = multiAx(v, rb, c, x, flops);
     res = norm(b - A_x) / normb;
     res_total(k + 1) = res;
     flops = flops + 2;
