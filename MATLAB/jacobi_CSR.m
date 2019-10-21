@@ -10,16 +10,13 @@ function [x, converged, k, res_total, flops] = jacobi_CSR(rb, c, v, b, x0, tol, 
 n = length(rb) - 1;
 k = 0;
 x = x0;
-A_x = zeros(n,1);
 normb = norm(b);
 
 %flop count
 flops = current_flops;
 
-for i = 1:n
-    A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
-    flops = flops + 1;
-end
+[A_x, flops] = multiAx(v, rb, c, x, flops);
+
 res = norm(b - A_x) / normb;
 res_total = res;
 %% Perform the iteration until res <= tol or maximum iterations taken
@@ -40,10 +37,8 @@ while res > tol && k < maxiters
     end
     k = k + 1;
     
-    for i = 1:n
-        A_x(i) = v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)));
-        flops = flops + 1;
-    end
+    [A_x, flops] = multiAx(v, rb, c, x, flops);
+    
     res = norm(b - A_x) / normb;
     res_total(k + 1) = res;
     flops = flops + 2;

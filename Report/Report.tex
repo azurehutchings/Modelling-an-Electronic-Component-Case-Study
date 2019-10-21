@@ -399,64 +399,18 @@ To use this factorised matrix, a new forward and backward method must be constru
 \subsection{Sparse Storage}
 
 \subsection{Compressed Sparse Row Format Storage}
-\textbf{Coordinate format} consists of three arrays: \textbf{r} which contains the row indices of non-zero elements, \textbf{c} which consists of the column indices, and \textbf{v} which contains the value of these elements.
-\\
-We can consider the following matrix $A \in \mathbb{R}^{4 \times 4}$.
-
-$$
-\textbf{A} = \begin{bmatrix}
-a_{11} & & a_{13} &\\
-a_{21} & a_{22} & &\\
-& & a_{33} & \\
-& a_{42} & & a_{44}
-\end{bmatrix}
-$$
-\\
-Therefore, \textbf{r}, \textbf{c}, \textbf{v} would be represented as, 
-$$
-\textbf{r} = \begin{bmatrix}
-1 & 1 & 2 & 2 & 3 & 4 & 4 
-\end{bmatrix}
-$$
-$$
-\textbf{c} = \begin{bmatrix}
-1 & 3 & 1 & 2 & 3 & 2 & 4
-\end{bmatrix}
-$$
-$$
-\textbf{v} = \begin{bmatrix}
-a_{11} & a_{13} & a_{21} & a_{22} & a_{33} & a_{42} & a_{44}
-\end{bmatrix}
-$$
-\\
-\textbf{Compressed sparse row format} (CSR), replaces \textbf{r} with \textbf{rb}, where \textbf{rb} stores the index of where each row begins in both \textbf{c} and \textbf{v}. Thus,
-$$
-\textbf{rb} = \begin{bmatrix}
-1 & 3 & 5 & 6 & 8
-\end{bmatrix}
-$$
-$$
-\textbf{c} = \begin{bmatrix}
-1 & 3 & 1 & 2 & 3 & 2 & 4
-\end{bmatrix}
-$$
-$$
-\textbf{v} = \begin{bmatrix}
-a_{11} & a_{13} & a_{21} & a_{22} & a_{33} & a_{42} & a_{44}
-\end{bmatrix}
-$$
-
-$\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
-\\
-CSR storage was used to factorise $A$ and Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
-\\
-To factorise $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ using Matlab's built in function: 
+\textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
+\\\\
+CSR storage was used to factorise $A$. Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
+\\\\
+To factorise $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. T using Matlab's built in function: 
 \begin{minted}{matlab} 
 [r, c, v] = find(A) 
 \end{minted}
-This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ needed to ordered so the row indices were in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ needed to be converted to $\textbf{rb}$.
+This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$.
 
 \subsubsection{The Jacobi Method}
+The first iterative method that is used to solve CSR is the Jacobi method. 
 
 \subsubsection{The Gauss-Seidel Method}
 
