@@ -152,9 +152,9 @@ ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
 \end{center}
 Therefore $\hat{\textbf{n}} = (-1,0)^T$. We can construct a first order forward difference approximation for $T_W$.
 \begin{center}
-\[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (-1,0)^T = 0\]
-\[-\frac{\partial T}{\partial x} = 0\]
-\[\frac{T-T_W}{0.01} = 0\]
+\[\bigg{(}\frac{\partial T_W}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (-1,0)^T = 0\]
+\[-\frac{\partial T_W}{\partial x} = 0\]
+\[-\frac{T-T_W}{0.01} = 0\]
 \[T_W = T.\]
 \end{center}
 This value of $T_W$ can be used in the stencil around the point T.
@@ -197,9 +197,9 @@ As a normalised vector, it will be
 \end{center}
 We can use this in our boundary condition to create a first order difference approximation for $T_W + T_S$.
 \begin{center}
-  \[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot \frac{1}{\sqrt{2}}(-1,-1)^T = 0\]
-  \[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (-1,-1)^T = 0\]
-  \[\bigg{(}\frac{\partial T}{\partial x}+\frac{\partial T}{\partial y}\bigg{)} = 0\]
+  \[\bigg{(}\frac{\partial T_W}{\partial x},\frac{\partial T_S}{\partial y}\bigg{)}\cdot \frac{1}{\sqrt{2}}(-1,-1)^T = 0\]
+  \[\bigg{(}\frac{\partial T_W}{\partial x},\frac{\partial T_S}{\partial y}\bigg{)}\cdot (-1,-1)^T = 0\]
+  \[-\bigg{(}\frac{\partial T_W}{\partial x}-\frac{\partial T_S}{\partial y}\bigg{)} = 0\]
   \[\frac{T-T_W}{0.01}+\frac{T-T_S}{0.01} = 0\]
   \[T_W+T_S=2T.\]
 \end{center}
@@ -234,9 +234,9 @@ This can be written as
 \end{center}
 Using the same boundary rule for the edge A-E-D (which contains the edge E-D) we can find a first order forward difference for $T_S$.
 \begin{center}
-\[\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (0,-1)^T = 0\]
-\[-\frac{\partial T}{\partial y}=0\]
-\[\frac{T-T_S}{0.01}=0\]
+\[\bigg{(}\frac{\partial T_S}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot (0,-1)^T = 0\]
+\[-\frac{\partial T_S}{\partial y}=0\]
+\[-\frac{T-T_S}{0.01}=0\]
 \[T_S=T\]
 \end{center} 
 Using this in our finite difference equation, we get the following equation for a node along the boundary E-D.
@@ -303,7 +303,7 @@ ghostnode/.style={circle, draw=green!60, thick, minimum size = 10mm},
 \node[roundnode] (center) {T$_{(3,5)}$};
 \node[roundnode] (left) [left of=center] {T$_\text{(2,5)}$};
 \node[ghostnode] (right) [right of=center] {T$_\text{E}$};
-\node[ghostnode] (above) [above of=center] {70};
+\node[ghostnode] (above) [above of=center] {T$_\text{N}$};
 \node[roundnode] (below) [below of=center] {T$_\text{(3,4)}$};
 
 \draw[ultra thick,-] (left.east) -- (center.west);
