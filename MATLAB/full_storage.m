@@ -7,7 +7,7 @@ T = diag(4*nOnes,0) + diag(-1*nOnes(1:n-1), -1) + diag(-1*nOnes(1:n-1),1);
 I = -1*eye(6);
 Z = zeros(6,6);
 A = [T I Z Z Z Z; I T I Z Z Z; Z I T I Z Z; Z Z I T I Z; Z Z Z I T I; Z Z Z Z I T];
-b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40+4/3; 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; 70+4/3];
+b = [0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; 40; 0; 0; 0; 0; 0; (4*sqrt(2)/3); 0; 0; 0; 0; sqrt(2)*4/3; 70; 70; 70; (4*sqrt(2)/3)];
 
 %make changes for insulated boundary
 A(1,1) = 2;
@@ -24,9 +24,9 @@ A(25,25) = 3;
 A(31,31) = 3;
 
 %changes along convective boundary
-A(24,24) = (9.2/3);
-A(29,29) = (2-sqrt(2)*0.2/3);
-A(34,34) = (9.2/3);
+A(24,24) = (2+sqrt(2)*0.2/3);
+A(29,29) = (2+sqrt(2)*0.2/3);
+A(34,34) = (2+sqrt(2)*0.2/3);
 
 %nothing should rely on u(4,5) which is row and column 30
 A(:,30) = [];

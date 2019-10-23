@@ -9,6 +9,7 @@ flops = current_flops;
 
 [~,n] = size(a);
 n = (-1 + sqrt(1 + 8 * n)) / 2;
+flops = flops + 3;
 x = b;
 
 for i = 1:n
@@ -18,7 +19,7 @@ for i = 1:n
     end
     if divide
         x(i) = x(i) / a(i+i*(i-1)/2);
-        flops = 1;
+        flops = flops + 1;
     end
 end
 

@@ -9,6 +9,7 @@ flops = current_flops;
 
 [~,n] = size(a);
 n = (-1 + sqrt(1 + 8 * n))/2;
+flops = flops +3; %Sqrt
 x = b;
 for i = n:-1:1
     for j = i+1:n
