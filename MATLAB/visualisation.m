@@ -1,4 +1,14 @@
-function visualisation(temperatures, graphTitle)
+function visualisation(temperatures, graphTitle, subgraph, total_number, plot_number)
+
+if nargin == 2
+    subgraph = false;
+end
+
+if (subgraph)
+    column_number = 2;
+    row_number = total_number / column_number;
+end
+
 %visualisation framework
 
 %temperatures = A\b;
@@ -21,8 +31,6 @@ Temps(6,5:7) = nan;
 Temps(7,5:7) = nan;
 Temps(7,1:4) = 70;
 
-
-
 temperatures = Temps(~isnan(Temps));
 
 x = X(~isnan(Temps));
@@ -34,13 +42,23 @@ tri(44,:) =[];
 tri(43,:) =[];
 tri(42,:) =[];
 
-figure;
+if (subgraph)
+    subplot(row_number, column_number, plot_number)
+else
+    figure;
+end
 trisurf(tri, x, y, temperatures)
 view(2)
 shading interp
 colormap hot
-colorbar
 axis image
 title([graphTitle], 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
+if (subgraph)
+    if (plot_number == total_number)
+        colorbar
+    end
+else
+    colorbar
+end
 end

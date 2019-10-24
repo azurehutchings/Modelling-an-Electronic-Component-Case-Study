@@ -1,11 +1,11 @@
-function [temperatures, flops, time] = packed_storage_solution
+function [temperatures, flops, time, A_packed] = packed_storage_solution(A)
 
     load full_storage
+    
     A_packed = packed_storage(A);
     tic;
-    [a, PackedFlops] = Cholesky_Packed(A_packed, 0);
-    [temperatures, PackedFlops] = packed_forward_substitution(a, b, PackedFlops);
-    [temperatures, PackedFlops] = packed_backward_substitution(a, temperatures, PackedFlops);
+    [a, flops] = Cholesky_Packed(A_packed, 0);
+    [temperatures, flops] = packed_forward_substitution(a, b, flops);
+    [temperatures, flops] = packed_backward_substitution(a, temperatures, flops);
     time = toc;
-    flops = PackedFlops;
 end

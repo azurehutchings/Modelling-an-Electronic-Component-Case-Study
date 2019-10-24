@@ -1,5 +1,6 @@
-function [temperatures, flops, time] = full_storage_solution()
-    load full_storage;
+function [temperatures, flops, time] = full_storage_solution(A)
+    load full_storage
+
     %Solving using cholesky factorisation, then forward and backward substitution
     tic;
     [A_cholesky, FullStorageFlops] = cholesky(A, 0);
