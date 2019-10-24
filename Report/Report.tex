@@ -50,7 +50,7 @@ The following report investigates the steady-state heat distribution in a newly 
 \\\\
 The report will discuss how to numerically solve for the steady-state heat distribution, the efficient of different methods and the effect of different ambient temperatures.
 
-\subsection{The Maths of the Problem}
+\subsection{Mathematical Model}
 
 \begin{figure}[H]
 	\center
@@ -272,7 +272,7 @@ ghostnode/.style={circle, draw=green!60, thick, minimum size = 14mm},
 \draw[ultra thick,-] (below.north) -- (center.south);
 \end{tikzpicture}
 \end{center}
-The unit normal on each node will be facing directly northeast as the boundary is diagonal. Therefore
+The unit normal on each node will be facing directly north-east as the boundary is diagonal. Therefore
 \[\hat{\textbf{n}} = \frac{1}{\sqrt{2}}(1,1)^T.\]
 Using this in our boundary condition (along with leaving the ambient temperature as a variable) yields
 \[3\bigg{(}\frac{\partial T}{\partial x},\frac{\partial T}{\partial y}\bigg{)}\cdot\frac{1}{\sqrt{2}}\big{(}1,1\big{)}^T=20\big{(}T_\infty-T\big{)}\]
@@ -302,7 +302,7 @@ will transform into
 \subsection{Matrix Construction}
 Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations.\\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
 \subsection{Checking SPD}
-The matrix A is both symmetric and positive definite. This can be verified with matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.\\\includegraphics{images/spySymmetric.png}
+The matrix A is both symmetric and positive definite. This can be verified with Matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.\\\includegraphics{images/spySymmetric.png}
 The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.
 \\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. Plotting the values of the eigenvalues along an axis representing the $n$th eigenvalue yields\\\includegraphics{images/eigenvaluePlot.png}
 
@@ -342,22 +342,22 @@ A sparse system is a matrix that has no structure to where the non-zero elements
 \subsection{Compressed Sparse Row Format Storage}
 \textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
 \\\\
-CSR storage was used to factorise $A$. Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
+CSR storage was used to store $A$. Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
 \\\\
-To factorise $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. T using Matlab's built in function: 
+To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using Matlab's built in function: 
 \begin{minted}{matlab} 
 [r, c, v] = find(A) 
 \end{minted}
 This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$.
+\\\\
+As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. 
+\\\\
+When $A$ is multiplied by $x$ throughout the iterative methods, the method for solving $Ax$ had to be altered. This ultimately removed the unnecessary multiplications as all the zero elements had been removed. This should result in the iterative methods running faster than they would if the A matrix had been stored using Full Storage.
 
 \subsubsection{The Jacobi Method}
 The first iterative method that is used to solve CSR storage is the Jacobi method.
 \\\\
-Due to the fact that $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the Jacobi method must be altered to account for this change. When $A \times x$, the 
 
-\begin{minted}{matlab} 
-v(rb(i):(rb(i + 1) - 1)) * x(c(rb(i):(rb(i + 1) - 1)))
-\end{minted}
 
 \subsubsection{The Gauss-Seidel Method}
 
@@ -420,7 +420,7 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 
 \subsection{Tolerance Required for Iterative Methods)}
 The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method.
-\\\\
+
 \subsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
 The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
 \\\\
@@ -444,39 +444,16 @@ The effect of $\omega$ was explored on the number of iterations taken to converg
 	\label{fig:omega2}
 \end{figure}
 
-\section{Effect of Ambient Temperature} The electronic component will only function if the temperature at the point (0.03, 0.03) is within 50-55$\degree$C. This temperature could change depending on what the ambient air temperature is. Earlier in the model, we have assumed that it is 20$\degree$C. To find the affect of different ambient temperatures, we can run the model through a loop, changing the value of the ambient temperature from 0$\degree$C to 60$\degree$C in increments of 0.01$\degree$C. Printing a value of the ambient temperature and the inner component temperature when the inner component temperature is within a tolerane of 0.001$\degree$C, we can find rough estimates of the lower and upper bounds of the ambient temperature. These come out to be 
+\section{Effect of Ambient Temperature} 
+The electronic component will only function if the temperature at the point (0.03, 0.03) is within $50-55\degree$C. This temperature could change depending on what the ambient air temperature is. Earlier in the model, we have assumed that this temperature is $20\degree$C. To find the affect of different ambient temperatures, we can run the model through a loop, changing the values of the ambient temperature from $0\degree$C to $60\degree$C in increments of $0.01\degree$C. Printing a value of the ambient temperature and the inner component temperature when the inner component temperature is within a tolerance of $0.001\degree$C, we can find rough estimates of the lower and upper bounds of the ambient temperature. These are found to be 
 \[\text{Lower bound }\approx 1.72\degree\text{C},\]
 \[\text{Upper bound }= 55\degree\text{C}.\]
-The algorithm can then be refined to search finer values around the lower bound. Searching within a tolerance of 1e-6, the ambient temperature comes out to around 1.727406$\degree$C. Because this is a very specific temperature, and the real world is not perfect, we can think of the lower bound as just being 2$\degree$C. \\\\We recommend that the component only be deployed in locations with a temperature that never goes below 2$\degree$C or above 55$\degree$C.
-%
-%\subsection{Method}
-%
-%\subsubsection{Procedures}
-%
-%\subsubsection{Sample Size}
-%
-%\subsubsection{Selection Criteria}
-%
-%\subsection{Discussion and analysis of data}
-%
-%\subsubsection{Issue 1}
-%
-%\subsubsection{Issue 2}
-%
-%\subsubsection{Issue 3}
-%
-%\subsubsection{Reliability and accuracy of data}
-%
-%\section{Conclusions}
-%
-%\section{Recommendations}
-%
-%\subsection{Recommendation 1}
-%
-%\subsection{Recommendation 2}
-%
-%\section{References}
-%
+The algorithm can then be refined to search finer values around the lower bound. Searching within a tolerance of $10^{-6}$, the ambient temperature comes out to approximately 1.727406$\degree$C. As this is a very specific temperature, and the real world is not perfect, we can think of the lower bound as just being $2\degree$C. 
+\\\\We recommend that the component only be deployed in locations with a temperature that never goes below $2\degree$C or above $55\degree$C.
+\section{Conclusions}
+\section{Recommendations}
+\subsection{Ambient Temperature}
+\pagebreak
 \section{Appendices}
 \subsection*{Appendix A}
 \begin{align*}
@@ -518,7 +495,7 @@ The algorithm can then be refined to search finer values around the lower bound.
 \text{T}_{35} \text{ is null}
 \end{align*}
 \subsection*{Appendix B}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
