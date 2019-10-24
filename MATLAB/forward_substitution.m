@@ -18,7 +18,7 @@ for i = 1:n
     end
     if divide
         X(i,:) = X(i,:) / A(i,i);
-        flops = flops + 2;
+        flops = flops + 1;
     end
 end
 
