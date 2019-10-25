@@ -41,14 +41,15 @@ figure
 bar(Direct_Method_Bytes)
 title('Bytes of Direct Methods', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
-
+%%
 %Iterations
 NumberIterations = [jacobi_k, gs_k, conjugate_k, SOR_k];
 figure
 bar(NumberIterations)
 title('Number of Iterations for Iterative Methods', 'Interpreter', 'latex')
-set(gca,'TickLabelInterpreter','latex')
-
+xtickangle(45)
+set(gca,'xticklabel',{'Jacobi', 'Gauss Seidel', 'Conjugate Gradiant', 'SOR'})
+%%
 %Average runtime
 AverageRunTime
 
