@@ -14,12 +14,12 @@ visualisation(temperatures, 'Full Storage Solution')
 [temperatures, packed_flops, ~, A_packed] =  packed_storage_solution(A);
 visualisation(temperatures, 'Packed Storage Solution')
 
-[temperatures, band_flops, ~, A_band] = band_storage_solution(A);
+[temperatures, band_flops, ~, A_band, cholBand] = band_storage_solution(A);
 visualisation(temperatures, 'Band Storage Solution')
-
+spy(A_band)
 [temperatures, sparse_flops, ~, A_sparse] = sparse_storage_solution(A);
 visualisation(temperatures, 'Sparse Storage Solution')
-
+spy(A_sparse)
 [temperatures, JacobiFlops, ~, jacobi_k, jacobi_res] = jacobi_solution(A);
 visualisation(temperatures, 'Jacobi Solution')
 
@@ -35,12 +35,13 @@ visualisation(temperatures, 'SOR Solution')
 %%
 %Efficiency Comparison
 %Memory
-S = whos('A', 'b', 'A_packed', 'A_band', 'A_sparse');
-Direct_Method_Bytes = [S(1).bytes, S(2).bytes, S(3).bytes, S(4).bytes, S(4).bytes];
+S = whos('A', 'A_packed', 'A_band', 'A_sparse');
+Direct_Method_Bytes = [S(1).bytes, S(2).bytes, S(3).bytes, S(4).bytes];
 figure
 bar(Direct_Method_Bytes)
-title('Bytes of Direct Methods', 'Interpreter', 'latex')
-set(gca,'TickLabelInterpreter','latex')
+title('Storage Size in Bytes for Direct Methods', 'Interpreter', 'latex')
+xtickangle(45)
+set(gca,'xticklabel',{'Full Storage', 'Packed Storage', 'Band Store', 'Sparse Storage'})
 %%
 %Iterations
 NumberIterations = [jacobi_k, gs_k, conjugate_k, SOR_k];
@@ -52,6 +53,9 @@ set(gca,'xticklabel',{'Jacobi', 'Gauss Seidel', 'Conjugate Gradiant', 'SOR'})
 %%
 %Average runtime
 runtimes = AverageRunTime;
+
+
+
 %%
 %Floating Point Operations
 NumberFlops = [full_flops, packed_flops, band_flops, sparse_flops, ...
