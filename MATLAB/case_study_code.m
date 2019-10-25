@@ -2,33 +2,41 @@ format long
 format compact
 
 %%
-%Storage and Solution
-%Full Storage
+% Storage and Solution
+% Full Storage
 load full_storage
 spy(A)
 title('Spy of A')
 
+% Full Storage (solved using Cholesky)
 [temperatures, full_flops, ~] = full_storage_solution(A);
 visualisation(temperatures, 'Full Storage Solution')
 
+% Packed Storage (solved using Cholesky) 
 [temperatures, packed_flops, ~, A_packed] =  packed_storage_solution(A);
 visualisation(temperatures, 'Packed Storage Solution')
 
 [temperatures, band_flops, ~, A_band, cholBand] = band_storage_solution(A);
+% Banded Storage (solved using Cholesky)
 visualisation(temperatures, 'Band Storage Solution')
 spy(A_band)
+% Sparse Storage (solved using Cholesky)
 [temperatures, sparse_flops, ~, A_sparse] = sparse_storage_solution(A);
 visualisation(temperatures, 'Sparse Storage Solution')
 spy(A_sparse)
+% CSR Storage (solved using Jacobi)
 [temperatures, JacobiFlops, ~, jacobi_k, jacobi_res] = jacobi_solution(A);
 visualisation(temperatures, 'Jacobi Solution')
 
+% CSR Storage (solved using Gauss Seidel)
 [temperatures, GaussFlops, ~, gs_k, gs_res] = gauss_seidel_solution(A);
 visualisation(temperatures, 'Gauss Seidel Solution')
 
+% CSR Storage (solved using Conjugate Gradient)
 [temperatures, ConjugateFlops, ~, conjugate_k, conjugate_res] = conjugate_gradient_solution(A);
 visualisation(temperatures, 'Conjugate Gradient Solution')
 
+% CSR Storage (solved using SOR)
 [temperatures, SORFlops, ~, SOR_k, SOR_res] = SOR_solution(A);
 visualisation(temperatures, 'SOR Solution')
 

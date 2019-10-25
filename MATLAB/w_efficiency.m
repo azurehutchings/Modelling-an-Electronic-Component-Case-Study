@@ -8,10 +8,10 @@ U = triu(A, 1);
 T_SOR_opt = (D/w_opt + L) \ ((1-w_opt)/w_opt * D - U);
 rhoT_SOR_opt = max(abs(eig(T_SOR_opt)));
 
-wVec = linspace(1e-2,2,200);
-rhoT_SOR = zeros(1,200);
+wVec = linspace(1e-2,2,400);
+rhoT_SOR = zeros(1,400);
 
-for i = 1:200
+for i = 1:400
     w = wVec(i);
     T_SOR = (D/w + L) \ ((1-w)/w * D - U);
     rhoT_SOR(i) = max(abs(eig(T_SOR)));
@@ -26,10 +26,10 @@ xlabel('$\omega$', 'Interpreter','latex')
 
 [rb, c, v, x0, tol, maxiters] = CSR_Storage(A);
 
-kVec = zeros(1,200);
+kVec = zeros(1,400);
 [~, ~, k_opt, ~, ~] = sor_CSR(rb, c', v', b, x0, w_opt, tol, maxiters, 0);
 
-for i = 1:200
+for i = 1:400
     [~, ~, kVec(i), ~, ~] = sor_CSR(rb, c', v', b, x0, wVec(i), tol, maxiters, 0);
 end
 
