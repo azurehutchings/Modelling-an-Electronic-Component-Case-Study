@@ -35,8 +35,8 @@ visualisation(temperatures, 'SOR Solution')
 %%
 %Efficiency Comparison
 %Memory
-whos A b A_packed A_band A_sparse
-Direct_Method_Bytes = [8712, 1848, 4488, 2528, 264];
+S = whos('A', 'b', 'A_packed', 'A_band', 'A_sparse');
+Direct_Method_Bytes = [S(1).bytes, S(2).bytes, S(3).bytes, S(4).bytes, S(4).bytes];
 figure
 bar(Direct_Method_Bytes)
 title('Bytes of Direct Methods', 'Interpreter', 'latex')
