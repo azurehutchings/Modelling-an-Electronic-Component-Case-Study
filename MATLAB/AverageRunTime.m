@@ -1,4 +1,6 @@
-average_run_time = [0, 0, 0, 0, 0] %Average runtime 
+function average_run_time = AverageRunTime
+
+average_run_time = [0, 0, 0, 0, 0]; %Average runtime 
 
 % Run the code 1000 times, then average the runtimes
 for i = 1:100
@@ -16,4 +18,4 @@ for i = 1:100
     
 end
 
-average_run_time./100
+average_run_time./100;

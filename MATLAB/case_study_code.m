@@ -51,15 +51,20 @@ xtickangle(45)
 set(gca,'xticklabel',{'Jacobi', 'Gauss Seidel', 'Conjugate Gradiant', 'SOR'})
 %%
 %Average runtime
-AverageRunTime
-
+runtimes = AverageRunTime;
+%%
 %Floating Point Operations
-NumberFlops = [full_flops; packed_flops; band_flops; sparse_flops; ...
-    JacobiFlops; GaussFlops; ConjugateFlops; SORFlops];
+NumberFlops = [full_flops, packed_flops, band_flops, sparse_flops, ...
+    JacobiFlops, GaussFlops, ConjugateFlops, SORFlops];
 figure
 bar(NumberFlops)
 title('Number of Flops for Direct and Iterative Methods', 'Interpreter', 'latex')
-set(gca,'TickLabelInterpreter','latex')
+xtickangle(45)
+set(gca,'xticklabel',{'Full Storage Flops', 'Packed Storage Flops',...
+    'Band Storage Flops', 'Sparse Storage Flops', 'Jacobi Iteration Flops',...
+    'Gauss Seidel Iteration Flops', 'Conjugate Gradient Iteration Flops', 'SOR Iteration Flops'})
+text(1:length(NumberFlops),NumberFlops,num2str(NumberFlops'),'vert','bottom','horiz','center'); 
+%%
 
 figure
 hold on
