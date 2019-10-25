@@ -1,4 +1,4 @@
-function [temperatures, flops, time, A_sparse] = sparse_storage_solution(A)
+function [temperatures, flops, time, A_sparse, A_AMD_cholesky] = sparse_storage_solution(A)
 
     load full_storage;
     

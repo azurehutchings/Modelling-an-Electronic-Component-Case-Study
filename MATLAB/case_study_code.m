@@ -16,14 +16,29 @@ visualisation(temperatures, 'Full Storage Solution')
 [temperatures, packed_flops, ~, A_packed] =  packed_storage_solution(A);
 visualisation(temperatures, 'Packed Storage Solution')
 
-[temperatures, band_flops, ~, A_band, cholBand] = band_storage_solution(A);
+[temperatures, band_flops, ~, A_RCM, A_band, cholBand] = band_storage_solution(A);
 % Banded Storage (solved using Cholesky)
 visualisation(temperatures, 'Band Storage Solution')
+figure
 spy(A_band)
+title('A$_\mathrm{Band}$', 'Interpreter', 'latex')
+figure
+spy(cholBand)
+title('chol(A$_\mathrm{Band}$)', 'Interpreter', 'latex')
+figure
+spy(A_RCM)
+title('A$_\mathrm{RCM}$', 'Interpreter', 'latex')
 % Sparse Storage (solved using Cholesky)
-[temperatures, sparse_flops, ~, A_sparse] = sparse_storage_solution(A);
+%%
+[temperatures, sparse_flops, ~, A_sparse, sparseBand] = sparse_storage_solution(A);
 visualisation(temperatures, 'Sparse Storage Solution')
+figure
 spy(A_sparse)
+title('A$_\mathrm{Sparse}$', 'Interpreter', 'latex')
+figure
+spy(sparseBand)
+title('chol(A$_\mathrm{Sparse}$)', 'Interpreter', 'latex')
+%%
 % CSR Storage (solved using Jacobi)
 [temperatures, JacobiFlops, ~, jacobi_k, jacobi_res] = jacobi_solution(A);
 visualisation(temperatures, 'Jacobi Solution')
@@ -50,6 +65,7 @@ bar(Direct_Method_Bytes)
 title('Storage Size in Bytes for Direct Methods', 'Interpreter', 'latex')
 xtickangle(45)
 set(gca,'xticklabel',{'Full Storage', 'Packed Storage', 'Band Store', 'Sparse Storage'})
+text(1:length(Direct_Method_Bytes),Direct_Method_Bytes,num2str(Direct_Method_Bytes'),'vert','top','horiz','center');
 %%
 %Iterations
 NumberIterations = [jacobi_k, gs_k, conjugate_k, SOR_k];
@@ -58,6 +74,7 @@ bar(NumberIterations)
 title('Number of Iterations for Iterative Methods', 'Interpreter', 'latex')
 xtickangle(45)
 set(gca,'xticklabel',{'Jacobi', 'Gauss Seidel', 'Conjugate Gradiant', 'SOR'})
+text(1:length(NumberIterations),NumberIterations,num2str(NumberIterations'),'vert','top','horiz','center')
 %%
 %Average runtime
 runtimes = AverageRunTime;
@@ -75,7 +92,7 @@ xtickangle(45)
 set(gca,'xticklabel',{'Full Storage Flops', 'Packed Storage Flops',...
     'Band Storage Flops', 'Sparse Storage Flops', 'Jacobi Iteration Flops',...
     'Gauss Seidel Iteration Flops', 'Conjugate Gradient Iteration Flops', 'SOR Iteration Flops'})
-text(1:length(NumberFlops),NumberFlops,num2str(NumberFlops'),'vert','bottom','horiz','center'); 
+text(1:length(NumberFlops),NumberFlops,num2str(NumberFlops'),'vert','top','horiz','center'); 
 %%
 
 figure
