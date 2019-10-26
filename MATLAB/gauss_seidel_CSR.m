@@ -29,7 +29,7 @@ while res > tol && k < maxiters
         flops = flops + 1;
     end
     k = k + 1;
-    [A_x, flops] = multiAx(v, rb, c, x, current_flops);
+    [A_x, flops] = multiAx(v, rb, c, x, flops);
     res = norm(b - A_x) / normb;
     res_total(k + 1) = res;
     flops = flops + 2;
