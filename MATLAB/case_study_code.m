@@ -9,9 +9,10 @@ spy(A)
 title('Spy of A')
 
 % Full Storage (solved using Cholesky)
-[temperatures, full_flops, ~] = full_storage_solution;
+[temperatures, full_flops, ~, A_cholesky] = full_storage_solution;
 visualisation(temperatures, 'Full Storage Solution')
-
+spy(A_cholesky)
+title('chol(A)')
 % Packed Storage (solved using Cholesky) 
 [temperatures, packed_flops, ~, A_packed] =  packed_storage_solution;
 visualisation(temperatures, 'Packed Storage Solution')
