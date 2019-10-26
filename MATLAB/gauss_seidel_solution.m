@@ -1,4 +1,4 @@
-function [temperatures, flops, time, k, res] = gauss_seidel_solution(A)
+function [temperatures, flops, time, k, res] = gauss_seidel_solution
 
 load full_storage
 

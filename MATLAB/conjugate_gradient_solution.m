@@ -1,4 +1,4 @@
-function [temperatures, flops, time, k, res] = conjugate_gradient_solution(A)
+function [temperatures, flops, time, k, res] = conjugate_gradient_solution
 
 load full_storage
 

@@ -1,4 +1,4 @@
-function [temperatures, flops, time, A_RCM, A_band, G_Band_then_chol] = band_storage_solution(A)
+function [temperatures, flops, time, A_RCM, A_band, G_Band_then_chol] = band_storage_solution
 
     load full_storage
 

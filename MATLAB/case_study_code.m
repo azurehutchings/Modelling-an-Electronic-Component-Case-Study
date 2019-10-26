@@ -9,14 +9,14 @@ spy(A)
 title('Spy of A')
 
 % Full Storage (solved using Cholesky)
-[temperatures, full_flops, ~] = full_storage_solution(A);
+[temperatures, full_flops, ~] = full_storage_solution;
 visualisation(temperatures, 'Full Storage Solution')
 
 % Packed Storage (solved using Cholesky) 
-[temperatures, packed_flops, ~, A_packed] =  packed_storage_solution(A);
+[temperatures, packed_flops, ~, A_packed] =  packed_storage_solution;
 visualisation(temperatures, 'Packed Storage Solution')
 
-[temperatures, band_flops, ~, A_RCM, A_band, cholBand] = band_storage_solution(A);
+[temperatures, band_flops, ~, A_RCM, A_band, cholBand] = band_storage_solution;
 % Banded Storage (solved using Cholesky)
 visualisation(temperatures, 'Band Storage Solution')
 figure
@@ -30,7 +30,7 @@ spy(A_RCM)
 title('A$_\mathrm{RCM}$', 'Interpreter', 'latex')
 % Sparse Storage (solved using Cholesky)
 %%
-[temperatures, sparse_flops, ~, A_sparse, sparseBand] = sparse_storage_solution(A);
+[temperatures, sparse_flops, ~, A_sparse, sparseBand] = sparse_storage_solution;
 visualisation(temperatures, 'Sparse Storage Solution')
 figure
 spy(A_sparse)
@@ -40,19 +40,19 @@ spy(sparseBand)
 title('chol(A$_\mathrm{Sparse}$)', 'Interpreter', 'latex')
 %%
 % CSR Storage (solved using Jacobi)
-[temperatures, JacobiFlops, ~, jacobi_k, jacobi_res] = jacobi_solution(A);
+[temperatures, JacobiFlops, ~, jacobi_k, jacobi_res] = jacobi_solution;
 visualisation(temperatures, 'Jacobi Solution')
 
 % CSR Storage (solved using Gauss Seidel)
-[temperatures, GaussFlops, ~, gs_k, gs_res] = gauss_seidel_solution(A);
+[temperatures, GaussFlops, ~, gs_k, gs_res] = gauss_seidel_solution;
 visualisation(temperatures, 'Gauss Seidel Solution')
 
 % CSR Storage (solved using Conjugate Gradient)
-[temperatures, ConjugateFlops, ~, conjugate_k, conjugate_res] = conjugate_gradient_solution(A);
+[temperatures, ConjugateFlops, ~, conjugate_k, conjugate_res] = conjugate_gradient_solution;
 visualisation(temperatures, 'Conjugate Gradient Solution')
 
 % CSR Storage (solved using SOR)
-[temperatures, SORFlops, ~, SOR_k, SOR_res] = SOR_solution(A);
+[temperatures, SORFlops, ~, SOR_k, SOR_res] = SOR_solution;
 visualisation(temperatures, 'SOR Solution')
 
 %%
@@ -78,8 +78,11 @@ text(1:length(NumberIterations),NumberIterations,num2str(NumberIterations'),'ver
 %%
 %Average runtime
 runtimes = AverageRunTime;
-
-
+figure
+bar(runtimes)
+title('Average run time for direct methods (in seconds)')
+xtickangle(45)
+set(gca, 'xticklabel', {'Full Solution', 'Packed Solution', 'Band Solution', 'Sparse Solution', 'Jacobi Solution', 'Gauss-Seidel Solution', 'Conjugate Gradient Solution', 'SOR Solution'})
 
 %%
 %Floating Point Operations

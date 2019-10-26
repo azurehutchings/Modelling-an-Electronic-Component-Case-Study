@@ -1,4 +1,4 @@
-function [temperatures, flops, time] = full_storage_solution(A)
+function [temperatures, flops, time] = full_storage_solution
     load full_storage
 
     %Solving using cholesky factorisation, then forward and backward substitution

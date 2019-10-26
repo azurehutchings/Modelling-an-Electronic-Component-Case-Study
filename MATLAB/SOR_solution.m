@@ -1,4 +1,4 @@
-function [temperatures, flops, time, k, res] = SOR_solution(A)
+function [temperatures, flops, time, k, res] = SOR_solution
 
 load full_storage
 

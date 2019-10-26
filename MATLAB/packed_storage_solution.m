@@ -1,4 +1,4 @@
-function [temperatures, flops, time, A_packed] = packed_storage_solution(A)
+function [temperatures, flops, time, A_packed] = packed_storage_solution
 
     load full_storage
     

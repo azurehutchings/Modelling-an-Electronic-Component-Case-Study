@@ -1,4 +1,4 @@
-function [temperatures, flops, time, k, res] = jacobi_solution(A)
+function [temperatures, flops, time, k, res] = jacobi_solution
 
 load full_storage
 
