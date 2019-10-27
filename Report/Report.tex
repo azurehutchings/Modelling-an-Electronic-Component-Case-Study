@@ -59,7 +59,7 @@ The report will discuss how to numerically solve for the steady-state heat distr
 	\label{fig:componentSchematic}
 \end{figure}
 
-The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to 70\degree C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be 40\degree C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
+The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to $70\degree$C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be $40\degree$C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
 \\\\
 This type of model can be described with Laplace's equation. Letting $T(x,y)$ represent the temperature of the component at point $(x, y)$, the model is as follows	
 
@@ -130,7 +130,7 @@ As an example, the node $T_{(1,1)}$ can be examined.
   $4T_{(1,1)}-T_{(0,1)}-T_{(2,1)}-T_{(1,2)}-T_{(1,0)}=0$
 \end{center}
 \subsubsection{Boundary A-E-D Nodes}
-On the boundary A-E-D, there are no nodes outside of the matrix. We can approximate them using first order forward differences (to keep the A matrix SPD). This approximation can be done using the rule $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$, where ${\hat{\textbf{n}}}$ is the normal unit vector at the node T and $\boldsymbol{\nabla} T$ is the directional gradient at T. The first order differences are then used to construct a finite difference equations for each node on the boundary.\\We will provide 3 examples that show all the unique cases along the boundary A-E-D, namely on the border A-E (not including A or E), the border E-D (not including E or D) and the node E.
+On the boundary A-E-D, there are no nodes outside of the matrix. We can approximate them using first order forward differences (to keep the $A$ matrix SPD). This approximation can be done using the rule $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$, where ${\hat{\textbf{n}}}$ is the normal unit vector at the node $T$ and $\boldsymbol{\nabla} T$ is the directional gradient at $T$. The first order differences are then used to construct a finite difference equations for each node on the boundary.\\We will provide 3 examples that show all the unique cases along the boundary A-E-D, namely on the border A-E (not including A or E), the border E-D (not including E or D) and the node E.
 \paragraph*{Nodes A-E}
 On the A-E nodes, the normal unit vector will face directly west.
 \begin{center}
@@ -300,11 +300,11 @@ For example, the equation
 will transform into
 \[2T_0-T_1-T_6=0.\]
 \subsection{Matrix Construction}
-Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where A is the coefficient matrix of the equations, x is the unknown temperature values and b is the right hand side values of the equations.\\\\Using the spy() command on A, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
+Using our node ordering, we can write out all the equations in a certain ordering (See Appendix A1). This can then be rewritten as a linear system, $Ax=b$, where $A$ is the coefficient matrix of the equations, $x$ is the unknown temperature values and b is the right hand side values of the equations.\\\\Using the spy() command on $A$, we can see that it has a banded structure, noting that it has a total bandwidth of 13.\\\includegraphics{images/spyA.png}
 \subsection{Checking SPD}
-The matrix A is both symmetric and positive definite. This can be verified with Matlab.\\If A is symmetric, then for all (i, j)$\in$ dim(A), A(i, j) = A(j, i). To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.\\\includegraphics{images/spySymmetric.png}
+The matrix $A$ is both symmetric and positive definite. This can be verified with Matlab.\\If $A$ is symmetric, then for all $(i, j)\in$ dim$(A), A(i, j) = A(j, i)$. To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.\\\includegraphics{images/spySymmetric.png}
 The spy command produces a plot graph with plots in coordinates where the value of the matrix (at the same coordinate) is not zero. Since the figure produced by the spy command has no plots, every value in the matrix A-A' is zero, which implies that A is symmetric.
-\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all postive. Plotting the values of the eigenvalues along an axis representing the $n$th eigenvalue yields\\\includegraphics{images/eigenvaluePlot.png}
+\\\\To show that A is positive definite, it is enough to show that the eigenvalues are all positive. Plotting the values of the eigenvalues along an axis representing the $n^{th}$ eigenvalue yields\\\includegraphics{images/eigenvaluePlot.png}
 
 
 \section{Storage and Solutions}
@@ -327,7 +327,7 @@ The Full Storage solution is very simple. Because we have a linear system, we ca
 \end{figure}
 By analysing the number of non-zero elements, it can be seen that the fill-in from using the Cholesky algorithm is 109.
 \subsection{Packed Storage}
-A packed storage is a linear direct method when we store an non-zero elements of matrix A in one vector. The storage operation can be acted by using row or even the column.A matrix must be Cholesky factorisation. Since A is symmetric and definite we can reduce the size of matrix A  to be stored. There is technique called mapping which is the key of convert a matrix A(i,j) of two dimensions to be vector b (( one dimension)). Applying mapping  technique on Cholesky algorithm to become Cholesky packed storage algorithm.The mapping conversation is A(i,j) $\to$ a(i+j(j-1)/2). 
+A packed storage is a linear direct method when we store an non-zero elements of matrix $A$ in one vector. The storage operation can be acted by using row or even the column. A matrix must be Cholesky factorisation. Since $A$ is symmetric and definite we can reduce the size of matrix $A$  to be stored. There is technique called mapping which is the key of convert a matrix $A(i,j)$ of two dimensions to be vector $b$ (one dimension). Applying mapping  technique on Cholesky algorithm to become Cholesky packed storage algorithm. The mapping conversation is $A(i,j) \to a(i+j(j-1)/2)$. 
 
 \subsection{Band Storage}
 A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. \\\\Using a technique called RCM ordering, the average bandwidth can be reduced, along with the level of fill in when Cholesky factorisation is performed. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering and the banded matrix B will look like
@@ -350,33 +350,85 @@ A(i,j)\to B(i,j-i+1), \text{ where } i,j < \text{dim}(A).
 To perform Cholesky factorisation on this matrix, and keeping the factorised matrix in the same dimension, the regular Cholesky factorisation method can be retooled using the previously mentioned mapping for band storage.
 The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields\\\includegraphics{images/cholband.png}\\It can be seen that the fill-in of this storage method is 81.\\To use this factorised matrix, a new forward and backward method must be constructed. Luckily, the previous mapping can still be used. Care must be taken when working in a non-square matrix in both forward and backward substitution, as it is still possible to access elements outside of the new array. Adding checks before accessing the array to make sure the given index is within the bounds of the array solves the problem, as any element outside of the array would just be zero, and performing no operation results in the same outcome. The mapping is also substituted into the forward and backward substitution algorithms.\\\\Solving the system of equations using the new forward and backward substitution, the following heatmap of the component is obtained.\\\includegraphics{images/bandsolution.png}
 \subsection{Sparse Storage}
-A sparse system is a matrix that has no structure to where the non-zero elements appear, but still has a large number of zero values. To premtively reduce the fill-in from the Cholesky factorisation, Approximate Minimum Degree (AMD) is used to reorder the A matrix. An AMD permutation will change the ordering of the matrix such that it has when Cholesky factorisation is performed, many of the zero values will stay zero. This reduces storage space when the new factorised matrix is stored using sparse storage, and can reduce runtime when implemented properly. In this case, sparse storage was only used to demonstrate storage benefits.\\\\Using matlab's inbuilt \textbf{symamd} function, the following matrix is obtained\\\includegraphics{images/A_SPARSE.png}\\This can be stored in sparse storage using matlab's \textbf{sparse} function. The size of the sparse matrix is only 2528 bytes, nearly 3.5 times smaller. The Cholesky algorithm is changed to check if any value at the index it accesses is 0 and if it is, it skips performing the operation involving that index. This reduces the flop count of the algorithm, but increases computation time due to if statements being inefficient when accesing a sparse matrix on matlab. Viewing the AMD ordered factorised matrix, it can be seen that the fill-in is fairly small.\\\includegraphics{images/A_SPARSE_CHOL.png}\\Looking at the difference in the number of non-zero elements, it can be seen that the fill in using AMD ordering is 53. The final heatmap is \\\includegraphics{images/sparsestorage.png}
+A sparse system is a matrix that has no structure to where the non-zero elements appear, but still has a large number of zero values. To pre-emptively reduce the fill-in from the Cholesky factorisation, Approximate Minimum Degree (AMD) is used to reorder the A matrix. An AMD permutation will change the ordering of the matrix such that it has when Cholesky factorisation is performed, many of the zero values will stay zero. This reduces storage space when the new factorised matrix is stored using sparse storage, and can reduce runtime when implemented properly. In this case, sparse storage was only used to demonstrate storage benefits.\\\\Using matlab's inbuilt \textbf{symamd} function, the following matrix is obtained\\\includegraphics{images/A_SPARSE.png}\\This can be stored in sparse storage using Matlab's \textbf{sparse} function. The size of the sparse matrix is only 2528 bytes, nearly 3.5 times smaller. The Cholesky algorithm is changed to check if any value at the index it accesses is 0 and if it is, it skips performing the operation involving that index. This reduces the flop count of the algorithm, but increases computation time due to if statements being inefficient when accessing a sparse matrix on Matlab. Viewing the AMD ordered factorised matrix, it can be seen that the fill-in is fairly small.\\\includegraphics{images/A_SPARSE_CHOL.png}\\Looking at the difference in the number of non-zero elements, it can be seen that the fill in using AMD ordering is 53. The final heatmap is \\\includegraphics{images/sparsestorage.png}
 
 \subsection{Compressed Sparse Row Format Storage}
 \textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
 \\\\
 CSR storage was used to store $A$. Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
 \\\\
-To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using Matlab's built in function: 
-\begin{minted}{matlab} 
-[r, c, v] = find(A) 
-\end{minted}
-This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$.
+To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using Matlab's built in function \textbf{find}.
 \\\\
-As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. 
+This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$. As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. 
 \\\\
 When $A$ is multiplied by $x$ throughout the iterative methods, the method for solving $Ax$ had to be altered. This ultimately removed the unnecessary multiplications as all the zero elements had been removed. This should result in the iterative methods running faster than they would if the A matrix had been stored using Full Storage.
 
 \subsubsection{The Jacobi Method}
-The first iterative method that is used to solve CSR storage is the Jacobi method.
+The first iterative method that is used to solve for $x$ using CSR storage is the \textbf{Jacobi method}.
 \\\\
-
+The Jacobi Method is:
+\\\\
+$$x_{i}^{(k+1)} = \frac{1}{a_ii}(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}, i = 1, 2, ..., n$$
+\\\\
+As mentioned above, the Jacobi method function had to be altered as $A$ was not stored in Full Storage, but in CSR storage. 
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/jacobisolution.png}
+	\caption{Jacobi Solution.}
+	\label{fig:jacobi}
+\end{figure}
 
 \subsubsection{The Gauss-Seidel Method}
+The second iterative method that is used to solve for $x$ using CSR storage is the Gauss-Seidel method.
+\\\\
+The Gauss-Seidel Method is:
+\\\\
+$$x_{i}^{(k+1)} = \frac{1}{a_ii}(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}), i = 1, 2, ..., n$$
+\\\\
+The Gauss-Seidel function also had to be altered to account for the different storage. 
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/gaussseidelsolution.png}
+	\caption{Gauss-Seidel Solution.}
+	\label{fig:gauss}
+\end{figure}
 
 \subsubsection{The Successive Over-relaxation Method}
+The third iterative method that is used to solve for $x$ using CSR storage is the Successive Over-relaxation (SOR) method. The SOR method has much faster convergence than Jacobi and Gauss-Seidel method, provided the $\omega$ selected is the optimal value. This is because SOR is designed so that $\omega$ minimises the spectral radius $\rho(T_{SOR})$. For solving this solution, the formula for finding the optimal $\omega$ was used as the $\omega$ value.
+\\\\
+$\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$.
+\\\\
+The SOR Method is: 
+\\\\
+$$x_{i}^{(k+1)} = (1-\omega)x_{i}^{(k)}+\frac{\omega}{a_ii}(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}), i = 1, 2, ..., n$$
+\\\\
+The SOR function was also altered to account for the change in storage.
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/sorsolution.png}
+	\caption{SOR Solution.}
+	\label{fig:sor}
+\end{figure}
 
 \subsubsection{The Conjugate Gradient Method}
+The fourth iterative method that is used to solve for $x$ using CSR storage is the Conjugate Gradient method. If the coefficient matrix is symmetric positive definite, the Conjugate Gradient method is very powerful.
+\\\\
+\textbf{Algorithm for Conjugate Gradient Method}
+\begin{center}
+$\textbf{r}^{(0)}=\textbf{b-Ax}^{(0)}, \textbf{d}^{(0)}=\textbf{r}^{(0)}$.
+\end{center}
+\begin{enumerate}
+\item $\alpha_{k} = (\textbf{r}^{(k)^{T}}\textbf{r}^{(k)})/(\textbf{d}^{(k)^{T}}\textbf{Ad}^{(k)})$
+\item $\textbf{x}^{(k+1)}=\textbf{x}^{(k)}+\alpha_{k}\textbf{d}^{(k)}$
+\item $\textbf{r}^{(k+1)}=\textbf{r}^{(k)}-\alpha_{k}\textbf{Ad}^{(k)}$
+\item $\beta_{k} = (\textbf{r}^{(k+1)^{T}}\textbf{r}^{(k+1)})/\textbf{r}^{(k)^{T}}\textbf{r}^{(k)}$
+\item $\textbf{d}^{(k+1)}=\textbf{r}^{(k+1)}+\beta_{k}\textbf{d}^{(k)}$
+\end{enumerate}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/conjugategradientsolution.png}
+	\caption{Conjugate Gradient Solution.}
+	\label{fig:conjugate}
+\end{figure}
 
 \section{Efficiency Comparison}
 The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component.
@@ -433,6 +485,194 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 
 \subsection{Tolerance Required for Iterative Methods)}
 The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/JacobiComparisontole-05.png}
+		\caption{Tolerance of $10^{-5}$.}
+		\label{fig:Jacobitole-05}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/JacobiComparisontol0-001.png}
+		\caption{Tolerance of $10^{-3}$.}
+		\label{fig:Jacobitol0.001}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/JacobiComparisontol0-002.png}
+		\caption{Tolerance of $2 \times 10^{-3}$.}
+		\label{fig:Jacobitol0.002}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/JacobiComparisontol0-01.png}
+		\caption{Tolerance of $10^{-2}$.}
+		\label{fig:Jacobitol0.01}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/JacobiComparisontol0-1.png}
+		\caption{Tolerance of $10^{-1}$.}
+		\label{fig:Jacobitol0.1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/JacobiComparisontol0-5.png}
+		\caption{Tolerance of $0.5$.}
+		\label{fig:Jacobitol0.5}
+	\end{subfigure}
+	\caption{Varying tolerances for solving $x$ using the Jacobi Method.}
+    \label{fig:Jacobitolerance}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/GaussComparisontole-05.png}
+		\caption{Tolerance of $10^{-5}$.}
+		\label{fig:Gausstole-05}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/GaussComparisontol0-001.png}
+		\caption{Tolerance of $10^{-3}$.}
+		\label{fig:Gausstol0.001}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/GaussComparisontol0-002.png}
+		\caption{Tolerance of $2 \times 10^{-3}$.}
+		\label{fig:Gausstol0.002}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/GaussComparisontol0-01.png}
+		\caption{Tolerance of $10^{-2}$.}
+		\label{fig:Gausstol0.01}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/GaussComparisontol0-1.png}
+		\caption{Tolerance of $10^{-1}$.}
+		\label{fig:tol0.1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/GaussComparisontol0-5.png}
+		\caption{Tolerance of $0.5$.}
+		\label{fig:Gausstol0.5}
+	\end{subfigure}
+	\caption{Varying tolerances for solving $x$ using the Gauss-Seidel Method.}
+    \label{fig:Gausstolerance}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/SORComparisontole-05.png}
+		\caption{Tolerance of $10^{-5}$.}
+		\label{fig:SORtole-05}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/SORComparisontol0-001.png}
+		\caption{Tolerance of $10^{-3}$.}
+		\label{fig:SORtol0.001}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/SORComparisontol0-002.png}
+		\caption{Tolerance of $2 \times 10^{-3}$.}
+		\label{fig:SORtol0.002}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/SORComparisontol0-01.png}
+		\caption{Tolerance of $10^{-2}$.}
+		\label{fig:SORtol0.01}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/SORComparisontol0-1.png}
+		\caption{Tolerance of $10^{-1}$.}
+		\label{fig:SORtol0.1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/SORComparisontol0-5.png}
+		\caption{Tolerance of $0.5$.}
+		\label{fig:SORtol0.5}
+	\end{subfigure}
+	\caption{Varying tolerances for solving $x$ using the SOR Method.}
+    \label{fig:SORtolerance}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/ConjugateComparisontole-05.png}
+		\caption{Tolerance of $10^{-5}$.}
+		\label{fig:Conjugatetole-05}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/ConjugateComparisontol0-001.png}
+		\caption{Tolerance of $10^{-3}$.}
+		\label{fig:Conjugatetol0.001}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/ConjugateComparisontol0-002.png}
+		\caption{Tolerance of $2 \times 10^{-3}$.}
+		\label{fig:Conjugatetol0.002}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/ConjugateComparisontol0-01.png}
+		\caption{Tolerance of $10^{-2}$.}
+		\label{fig:Conjugatetol0.01}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/ConjugateComparisontol0-1.png}
+		\caption{Tolerance of $10^{-1}$.}
+		\label{fig:Conjugatetol0.1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{images/ConjugateComparisontol0-5.png}
+		\caption{Tolerance of $0.5$.}
+		\label{fig:Conjugatetol0.5}
+	\end{subfigure}
+	\caption{Varying tolerances for solving $x$ using the Conjugate Gradient Method.}
+    \label{fig:tolerance}
+\end{figure}
 
 \subsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
 The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
@@ -507,66 +747,5 @@ The algorithm can then be refined to search finer values around the lower bound.
 \text{T}_{34} \text{ is null}\\
 \text{T}_{35} \text{ is null}
 \end{align*}
-\subsection*{Appendix B}
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/Comparisontole-10.png}
-		\caption{Tolerance of $10^{-10}$.}
-		\label{fig:tole-10}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontole-05.png}
-		\caption{Tolerance of $10^{-5}$.}
-		\label{fig:tole-05}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontol0-001.png}
-		\caption{Tolerance of $10^{-3}$.}
-		\label{fig:tol0.001}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontol0-002.png}
-		\caption{Tolerance of $2 \times 10^{-3}$.}
-		\label{fig:tol0.002}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontol0-01.png}
-		\caption{Tolerance of $10^{-2}$.}
-		\label{fig:tol0.01}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontol0-1.png}
-		\caption{Tolerance of $10^{-1}$.}
-		\label{fig:tol0.1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontol0-5.png}
-		\caption{Tolerance of $0.5$.}
-		\label{fig:tol0.5}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{images/Comparisontol1.png}
-		\caption{Tolerance of $1$.}
-		\label{fig:tol1}
-	\end{subfigure}
-	\caption{Varying tolerances for solving $x$ using the SOR Method.}
-    \label{fig:tolerance}
-\end{figure}
  
 \end{document}

@@ -1,18 +1,23 @@
 format long
 format compact
-
 %%
 % Storage and Solution
 % Full Storage
 load full_storage
+figure
 spy(A)
-title('Spy of A')
+title('Spy of A', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
 
 % Full Storage (solved using Cholesky)
 [temperatures, full_flops, ~, A_cholesky] = full_storage_solution;
 visualisation(temperatures, 'Full Storage Solution')
+
+figure
 spy(A_cholesky)
-title('chol(A)')
+title('chol(A)', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
+
 % Packed Storage (solved using Cholesky) 
 [temperatures, packed_flops, ~, A_packed] =  packed_storage_solution;
 visualisation(temperatures, 'Packed Storage Solution')
@@ -20,25 +25,35 @@ visualisation(temperatures, 'Packed Storage Solution')
 [temperatures, band_flops, ~, A_RCM, A_band, cholBand] = band_storage_solution;
 % Banded Storage (solved using Cholesky)
 visualisation(temperatures, 'Band Storage Solution')
+
 figure
 spy(A_band)
 title('A$_\mathrm{Band}$', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
+
 figure
 spy(cholBand)
 title('chol(A$_\mathrm{Band}$)', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
+
 figure
 spy(A_RCM)
 title('A$_\mathrm{RCM}$', 'Interpreter', 'latex')
-% Sparse Storage (solved using Cholesky)
+set(gca,'TickLabelInterpreter','latex')
+
 %%
+% Sparse Storage (solved using Cholesky)
 [temperatures, sparse_flops, ~, A_sparse, sparseBand] = sparse_storage_solution;
 visualisation(temperatures, 'Sparse Storage Solution')
 figure
 spy(A_sparse)
 title('A$_\mathrm{Sparse}$', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
+
 figure
 spy(sparseBand)
 title('chol(A$_\mathrm{Sparse}$)', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
 %%
 % CSR Storage (solved using Jacobi)
 [temperatures, JacobiFlops, ~, jacobi_k, jacobi_res] = jacobi_solution;
@@ -66,6 +81,7 @@ bar(Direct_Method_Bytes)
 title('Storage Size in Bytes for Direct Methods', 'Interpreter', 'latex')
 xtickangle(45)
 set(gca,'xticklabel',{'Full Storage', 'Packed Storage', 'Band Store', 'Sparse Storage'})
+set(gca,'TickLabelInterpreter','latex')
 text(1:length(Direct_Method_Bytes),Direct_Method_Bytes,num2str(Direct_Method_Bytes'),'vert','top','horiz','center');
 %%
 %Iterations
@@ -75,14 +91,16 @@ bar(NumberIterations)
 title('Number of Iterations for Iterative Methods', 'Interpreter', 'latex')
 xtickangle(45)
 set(gca,'xticklabel',{'Jacobi', 'Gauss Seidel', 'Conjugate Gradiant', 'SOR'})
+set(gca,'TickLabelInterpreter','latex')
 text(1:length(NumberIterations),NumberIterations,num2str(NumberIterations'),'vert','top','horiz','center')
 %%
 %Average runtime
 runtimes = AverageRunTime;
 figure
 bar(runtimes)
-title('Average run time for direct methods (in seconds)')
+title('Average run time for direct methods (in seconds)', 'Interpreter', 'latex')
 xtickangle(45)
+set(gca,'TickLabelInterpreter','latex')
 set(gca, 'xticklabel', {'Full Solution', 'Packed Solution', 'Band Solution', 'Sparse Solution', 'Jacobi Solution', 'Gauss-Seidel Solution', 'Conjugate Gradient Solution', 'SOR Solution'})
 text(1:length(runtimes'),runtimes',num2str(runtimes),'vert','bottom','horiz','center'); 
 %%
@@ -93,6 +111,7 @@ figure
 bar(NumberFlops)
 title('Number of Flops for Direct and Iterative Methods', 'Interpreter', 'latex')
 xtickangle(45)
+set(gca,'TickLabelInterpreter','latex')
 set(gca,'xticklabel',{'Full Storage Flops', 'Packed Storage Flops',...
     'Band Storage Flops', 'Sparse Storage Flops', 'Jacobi Iteration Flops',...
     'Gauss Seidel Iteration Flops', 'Conjugate Gradient Iteration Flops', 'SOR Iteration Flops'})

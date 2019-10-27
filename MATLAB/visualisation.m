@@ -52,7 +52,7 @@ view(2)
 shading interp
 colormap hot
 axis image
-title([graphTitle], 'Interpreter', 'latex')
+title(graphTitle, 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 if (subgraph)
     if (plot_number == total_number)
