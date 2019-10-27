@@ -437,6 +437,8 @@ The following section investigates which numerical method or methods provide the
 
 
 \subsection{Memory (for Direct Methods)}
+Memory for the $A$ that were used to solve $x$ using direct methods was compared to see which storage had the least memory.
+\\\\
 \begin{center}
 \begin{tabular}{c c c c c}
 Name & Size & Bytes & Class & Attributes \\
@@ -445,23 +447,22 @@ $A$ & $33 \times 33$ & $8712$ & double & \\
 $A$ Banded Storage & $33 \times 7$ & $1848$ & double & \\
 $A$ Packed Storage & $1 \times 561$ & $4488$ & double & \\
 $A$ Sparse Storage & $33 \times 33$ & $2528$ & double & sparse \\
-$b$ & $33 \times 1$ & $264$ & double & \\
 \end{tabular}
 \end{center}
-
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/MemoryGraph.png}
 	\caption{Size in bytes for storage size for each direct method.}
 	\label{fig:memory}
 \end{figure}
+Full Storage was found to require the most memory (8712 Bytes), whereas Banded and Sparse storage were found to require the least amount of memory (1848 and 2528 respectively). 
 
 \subsection{Iterations (for Iterative Methods)}
+The efficiency of how many iterations it takes 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/IterationsGraph.png}
 	\caption{Number of Iterations for each Iterative Method}
 	\label{fig:iterations}
 \end{figure}
-
 
 \subsection{Runtime (Direct and Iterative)}
 \begin{figure}[H]
@@ -484,7 +485,10 @@ $b$ & $33 \times 1$ & $264$ & double & \\
 \end{figure}
 
 \subsection{Tolerance Required for Iterative Methods)}
-The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method.
+The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method. The tolerances: $1\times10^{-10}, 1\times10^{-5}, 1\times10^{-3}, 2\times10^{-3}, 1\times10^{-2}, 1\times10^{-1}, 0.5, 1$ were compared against the exact solution for each iterative method.
+\\\\
+It was found that for the Jacobi Method, SOR Method, Gauss Method that $1\times10^{-5}$ was the tolerance where the solution was visually indistinguishable. However, for the Conjugate Gradient Method the tolerance was $2\times10^{-3}$ where the solution was visually indistinguishable.
+\\\\
 
 \begin{figure}[H]
 	\centering
