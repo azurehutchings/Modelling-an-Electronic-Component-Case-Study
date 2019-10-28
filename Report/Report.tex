@@ -334,7 +334,12 @@ The Full Storage solution is very simple. Because we have a linear system, we ca
 		\includegraphics[width=\textwidth]{images/cholA.png}
 	\end{subfigure}
 \end{figure}
-By analysing the number of non-zero elements, it can be seen that the fill-in from using the Cholesky algorithm is 109.
+By analysing the number of non-zero elements, it can be seen that the fill-in from using the Cholesky algorithm is 109. After running Cholesky factorisation, forward substitution and then backward substitution, the following heatmap is obtained.
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/fullSolution.png}
+	\caption{Packed Solution.}
+	\label{fig:packed}
+\end{figure}
 \subsubsection{Packed Storage}
 The packed storage is a linear direct method solution. That because we just need to factorise the matrix into upper system. In addition, as the coefficients of the matrix is SPD, then we can use Cholesky factorisation. Therefore, we are able to reduce the size of the matrix into a array a, where the array a is the number of elements in the matrix being store in only one vector. To implement Cholesky factorisation by using packed storage structure, it is necessary that to convert the two-dimension matrix into one dimensional vector. How can we convert this? The answer is by using mapping technique which is as follow:
 \\
