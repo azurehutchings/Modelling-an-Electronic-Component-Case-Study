@@ -434,20 +434,10 @@ $\textbf{r}^{(0)}=\textbf{b-Ax}^{(0)}, \textbf{d}^{(0)}=\textbf{r}^{(0)}$.
 The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component. This involves the storage size of the coefficent matrix and the time it takes to find the solution for each method.
 
 \subsection{Bandwidth and Level of Fill-in for each different Node Ordering}
-Because memory is a key concern when working with large data structures, it is important to choose a method that reduces the storage size. The bandwidth and fill-in are both components that determine how much memory the factorised matrix will take up. Fill-in is the number of zero elements in the matrix that turn into non-zero elements after factorisation is completed. It it important to note that the factorised matrices non-zero elements will all be within the average bandwidth of the unfactorised matrix. As Cholesky factorisation is symmetric and only the upper matrix is being stored, only the upper bandwidth will be looked at.
-
-\subsubsection{Ascending Order}
-The upper bandwidth of the full storage matrix is 6. When Cholesky factorisation is performed, the number of elements that are filled in are 109. As a proportion of the total number of elements in the upper matrix, this is $\frac{109}{561}$ or approximately 20\%. 
-
-\subsubsection{RCM Ordering}
-Using RCM ordering, the bandwidth of the new matrix is still 6. However, the average bandwidth is much lower. The fill-in for RCM Ordering in this scenario is 81. The band storage also reduces the size of the matrix, which makes the percentage of filled in elements only 35\%.
-
-\subsubsection{AMD Ordering}
-AMD ordering is designed to reduce fill-in the most. With AMD ordering, the bandwidth is increased to 29. However, the fill-in of this is only 53 elements. This is a much lower percentage increase, at only 9\%.
+Because memory is a key concern when working with large data structures, it is important to choose a method that reduces the storage size. The bandwidth and fill-in are both components that determine how much memory the factorised matrix will take up. Fill-in is the number of zero elements in the matrix that turn into non-zero elements after factorisation is completed. 
 
 \subsection{Memory (for Direct Methods)}
 Memory for the $A$ that were used to solve $x$ using direct methods was compared to see which storage required the least memory.
-\\\\
 \begin{center}
 \begin{tabular}{c c c c c}
 Name & Size & Bytes & Class & Attributes \\
@@ -469,20 +459,26 @@ Full Storage was found to require the most memory (8712 Bytes), whereas Banded a
 The efficiency of how many iterations it takes for the iterative method to converge, given the tolerance and $\omega$. The tolerance was $1\times10^{-5}$ and the $\omega$ was the optimal $\omega$ for this $A$ matrix.
 \\\\
 The number of iterations for each iterative method (Jacobi, Gauss-Seidel, SOR, and Conjugate Gradient method) were recorded and graphed.
-\\\\
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/IterationsGraph.png}
 	\caption{Number of Iterations for each Iterative Method}
 	\label{fig:iterations}
-\end{figure}
+\end{figure} 
 The Jacobi method required the most iterations to converge, followed by Gauss-Seidel, SOR, then Conjugate Gradient method.
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/ResidualNormGraph.png}
+	\caption{Residual Norm for each Iterative Methods}
+	\label{fig:res}
+\end{figure}
 
 \subsection{Runtime (Direct and Iterative)}
+The runtime for solving $x$ using each type of storage was calculated using Matlab's built in functionality (tic and toc). The runtime
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/RuntimeGraph.png}
 	\caption{Runtime for solving each of the Direct and Iterative Methods.}
 	\label{fig:runtime}
 \end{figure}
+
 
 \subsection{Floating Point Operations (Direct and Iterative)}
 \textbf{Floating point operation count} (flop count) is referred to as the number of arithmetic operations performed by an algorithm during its execution. For the direct and iterative methods, the flop count was calculated for every multiplication and addition. A flop was counted for every multiplication and addition in the nested for loops. However, this is only an estimation as some of the multiplications are performing more than one flop, but are only counted as one.
@@ -491,13 +487,7 @@ The Jacobi method required the most iterations to converge, followed by Gauss-Se
 	\caption{Flops for each Direct and Iterative Methods.}
 	\label{fig:flops}
 \end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/ResidualNormGraph.png}
-	\caption{Residual Norm for each Iterative Methods}
-	\label{fig:res}
-\end{figure}
-
+The Jacobi method was found to contain the most flops, whereas the Conjugate Gradient method was found to have the least flops. Interestingly, the Cholesky factorisation, forward and backwards substitution for Full and Packed Storage had approximately the same amount of flops, but Band and Sparse storage had significantly less than the other Cholesky factorisation. The packed and full had approximately $5.25$ times more flops than the band and sparse.
 
 \subsection{Tolerance Required for Iterative Methods)}
 The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method. The tolerances: $1\times10^{-10}, 1\times10^{-5}, 1\times10^{-3}, 2\times10^{-3}, 1\times10^{-2}, 1\times10^{-1}, 0.5, 1$ were compared against the exact solution for each iterative method.
@@ -505,6 +495,80 @@ The following discusses the tolerance that is required for the iterative methods
 It was found that for the Jacobi Method, SOR Method, Gauss Method that $1\times10^{-5}$ was the tolerance where the solution was visually indistinguishable. However, for the Conjugate Gradient Method the tolerance was $2\times10^{-3}$ where the solution was visually indistinguishable.
 \\\\
 
+\subsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
+The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
+\\\\
+For matrices that arise from finite difference discretisations of Laplace's equation, the value of $\omega$ that minimises the spectral radius $\rho(T_{SOR})$ is 
+\begin{center}
+$\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$.
+\end{center}
+The Figure \ref{fig:omega1} compares the value of $\omega$ against $\rho(T_{SOR})$ to visually see what $\omega$ value has the least $\rho(T_{SOR})$. The theoretical optimal value of $\omega$ is $\omega_{opt}$.
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/omegaGraph1.png}
+	\caption{Omega.}
+	\label{fig:omega1}
+\end{figure}
+
+The effect of $\omega$ was explored on the number of iterations taken to converge. In Figure \ref{fig:omega2} it can be seen that the $\omega$ that had the least iterations to converge was $\omega_{opt}$. Thus, the $\omega$ that will result with the least amount of iterations is approximately $1.605$.
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/omegaGraph2.png}
+	\caption{Number of Iterations against different values of $\omega$.}
+	\label{fig:omega2}
+\end{figure}
+
+\section{Effect of Ambient Temperature} 
+The electronic component will only function if the temperature at the point (0.03, 0.03) is within $50-55\degree$C. This temperature could change depending on what the ambient air temperature is. Earlier in the model, we have assumed that this temperature is $20\degree$C. To find the affect of different ambient temperatures, we can run the model through a loop, changing the values of the ambient temperature from $0\degree$C to $60\degree$C in increments of $0.01\degree$C. Printing a value of the ambient temperature and the inner component temperature when the inner component temperature is within a tolerance of $0.001\degree$C, we can find rough estimates of the lower and upper bounds of the ambient temperature. These are found to be 
+\[\text{Lower bound }\approx 1.72\degree\text{C},\]
+\[\text{Upper bound }= 55\degree\text{C}.\]
+The algorithm can then be refined to search finer values around the lower bound. Searching within a tolerance of $10^{-6}$, the ambient temperature comes out to approximately 1.727406$\degree$C. As this is a very specific temperature, and the real world is not perfect, we can think of the lower bound as just being $2\degree$C. 
+\\\\We recommend that the component only be deployed in locations with a temperature that never goes below $2\degree$C or above $55\degree$C.
+\section{Conclusions}
+\section{Recommendations}
+\subsection{Ambient Temperature}
+\pagebreak
+\section{Appendices}
+\subsection*{Appendix A}
+\begin{align*}
+2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
+3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
+3\text{T}_2-\text{T}_1-\text{T}_3-\text{T}_8          & =0\\
+3\text{T}_3-\text{T}_2-\text{T}_4-\text{T}_9          & =0\\
+3\text{T}_4-\text{T}_3-\text{T}_5-\text{T}_{10}       & =0\\
+3\text{T}_5-\text{T}_4-\text{T}_{11}           & =40\\
+3\text{T}_6-\text{T}_0-\text{T}_7-\text{T}_{12}       & =0\\
+4\text{T}_7-\text{T}_8-\text{T}_1-\text{T}_6-\text{T}_{13}   & =0\\
+4\text{T}_8-\text{T}_7-\text{T}_2-\text{T}_9-\text{T}_{14}   & =0\\
+4\text{T}_9-\text{T}_8-\text{T}_3-\text{T}_{10}-\text{T}_{15}& =0\\
+4\text{T}_{10}-\text{T}_9-\text{T}_4-\text{T}_{11}-\text{T}_{16} & =0\\
+4\text{T}_{11}-\text{T}_{10}-\text{T}_5-\text{T}_{17} & =40\\
+3\text{T}_{12}-\text{T}_6-\text{T}_{16}-\text{T}_{13} & =0\\
+4\text{T}_{13}-\text{T}_{12}-\text{T}_{14}-\text{T}_{7}-\text{T}_{19} & =0\\
+4\text{T}_{14}-\text{T}_{13}-\text{T}_{15}-\text{T}_{8}-\text{T}_{20} & =0\\
+4\text{T}_{15}-\text{T}_{14}-\text{T}_{16}-\text{T}_{9}-\text{T}_{21} & =0\\
+4\text{T}_{16}-\text{T}_{15}-\text{T}_{17}-\text{T}_{10}-\text{T}_{22}& =0\\
+4\text{T}_{17}-\text{T}_{16}-\text{T}_{11}-\text{T}_{23} & =40\\
+3\text{T}_{18}-\text{T}_{12}-\text{T}_{24}-\text{T}_{19} & =0\\
+4\text{T}_{19}-\text{T}_{18}-\text{T}_{20}-\text{T}_{13}-\text{T}_{25} & =0\\
+4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
+4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
+4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =\frac{4\sqrt{2}}{3}\\
+3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
+4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
+4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
+4\text{T}_{27}-\text{T}_{26}-\text{T}_{28}-\text{T}_{21}-\text{T}_{33} & =0\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{28}-\text{T}_{27}-\text{T}_{22} & =\frac{4\sqrt{2}}{3}\\
+\text{T}_{29} \text{ is null}\\
+3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
+4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
+4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =\frac{4\sqrt{2}}{3}\\
+\text{T}_{34} \text{ is null}\\
+\text{T}_{35} \text{ is null}
+\end{align*}
+\subsection*{Appendix B}
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.48\textwidth}
@@ -692,79 +756,5 @@ It was found that for the Jacobi Method, SOR Method, Gauss Method that $1\times1
 	\caption{Varying tolerances for solving $x$ using the Conjugate Gradient Method.}
     \label{fig:tolerance}
 \end{figure}
-
-\subsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
-The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
-\\\\
-For matrices that arise from finite difference discretisations of Laplace's equation, the value of $\omega$ that minimises the spectral radius $\rho(T_{SOR})$ is 
-\begin{center}
-$\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$.
-\end{center}
-The Figure \ref{fig:omega1} compares the value of $\omega$ against $\rho(T_{SOR})$ to visually see what $\omega$ value has the least $\rho(T_{SOR})$. The theoretical optimal value of $\omega$ is $\omega_{opt}$.
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/omegaGraph1.png}
-	\caption{Omega.}
-	\label{fig:omega1}
-\end{figure}
-
-The effect of $\omega$ was explored on the number of iterations taken to converge. In Figure \ref{fig:omega2} it can be seen that the $\omega$ that had the least iterations to converge was $\omega_{opt}$. Thus, the $\omega$ that will result with the least amount of iterations is approximately $1.605$.
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{images/omegaGraph2.png}
-	\caption{Number of Iterations against different values of $\omega$.}
-	\label{fig:omega2}
-\end{figure}
-
-\section{Effect of Ambient Temperature} 
-The electronic component will only function if the temperature at the point (0.03, 0.03) is within $50-55\degree$C. This temperature could change depending on what the ambient air temperature is. Earlier in the model, we have assumed that this temperature is $20\degree$C. To find the affect of different ambient temperatures, we can run the model through a loop, changing the values of the ambient temperature from $0\degree$C to $60\degree$C in increments of $0.01\degree$C. Printing a value of the ambient temperature and the inner component temperature when the inner component temperature is within a tolerance of $0.001\degree$C, we can find rough estimates of the lower and upper bounds of the ambient temperature. These are found to be 
-\[\text{Lower bound }\approx 1.72\degree\text{C},\]
-\[\text{Upper bound }= 55\degree\text{C}.\]
-The algorithm can then be refined to search finer values around the lower bound. Searching within a tolerance of $10^{-6}$, the ambient temperature comes out to approximately 1.727406$\degree$C. As this is a very specific temperature, and the real world is not perfect, we can think of the lower bound as just being $2\degree$C. 
-\\\\We recommend that the component only be deployed in locations with a temperature that never goes below $2\degree$C or above $55\degree$C.
-\section{Conclusions}
-\section{Recommendations}
-\subsection{Ambient Temperature}
-\pagebreak
-\section{Appendices}
-\subsection*{Appendix A}
-\begin{align*}
-2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
-3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
-3\text{T}_2-\text{T}_1-\text{T}_3-\text{T}_8          & =0\\
-3\text{T}_3-\text{T}_2-\text{T}_4-\text{T}_9          & =0\\
-3\text{T}_4-\text{T}_3-\text{T}_5-\text{T}_{10}       & =0\\
-3\text{T}_5-\text{T}_4-\text{T}_{11}           & =40\\
-3\text{T}_6-\text{T}_0-\text{T}_7-\text{T}_{12}       & =0\\
-4\text{T}_7-\text{T}_8-\text{T}_1-\text{T}_6-\text{T}_{13}   & =0\\
-4\text{T}_8-\text{T}_7-\text{T}_2-\text{T}_9-\text{T}_{14}   & =0\\
-4\text{T}_9-\text{T}_8-\text{T}_3-\text{T}_{10}-\text{T}_{15}& =0\\
-4\text{T}_{10}-\text{T}_9-\text{T}_4-\text{T}_{11}-\text{T}_{16} & =0\\
-4\text{T}_{11}-\text{T}_{10}-\text{T}_5-\text{T}_{17} & =40\\
-3\text{T}_{12}-\text{T}_6-\text{T}_{16}-\text{T}_{13} & =0\\
-4\text{T}_{13}-\text{T}_{12}-\text{T}_{14}-\text{T}_{7}-\text{T}_{19} & =0\\
-4\text{T}_{14}-\text{T}_{13}-\text{T}_{15}-\text{T}_{8}-\text{T}_{20} & =0\\
-4\text{T}_{15}-\text{T}_{14}-\text{T}_{16}-\text{T}_{9}-\text{T}_{21} & =0\\
-4\text{T}_{16}-\text{T}_{15}-\text{T}_{17}-\text{T}_{10}-\text{T}_{22}& =0\\
-4\text{T}_{17}-\text{T}_{16}-\text{T}_{11}-\text{T}_{23} & =40\\
-3\text{T}_{18}-\text{T}_{12}-\text{T}_{24}-\text{T}_{19} & =0\\
-4\text{T}_{19}-\text{T}_{18}-\text{T}_{20}-\text{T}_{13}-\text{T}_{25} & =0\\
-4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
-4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
-4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
-\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =\frac{4\sqrt{2}}{3}\\
-3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
-4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
-4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
-4\text{T}_{27}-\text{T}_{26}-\text{T}_{28}-\text{T}_{21}-\text{T}_{33} & =0\\
-\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{28}-\text{T}_{27}-\text{T}_{22} & =\frac{4\sqrt{2}}{3}\\
-\text{T}_{29} \text{ is null}\\
-3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
-4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
-4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
-\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =\frac{4\sqrt{2}}{3}\\
-\text{T}_{34} \text{ is null}\\
-\text{T}_{35} \text{ is null}
-\end{align*}
  
 \end{document}
