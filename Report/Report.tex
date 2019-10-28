@@ -420,7 +420,7 @@ The first iterative method that is used to solve for $x$ using CSR storage is th
 \\\\
 The Jacobi Method is:
 \\\\
-$$x_{i}^{(k+1)} = \frac{1}{a_{ii}}(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}, i = 1, 2, ..., n$$
+$$x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}\bigg), i = 1, 2, ..., n$$
 \\\\
 As mentioned above, the Jacobi method function had to be altered as $A$ was stored in CSR storage. The three vectors then had to be integrated in the function. 
 \begin{figure}[H]
@@ -434,7 +434,7 @@ The second iterative method that is used to solve for $x$ using CSR storage is t
 \\\\
 The Gauss-Seidel Method is:
 \\\\
-$$x_{i}^{(k+1)} = \frac{1}{a_{ii}}(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}), i = 1, 2, ..., n$$
+$$x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n$$
 \\\\
 The Gauss-Seidel function also had to be altered to account for the different storage. 
 
@@ -451,7 +451,7 @@ $\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$.
 \\\\
 The SOR Method is: 
 \\\\
-$$x_{i}^{(k+1)} = (1-\omega)x_{i}^{(k)}+\frac{\omega}{a_{ii}}(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}), i = 1, 2, ..., n$$
+$$x_{i}^{(k+1)} = (1-\omega)x_{i}^{(k)}+\frac{\omega}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n$$
 \\\\
 The SOR function was also altered to account for the change in storage.
 
@@ -469,10 +469,10 @@ The fourth iterative method that is used to solve for $x$ using CSR storage is t
 $\textbf{r}^{(0)}=\textbf{b-Ax}^{(0)}, \textbf{d}^{(0)}=\textbf{r}^{(0)}$.
 \end{center}
 \begin{enumerate}
-\item $\alpha_{k} = (\textbf{r}^{(k)^{T}}\textbf{r}^{(k)})/(\textbf{d}^{(k)^{T}}\textbf{Ad}^{(k)})$
+\item $\alpha_{k} = \big(\textbf{r}^{(k)^{T}}\textbf{r}^{(k)}\big)/\big(\textbf{d}^{(k)^{T}}\textbf{Ad}^{(k)}\big)$
 \item $\textbf{x}^{(k+1)}=\textbf{x}^{(k)}+\alpha_{k}\textbf{d}^{(k)}$
 \item $\textbf{r}^{(k+1)}=\textbf{r}^{(k)}-\alpha_{k}\textbf{Ad}^{(k)}$
-\item $\beta_{k} = (\textbf{r}^{(k+1)^{T}}\textbf{r}^{(k+1)})/\textbf{r}^{(k)^{T}}\textbf{r}^{(k)}$
+\item $\beta_{k} = \big(\textbf{r}^{(k+1)^{T}}\textbf{r}^{(k+1)}\big)/\big(\textbf{r}^{(k)^{T}}\textbf{r}^{(k)}\big)$
 \item $\textbf{d}^{(k+1)}=\textbf{r}^{(k+1)}+\beta_{k}\textbf{d}^{(k)}$
 \end{enumerate}
 
