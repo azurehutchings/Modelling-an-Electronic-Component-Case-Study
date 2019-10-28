@@ -3,14 +3,14 @@ format compact
 %%
 %Check SPD
 load full_storage
-spy(A-A')
-title('A-A''')
 
 eigens = eig(A);
+figure
 plot(eigens)
-title('nth Eigenvalues of A')
-xlabel('n')
-ylabel('Eigenvalue')
+title('$n^{th}$ Eigenvalues of A', 'Interpreter', 'latex')
+xlabel('n', 'Interpreter', 'latex')
+ylabel('Eigenvalue', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
 
 %%
 % Storage and Solution
@@ -64,7 +64,8 @@ set(gca,'TickLabelInterpreter','latex')
 [temperatures, sparse_flops, ~, A_sparse, sparseChol] = sparse_storage_solution;
 visualisation(temperatures, 'Sparse Storage Solution')
 fill_in_sparse = nnz(sparseChol) - nnz(A_sparse);
-bandwidth_sparse = bandwidth(sparse);
+bandwidth_sparse = bandwidth(A_sparse);
+
 figure
 spy(A_sparse)
 title('$A_\mathrm{Sparse}$', 'Interpreter', 'latex')
