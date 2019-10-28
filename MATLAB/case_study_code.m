@@ -16,9 +16,15 @@ ylabel('Eigenvalue')
 % Storage and Solution
 % Full Storage
 load full_storage
+
 figure
 spy(A)
-title('Spy of A', 'Interpreter', 'latex')
+title('Spy of $A$', 'Interpreter', 'latex')
+set(gca,'TickLabelInterpreter','latex')
+
+figure
+spy(A - A')
+title("Spy of $A-A'$", 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 % Full Storage (solved using Cholesky)
@@ -27,7 +33,7 @@ visualisation(temperatures, 'Full Storage Solution')
 fill_in_full = nnz(A_cholesky) - nnz(A);
 figure
 spy(A_cholesky)
-title('chol(A)', 'Interpreter', 'latex')
+title('chol($A$)', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 % Packed Storage (solved using Cholesky) 
@@ -40,12 +46,12 @@ visualisation(temperatures, 'Band Storage Solution')
 fill_in_band = nnz(cholBand) - nnz(A_band);
 figure
 spy(A_band)
-title('A$_\mathrm{Band}$', 'Interpreter', 'latex')
+title('$A_\mathrm{Band}$', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 figure
 spy(cholBand)
-title('chol(A$_\mathrm{Band}$)', 'Interpreter', 'latex')
+title('chol($A_\mathrm{Band}$)', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 figure
@@ -61,7 +67,7 @@ fill_in_sparse = nnz(sparseChol) - nnz(A_sparse);
 bandwidth_sparse = bandwidth(sparse);
 figure
 spy(A_sparse)
-title('A$_\mathrm{Sparse}$', 'Interpreter', 'latex')
+title('$A_\mathrm{Sparse}$', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 figure
@@ -131,7 +137,6 @@ set(gca,'xticklabel',{'Full Storage Flops', 'Packed Storage Flops',...
     'Gauss Seidel Iteration Flops', 'Conjugate Gradient Iteration Flops', 'SOR Iteration Flops'})
 text(1:length(NumberFlops),NumberFlops,num2str(NumberFlops'),'vert','top','horiz','center'); 
 %%
-
 figure
 hold on
 set(gca, 'Yscale', 'log');
@@ -148,10 +153,10 @@ lgd.Interpreter = 'latex';
 
 ylabel('$||b-A*x^{(k)}|| / ||b||$', 'Interpreter','latex')
 xlabel('k', 'Interpreter','latex')
-
+%%
 %Tolerance
 tolVec = [1e-10, 1e-5, 1e-3, 2e-3, 1e-2, 1e-1, 0.5, 1];
 tolerance_efficiency(A, b, tolVec)
-
+%%
 %Effect of w on the rate of convergence of the SOR method.
 w_efficiency(A, b)
