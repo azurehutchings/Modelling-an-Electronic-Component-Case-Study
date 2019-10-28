@@ -1,4 +1,5 @@
 function w_opt = cal_w_opt(A)
+%This function calculates the optimal omega value for the SOR method.
 
 D = diag(diag(A));
 L = tril(A, -1);
