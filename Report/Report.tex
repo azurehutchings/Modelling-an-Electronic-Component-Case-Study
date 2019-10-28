@@ -530,7 +530,7 @@ The iterations are performed until the residual norm is less than the tolerance 
 	\caption{Residual Norm for each Iterative Methods}
 	\label{fig:res}
 \end{figure}
-In Figure \ref{fig:res} it can be seen that the Conjugate method has the least iterations. However, it can be observed for the first few iterations the conjugate gradient method got less accurate over the course of an iteration.
+In Figure \ref{fig:res} it can be seen that the Conjugate method has the least iterations. However, it can be observed for the first few iterations the conjugate gradient method got less accurate over the course of an iteration. Jacobi Method is clearly has the most iterations and is more than 10 times greater than the Conjugate Gradient method. This is not surprising, as the Gauss-Seidel is an improved Jacobi method, and SOR is an improvement on both Gauss-Seidel and Jacobi.
 
 \subsection{Runtime (Direct and Iterative)}
 The runtime for solving $x$ using each type of storage was recorded using Matlab's built in functionality (tic and toc). The runtime was recorded between the time taken to solve for $x$ with the storage for $A$ already calculated. Calculations, for example, $\omega_{opt}$ were not counted towards the runtime. Cholesky factorisation, forward substitution, backwards substitution, Jacobi method, Gauss-Seidel method, SOR method, and Conjugate Gradient Method were the only calculations counted towards the runtime.
