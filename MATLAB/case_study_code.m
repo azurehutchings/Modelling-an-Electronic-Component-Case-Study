@@ -5,7 +5,7 @@ format compact
 load full_storage
 spy(A-A')
 title('A-A''')
-
+figure
 eigens = eig(A);
 plot(eigens)
 title('nth Eigenvalues of A')
@@ -64,7 +64,7 @@ set(gca,'TickLabelInterpreter','latex')
 [temperatures, sparse_flops, ~, A_sparse, sparseChol] = sparse_storage_solution;
 visualisation(temperatures, 'Sparse Storage Solution')
 fill_in_sparse = nnz(sparseChol) - nnz(A_sparse);
-bandwidth_sparse = bandwidth(sparse);
+bandwidth_sparse = bandwidth(A_sparse);
 figure
 spy(A_sparse)
 title('$A_\mathrm{Sparse}$', 'Interpreter', 'latex')
@@ -160,3 +160,11 @@ tolerance_efficiency(A, b, tolVec)
 %%
 %Effect of w on the rate of convergence of the SOR method.
 w_efficiency(A, b)
+
+%%
+%Ambient temperature
+[lower_temp, lower_temp_vector, upper_temp, upper_temp_vector] = ambient_temperature;
+visualisation(lower_temp_vector, sprintf('%f degrees celsius ambient temperature', lower_temp))
+
+visualisation(upper_temp_vector, sprintf('%d degrees celsius ambient temperature', upper_temp))
+
