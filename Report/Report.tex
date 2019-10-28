@@ -518,7 +518,7 @@ The Jacobi method required the most iterations to converge, followed by Gauss-Se
 \subsection{Runtime (Direct and Iterative)}
 The runtime for solving $x$ using each type of storage was recorded using Matlab's built in functionality (tic and toc). The runtime was recorded between the time taken to solve for $x$ with the storage for $A$ already calculated. Calculations, for example, $\omega_{opt}$ were not counted towards the runtime. Cholesky factorisation, forward substitution, backwards substitution, Jacobi method, Gauss-Seidel method, SOR method, and Conjugate Gradient Method were the only calculations counted towards the runtime.
 \\\\
-The calculations for each storage was run $100$ times each then averaged out to get a more accurate representation of the runtime.
+The calculations for each storage was run $1000$ times each then averaged out to get a more accurate representation of the runtime.
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/RuntimeGraph.png}
 	\caption{Runtime for solving each of the Direct and Iterative Methods.}
@@ -526,7 +526,7 @@ The calculations for each storage was run $100$ times each then averaged out to 
 \end{figure}
 Figure \ref{fig:runtime} clearly shows that the iterative methods generally took the longest to execute, with the exception of the Sparse Solution. Sparse storage took longer to factorise using Cholesky compared to the other storages using Cholesky as the if statements are inefficient in the algorithm.
 \\\\
-The Full Storage took the least amount of time comparitively to all the 
+Banded Storage took the least runtime to execute 
 
 \subsection{Floating Point Operations (Direct and Iterative)}
 \textbf{Floating point operation count} (flop count) is referred to as the number of arithmetic operations performed by an algorithm during its execution. For the direct and iterative methods, the flop count was calculated for every multiplication and addition. A flop was counted for every multiplication and addition in the nested for loops. However, this is only an estimation as some of the multiplications are performing more than one flop, but are only counted as one.

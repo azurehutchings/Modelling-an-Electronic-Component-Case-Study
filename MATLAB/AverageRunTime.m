@@ -30,4 +30,4 @@ for i = 1:1000
     
 end
 
-%average_run_time./100;
+average_run_time = average_run_time./1000;

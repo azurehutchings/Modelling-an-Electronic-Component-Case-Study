@@ -123,6 +123,8 @@ title('Average run time for direct methods (in seconds)', 'Interpreter', 'latex'
 xtickangle(45)
 set(gca,'TickLabelInterpreter','latex')
 set(gca, 'xticklabel', {'Full Solution', 'Packed Solution', 'Band Solution', 'Sparse Solution', 'Jacobi Solution', 'Gauss-Seidel Solution', 'Conjugate Gradient Solution', 'SOR Solution'})
+set(gca, 'Yscale', 'log');
+ylim([1e-5 1e-1]);
 text(1:length(runtimes'),runtimes',num2str(runtimes),'vert','bottom','horiz','center'); 
 %%
 %Floating Point Operations
