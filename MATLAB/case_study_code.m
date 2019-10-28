@@ -94,7 +94,7 @@ visualisation(temperatures, 'SOR Solution')
 
 %%
 %Efficiency Comparison
-%Memory
+%Memory in storage
 S = whos('A', 'A_packed', 'A_band', 'A_sparse');
 Direct_Method_Bytes = [S(1).bytes, S(2).bytes, S(3).bytes, S(4).bytes];
 figure
@@ -105,7 +105,7 @@ set(gca,'xticklabel',{'Full Storage', 'Band Store', 'Packed Storage', 'Sparse St
 set(gca,'TickLabelInterpreter','latex')
 text(1:length(Direct_Method_Bytes),Direct_Method_Bytes,num2str(Direct_Method_Bytes'),'vert','top','horiz','center');
 %%
-%Iterations
+%Iterations count graph
 NumberIterations = [jacobi_k, gs_k, conjugate_k, SOR_k];
 figure
 bar(NumberIterations)
@@ -127,7 +127,7 @@ set(gca, 'Yscale', 'log');
 ylim([1e-5 1e-1]);
 text(1:length(runtimes'),runtimes',num2str(runtimes),'vert','bottom','horiz','center'); 
 %%
-%Floating Point Operations
+%Floating Point Operations count
 NumberFlops = [full_flops, packed_flops, band_flops, sparse_flops, ...
     JacobiFlops, GaussFlops, ConjugateFlops, SORFlops];
 figure
@@ -140,6 +140,7 @@ set(gca,'xticklabel',{'Full Storage Flops', 'Packed Storage Flops',...
     'Gauss Seidel Iteration Flops', 'Conjugate Gradient Iteration Flops', 'SOR Iteration Flops'})
 text(1:length(NumberFlops),NumberFlops,num2str(NumberFlops'),'vert','top','horiz','center'); 
 %%
+%Graph the residuals
 figure
 hold on
 set(gca, 'Yscale', 'log');
