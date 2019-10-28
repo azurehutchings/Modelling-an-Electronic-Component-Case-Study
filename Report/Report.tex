@@ -44,17 +44,15 @@
 \subsection{Purpose of the Report}
 The following report investigates the steady-state heat distribution in a newly designed component. 
 \\\\
-The report will discuss how to numerically solve for the steady-state heat distribution, the efficient of different methods and the effect of different ambient temperatures.
+The report will discuss how to numerically solve for the steady-state heat distribution in the newly designed component, to ensure it will perform to all the specifications. The report will also discuss the development of the mathematical model of the heat distribution in the component and discuss the efficiency of different methods and the effect of different ambient temperatures.
 
 \subsection{Mathematical Model}
-
 \begin{figure}[H]
 	\center
 	\includegraphics[width=0.9\linewidth]{images/Component.png}
 	\caption{Schematic of electronic component.}
 	\label{fig:componentSchematic}
 \end{figure}
-
 The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to $70\degree$C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be $40\degree$C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
 \\\\
 This type of model can be described with Laplace's equation. Letting $T(x,y)$ represent the temperature of the component at point $(x, y)$, the model is as follows	
@@ -364,8 +362,8 @@ To perform Cholesky factorisation on this matrix, and keeping the factorised mat
 The new algorithm must now check that the index $j-i+1$ is within the width of the matrix, as the column is less than the row count, and trying to access $A(i,j-i+1)$ would result in an error if $j-i+1$ was greater than the number of columns. In the original matrix, these values would have just been 0, and no change would happen.\\\\Performing the Banded Cholesky algorithm on the banded matrix yields
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=0.3\linewidth]{images/cholband.png}
-		\caption{Spy of Banded $A$ after the Cholesky.}
+		\includegraphics[width=\linewidth]{images/cholband.png}
+		\caption{Spy of Banded $A$ after the Cholesky factorisation.}
 		\label{fig:cholband}
 	\end{center}
 \end{figure}
@@ -398,13 +396,11 @@ Looking at the difference in the number of non-zero elements, it can be seen tha
 \subsection{Compressed Sparse Row Format Storage}
 \textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
 \\\\
-CSR storage was used to store $A$. Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$.
+CSR storage was used to store $A$. The iterative methods: Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$ given that $Ax = b$. Unlike the direct methods used for the previous storages of $A$, iterative methods do not require the matrix to be factorised or modified. The idea behind iterative methods is to gradually approach an approximation to the exact solution. The stationary iterative methods, Jacobi, Gauss-Seidel, and SOR are all based on the splitting of $\textbf{A} = \textbf{D} + \textbf{L} + \textbf{U}$.
 \\\\
-To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using Matlab's built in function \textbf{find}.
+To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using Matlab's built in function \textbf{find}. This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$. 
 \\\\
-This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$. As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. 
-\\\\
-When $A$ is multiplied by $x$ throughout the iterative methods, the method for solving $Ax$ had to be altered. This ultimately removed the unnecessary multiplications as all the zero elements had been removed. This should result in the iterative methods running faster than they would if the A matrix had been stored using Full Storage.
+As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. When $A$ is multiplied by $x$ throughout the iterative methods, the method for solving $Ax$ had to be altered. This ultimately removed the unnecessary multiplications as all the zero elements had been removed. This should result in the iterative methods running faster than they would if the A matrix had been stored using Full Storage.
 
 \subsubsection{The Jacobi Method}
 The first iterative method that is used to solve for $x$ using CSR storage is the \textbf{Jacobi method}.
@@ -413,7 +409,7 @@ The Jacobi Method is:
 \\\\
 $$x_{i}^{(k+1)} = \frac{1}{a_ii}(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}, i = 1, 2, ..., n$$
 \\\\
-As mentioned above, the Jacobi method function had to be altered as $A$ was not stored in Full Storage, but in CSR storage. 
+As mentioned above, the Jacobi method function had to be altered as $A$ was stored in CSR storage. The three vectors then had to be integrated in the function. 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/jacobisolution.png}
 	\caption{Jacobi Solution.}

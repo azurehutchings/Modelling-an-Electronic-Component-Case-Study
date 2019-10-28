@@ -138,6 +138,8 @@ set(gca,'TickLabelInterpreter','latex')
 set(gca,'xticklabel',{'Full Storage Flops', 'Packed Storage Flops',...
     'Band Storage Flops', 'Sparse Storage Flops', 'Jacobi Iteration Flops',...
     'Gauss Seidel Iteration Flops', 'Conjugate Gradient Iteration Flops', 'SOR Iteration Flops'})
+set(gca, 'Yscale', 'log');
+ylim([1e3 1e6]);
 text(1:length(NumberFlops),NumberFlops,num2str(NumberFlops'),'vert','top','horiz','center'); 
 %%
 %Graph the residuals
