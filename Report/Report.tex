@@ -468,7 +468,7 @@ The third iterative method that is used to solve for $x$ using CSR storage is th
 \[x=\bigg(\frac{D}{\omega}+L\bigg)^{-1}\bigg(D\frac{1-\omega}{\omega}+U\bigg)x+\bigg(\frac{D}{\omega}+L\bigg)^{-1}b\]
 The SOR method has much faster convergence than Jacobi and Gauss-Seidel method, provided an optimal value for $\omega$ is selected. This is because SOR is designed so that $\omega$ minimises the spectral radius $\rho(T_{SOR})$. 
 \[\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}.\]
-$\rho(T_{J})$ is the maximum absolute value from the eigenvalues of the matrix T used in the Jacobi method.
+$\rho(T_{J})$ is the maximum absolute value from the eigenvalues of the matrix T (the matrix in front of x$^{k}$) used in the Jacobi method.
 \[\rho(T_{J}) = \text{max}(\text{abs}(T_J)).\]
 The SOR Method is: 
 \[x_{i}^{(k+1)} = (1-\omega)x_{i}^{(k)}+\frac{\omega}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n\]
