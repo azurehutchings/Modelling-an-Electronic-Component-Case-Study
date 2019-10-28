@@ -53,9 +53,9 @@ The report will discuss how to numerically solve for the steady-state heat distr
 	\caption{Schematic of electronic component.}
 	\label{fig:componentSchematic}
 \end{figure}
-The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature condition along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to $70\degree$C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be $40\degree$C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
+The component schematic is shown in Figure \ref{fig:componentSchematic}. The location of the component within the device means it's subject to different temperature conditions along it's boundaries. The boundary A-B is in perfect thermal contact with another component which the temperature is known to $70\degree$C. The boundary C-D is also in perfect thermal contact with another component which the temperature is known to be $40\degree$C. The boundary A-E-D is thermally insulated and the boundary B-C is exposed to the air at ambient temperature.
 \\\\
-This type of model can be described with Laplace's equation. Letting $T(x,y)$ represent the temperature of the component at point $(x, y)$, the model is as follows	
+This type of model can be described with Laplace's equation. Letting $T(x,y)$ represent the temperature of the component at point $(x, y)$, the model is as follows:
 
 \begin{center}
 \begin{tabular}{c c}
@@ -66,7 +66,7 @@ $\boldsymbol{\nabla} T \cdot {\hat{\textbf{n}}} = 0$ & on boundary A-E-D\\
 $k\boldsymbol{\nabla}T\cdot\hat{\textbf{n}} = h(T_{\infty} - T)$ & on boundary B-C
 \end{tabular}
 \end{center}
-Where the thermal conductivity is $k=3Wm^{-1}C^{-1}$, and the heat transfer coefficient is $h=20 Wm^{-2}C^{-1}$. To begin with, we will assume the ambient temperature is $T_\infty = 20$.
+where the thermal conductivity is $k=3Wm^{-1}C^{-1}$, and the heat transfer coefficient is $h=20 Wm^{-2}C^{-1}$. To begin with, we will assume the ambient temperature is $T_\infty = 20$.
 \clearpage
 \section{Method for Discretising the Problem}
 If this was left as a continuous partial differential equation, we would need to analytically solve it. However, it can be much quicker to numerically solve this problem and still retain a high degree of accuracy with the final answers. In this section we will show how we converted the analytical problem to a numerical problem, how the mesh was constructed, the node ordering used, the linear system we derived from the mesh and discuss the matrix that was created from it.
@@ -405,7 +405,9 @@ Looking at the difference in the number of non-zero elements, it can be seen tha
 \subsection{Iterative Methods and Compressed Sparse Row Format Storage}
 Iterative methods involve solving for the vector $x$ by guessing an initial value for $x$, then updating it using the formula
 \[x^{k+1}=Tx^k+c\]
-where $T$ is the iteration matrix. This iteration matrix depends on which method is used.
+where $T$ is the iteration matrix. This iteration matrix depends on which method is used. Each iteration method is based on splitting A into three different matrices.
+\[A=L+D+U.\]
+L is the strictly lower portion of A, D is the diagonal elements from A and U is the strictly upper portion of A.
 \\\\
 \textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
 \\\\
@@ -416,12 +418,17 @@ To change the storage of $A$ using CSR storage, the matrix had to first be sorte
 As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. When $A$ is multiplied by $x$ throughout the iterative methods, the method for solving $Ax$ had to be altered. This ultimately removed the unnecessary multiplications as all the zero elements had been removed. This should result in the iterative methods running faster than they would if the A matrix had been stored using Full Storage.
 
 \subsubsection{The Jacobi Method}
-The first iterative method that is used to solve for $x$ using CSR storage is the \textbf{Jacobi method}.
-\\\\
-The Jacobi Method is:
-\\\\
-$$x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}\bigg), i = 1, 2, ..., n$$
-\\\\
+The first iterative method that is used to solve for $x$ using CSR storage is the \textbf{Jacobi method}. This method is simply derived by factoring out the splitting of A.
+\[b=Ax\]
+\[0=Ax-b\]
+\[0=\big(D+L+U\big)x-b\]
+\[0=Dx+\big(L+U\big)x-b\]
+\[-Dx=\big(L+U\big)x-b\]
+\[x=-D^{-1}\big(L+U\big)x+D^{-1}b.\]
+By starting at an initial guess for x, we can create a better guess for x using the above formula. This is repeated until there is no difference between the current and subsequent value.
+\[x^{k+1}=-D^{-1}\big(L+U\big)x^{k}+D^{-1}b.\]
+This can be turned into the following equation to calculate the i$^{th}$ value of x, called the Jacobi Method:
+\[x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}\bigg),\,\,\, i = 1, 2, ..., n.\]
 As mentioned above, the Jacobi method function had to be altered as $A$ was stored in CSR storage. The three vectors then had to be integrated in the function. 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/jacobisolution.png}
@@ -430,8 +437,15 @@ As mentioned above, the Jacobi method function had to be altered as $A$ was stor
 \end{figure}
 
 \subsubsection{The Gauss-Seidel Method}
-The second iterative method that is used to solve for $x$ using CSR storage is the Gauss-Seidel method.
-\\\\
+The second iterative method that is used to solve for $x$ using CSR storage is the Gauss-Seidel method. This is derived from the splitting of A.
+\[b=Ax\]
+\[0=Ax-b\]
+\[0=\big(D+L+U\big)x-b\]
+\[0=\big(D+L\big)x+Ux-b\]
+\[-\big(D+L\big)x=Ux-b\]
+\[x=-(D+L)^{-1}Ux+(D+L)^{-1}b\]
+This is also used to create approximations for the true value of x by starting at a guessing vector.
+\[x^{k+1}=-(D+L)^{-1}Ux^{k}+(D+L)^{-1}b\]
 The Gauss-Seidel Method is:
 \\\\
 $$x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n$$
