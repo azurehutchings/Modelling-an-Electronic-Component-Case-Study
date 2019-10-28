@@ -557,18 +557,24 @@ The algorithm can then be refined to search finer values around the lower bound.
 	\end{subfigure}
 \end{figure}
 We recommend that the component only be deployed in locations with a temperature that never goes below $2\degree$C or above $55\degree$C.
-\section{Results}
-The heat distribution of the component is a smooth fan that goes from 70$\degree$C at the upper boundary to 40$\degree$C on the right boundary. The ambient temperature also affects the distribution of heat, as a lower ambient temperature causes the heat at the 70$\degree$C boundary to drop off much faster. \\\\A map of the world's yearly average temperatures show that the component show not be deployed in countries near the north pole, along with Antartica, some high altitude countries and space. 
+\section{Recommendations}
+The following section is recommendations for the component or for components similar to the one discussed in this report.
+\subsection{Distribution of the Component}
+The heat distribution of the component fans smoothly from 70$\degree$C at the upper boundary to 40$\degree$C on the right boundary. The ambient temperature is an important factor that affects the distribution of the heat on the component. As discussed in section 5, the range of ambient temperatures this component can safely operate
+in is between 2$\degree$C and 55$\degree$C, such that the temperature at the point (0.03, 0.03) remains between 50 and 55$\degree$C. The lower ambient temperature causes the heat at the 70$\degree$C boundary to drop off much faster. 
+\\\\
+A map of the world's yearly average temperatures show that the component should not be deployed in countries near the north pole, along with Antarctica, and high altitude countries. 
 \begin{figure}[H]
 	\center
 	\includegraphics[width=0.9\linewidth]{images/Average_yearly_temperature_per_country.png}
-	\caption{By OchTom - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=83336830}
+	\caption{Average Temperatures for countries.}
+	\label{fig:worldtemperature}
 \end{figure}
-The temperature does not go higher than 30$\degree$C on this map, but there may be local regions where the temperature does go this high. 
+The temperatures don't go higher than 30$\degree$C on Figure \ref{fig:worldtemperature}, but there may be local regions where the temperature is hotter than 30$\degree$C during certain periods of the year.
 \\\\
 Due to climate change, the low temperatures in many northern countries will rise in the following decades. This means that the component may be able to be deployed up north. 
 \section{Conclusions}
-To conclude, we will recommend different methods based off their run time and storage size.\\The fastest method was the full storage method by a fraction of a millisecond compared to packed storage method and band storage method. However, these other methods reduce the storage size by a lot. Band storage is the most efficient of the faster methods in terms of storage space ().
+To conclude, we will recommend different methods based off their run time and storage size.\\The fastest methods are the full storage, packed storage and the band storage which are all solved by Cholesky factorisation, then forward substitution, and backwards substitution. Band storage also requires the least amount of storage comparatively to the other storages that use direct methods. Therefore, as Band storage is the most efficient storage method as it is both one of the fastest of both the direct and iterative methods and requires the least amount of memory out of all the direct methods. It is recommended that for problems in the future of a similar nature, band storage and cholesky factorisation is recommended as providing the greatest efficiency.
 \pagebreak
 \section{Appendices}
 \subsection*{Appendix A}

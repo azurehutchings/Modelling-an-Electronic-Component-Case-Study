@@ -101,7 +101,7 @@ figure
 bar(Direct_Method_Bytes)
 title('Storage Size in Bytes for Direct Methods', 'Interpreter', 'latex')
 xtickangle(45)
-set(gca,'xticklabel',{'Full Storage', 'Packed Storage', 'Band Store', 'Sparse Storage'})
+set(gca,'xticklabel',{'Full Storage', 'Band Store', 'Packed Storage', 'Sparse Storage'})
 set(gca,'TickLabelInterpreter','latex')
 text(1:length(Direct_Method_Bytes),Direct_Method_Bytes,num2str(Direct_Method_Bytes'),'vert','top','horiz','center');
 %%
