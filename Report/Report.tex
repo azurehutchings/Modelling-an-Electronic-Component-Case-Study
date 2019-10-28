@@ -301,7 +301,7 @@ Using our node ordering, we can write out all the equations in a certain orderin
 	\label{fig:spyA}
 \end{figure}
 \subsection{Checking SPD}
-The matrix $A$ is both symmetric and positive definite. This can be verified with Matlab.\\If $A$ is symmetric, then for all $(i, j)\in$ dim$(A), A(i, j) = A(j, i)$. To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.
+The matrix $A$ is both symmetric and positive definite. This can be verified with MATLAB.\\If $A$ is symmetric, then for all $(i, j)\in$ dim$(A), A(i, j) = A(j, i)$. To check that it is symmetric, the matrix minus its transpose can be plotted. If all the values are zero, then it is symmetric.
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/spySymmetric.png}
 	\caption{Spy of $A-A'$.}
@@ -388,13 +388,13 @@ It can be seen that the fill-in of this storage method is 81.\\To use this facto
 	\label{fig:bandsolution}
 \end{figure}
 \subsubsection{Sparse Storage}
-A sparse system is a matrix that has no structure to where the non-zero elements appear, but still has a large number of zero values. To pre-emptively reduce the fill-in from the Cholesky factorisation, Approximate Minimum Degree (AMD) is used to reorder the $A$ matrix. An AMD permutation will change the ordering of the matrix such that it has when Cholesky factorisation is performed, many of the zero values will stay zero. This reduces storage space when the new factorised matrix is stored using sparse storage, and can reduce runtime when implemented properly. In this case, sparse storage was only used to demonstrate storage benefits.\\\\Using Matlab's inbuilt \textbf{symamd} function, the following matrix is obtained
+A sparse system is a matrix that has no structure to where the non-zero elements appear, but still has a large number of zero values. To pre-emptively reduce the fill-in from the Cholesky factorisation, Approximate Minimum Degree (AMD) is used to reorder the $A$ matrix. An AMD permutation will change the ordering of the matrix such that it has when Cholesky factorisation is performed, many of the zero values will stay zero. This reduces storage space when the new factorised matrix is stored using sparse storage, and can reduce runtime when implemented properly. In this case, sparse storage was only used to demonstrate storage benefits.\\\\Using MATLAB's inbuilt \textbf{symamd} function, the following matrix is obtained
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/A_SPARSE.png}
 	\caption{Spy of $A$ Sparse.}
 	\label{fig:A_SPARSE}
 \end{figure}
-This can be stored in sparse storage using Matlab's \textbf{sparse} function. The size of the sparse matrix is only 2528 bytes, nearly 3.5 times smaller. The Cholesky algorithm is changed to check if any value at the index it accesses is 0 and if it is, it skips performing the operation involving that index. This reduces the flop count of the algorithm, but increases computation time due to if statements being inefficient when accessing a sparse matrix on Matlab. Viewing the AMD ordered factorised matrix, it can be seen that the fill-in is fairly small.
+This can be stored in sparse storage using MATLAB's \textbf{sparse} function. The size of the sparse matrix is only 2528 bytes, nearly 3.5 times smaller. The Cholesky algorithm is changed to check if any value at the index it accesses is 0 and if it is, it skips performing the operation involving that index. This reduces the flop count of the algorithm, but increases computation time due to if statements being inefficient when accessing a sparse matrix on MATLAB. Viewing the AMD ordered factorised matrix, it can be seen that the fill-in is fairly small.
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/A_SPARSE_CHOL.png}
 	\caption{Spy of $A$ Sparse after Cholesky factorisation.}
@@ -418,7 +418,7 @@ L is the strictly lower portion of A, D is the diagonal elements from A and U is
 \\\\
 CSR storage was used to store $A$. The iterative methods: Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$ given that $Ax = b$. Unlike the direct methods used for the previous storages of $A$, iterative methods do not require the matrix to be factorised or modified. The idea behind iterative methods is to gradually approach an approximation to the exact solution. The stationary iterative methods, Jacobi, Gauss-Seidel, and SOR are all based on the splitting of $\textbf{A} = \textbf{D} + \textbf{L} + \textbf{U}$.
 \\\\
-To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using Matlab's built in function \textbf{find}. This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$. 
+To change the storage of $A$ using CSR storage, the matrix had to first be sorted into three vectors $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$, where $\textbf{r}$ was the row indices. This was computed using MATLAB's built in function \textbf{find}. This function returns $\textbf{r}$, $\textbf{c}$, and $\textbf{v}$ where the column indices are in ascending order. Therefore, $\textbf{r}$ must be ordered so the row indices are in ascending order and $\textbf{c}$, and $\textbf{v}$ needed to be reordered to correctly represent $A$. Then, $\textbf{r}$ must to be converted to $\textbf{rb}$. 
 \\\\
 As $A$ has now been converted to $\textbf{rb}$, $\textbf{c}$, and $\textbf{v}$ the iterative methods must be altered to account for this change. When $A$ is multiplied by $x$ throughout the iterative methods, the method for solving $Ax$ had to be altered. This ultimately removed the unnecessary multiplications as all the zero elements had been removed. This should result in the iterative methods running faster than they would if the A matrix had been stored using Full Storage.
 
@@ -551,7 +551,7 @@ The iterations are performed until the residual norm is less than the tolerance 
 In Figure \ref{fig:res} it can be seen that the Conjugate method has the least iterations. However, it can be observed for the first few iterations the conjugate gradient method got less accurate over the course of an iteration. Jacobi Method is clearly has the most iterations and is more than 10 times greater than the Conjugate Gradient method. This is not surprising, as the Gauss-Seidel is an improved Jacobi method, and SOR is an improvement on both Gauss-Seidel and Jacobi.
 
 \subsection{Runtime (Direct and Iterative)}
-The runtime for solving $x$ using each type of storage was recorded using Matlab's built in functionality (tic and toc). The runtime was recorded between the time taken to solve for $x$ with the storage for $A$ already calculated. Calculations, for example, $\omega_{opt}$ were not counted towards the runtime. Cholesky factorisation, forward substitution, backwards substitution, Jacobi method, Gauss-Seidel method, SOR method, and Conjugate Gradient Method were the only calculations counted towards the runtime.
+The runtime for solving $x$ using each type of storage was recorded using MATLAB's built in functionality (tic and toc). The runtime was recorded between the time taken to solve for $x$ with the storage for $A$ already calculated. Calculations, for example, $\omega_{opt}$ were not counted towards the runtime. Cholesky factorisation, forward substitution, backwards substitution, Jacobi method, Gauss-Seidel method, SOR method, and Conjugate Gradient Method were the only calculations counted towards the runtime.
 \\\\
 The calculations for each storage was run $1000$ times each then averaged out to get a more accurate representation of the runtime.
 \begin{figure}[H]
