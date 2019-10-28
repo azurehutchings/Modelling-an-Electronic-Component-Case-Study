@@ -403,9 +403,11 @@ Looking at the difference in the number of non-zero elements, it can be seen tha
 \end{figure}
 
 \subsection{Iterative Methods and Compressed Sparse Row Format Storage}
-Iterative methods involve solving for the vector x by guessing an initial value for x, then updating it using the formula
+Iterative methods involve solving for the vector $x$ by guessing an initial value for $x$, then updating it using the formula
 \[x^{k+1}=Tx^k+c\]
-where T is the iteration matrix. This iteration matrix depends on which method is used.\\\textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
+where $T$ is the iteration matrix. This iteration matrix depends on which method is used.
+\\\\
+\textbf{Compressed sparse row format} (CSR), stores all the non-zero elements that are in a given matrix and it's respected row and column indices of these non-zero elements. CSR consists of three arrays: \textbf{rb} which stores the index of where each new row begins in both \textbf{c} and \textbf{v}; \textbf{c} which consists of the column indices; and \textbf{v} which contains the value of these elements. $\textbf{rb}$ ends with $nz + 1$, where $nz$ is the total number of non-zero elements in $A$.
 \\\\
 CSR storage was used to store $A$. The iterative methods: Jacobi, Gauss-Seidel, Successive Over-relaxation (SOR), Conjugate Gradient Methods were used to solve for $x$ given that $Ax = b$. Unlike the direct methods used for the previous storages of $A$, iterative methods do not require the matrix to be factorised or modified. The idea behind iterative methods is to gradually approach an approximation to the exact solution. The stationary iterative methods, Jacobi, Gauss-Seidel, and SOR are all based on the splitting of $\textbf{A} = \textbf{D} + \textbf{L} + \textbf{U}$.
 \\\\

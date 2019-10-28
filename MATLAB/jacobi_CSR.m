@@ -15,6 +15,7 @@ normb = norm(b);
 %flop count
 flops = current_flops;
 
+%Multiplying A by x
 [A_x, flops] = multiAx(v, rb, c, x, flops);
 
 res = norm(b - A_x) / normb;
