@@ -8,8 +8,8 @@ load full_storage
 % Calculating optimal value of w
 w_opt = cal_w_opt(A);
 
-tic; % start runtime timing
+tic; % start recording runtime
 [temperatures, ~, k, res, flops] = sor_CSR(rb, c', v', b, x0, w_opt, tol, maxiters, 0);
-time = toc; % end runtime timing
+time = toc; % end recording timing
 
 end

@@ -431,7 +431,7 @@ The first iterative method that is used to solve for $x$ using CSR storage is th
 \[-Dx=\big(L+U\big)x-b\]
 \[x=-D^{-1}\big(L+U\big)x+D^{-1}b.\]
 By starting at an initial guess for x, we can create a better guess for x using the above formula. This is repeated until there is no difference between the current and subsequent value.
-\[x^{(k+1)}=-D^{-1}\big(L+U\big)x^{k}+D^{-1}b.\]
+\[x^{k+1}=-D^{-1}\big(L+U\big)x^{k}+D^{-1}b.\]
 This can be turned into the following equation to calculate the i$^{th}$ value of x, called the Jacobi Method:
 \[x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-{\sum_{j=1}^{i-1}}_{j\neq i}a_{ij}x_{j}^{(k+1)}\bigg),\,\,\, i = 1, 2, ..., n.\]
 As mentioned above, the Jacobi method function had to be altered as $A$ was stored in CSR storage. The three vectors then had to be integrated in the function. 
@@ -450,7 +450,7 @@ The second iterative method that is used to solve for $x$ using CSR storage is t
 \[-\big(D+L\big)x=Ux-b\]
 \[x=-(D+L)^{-1}Ux+(D+L)^{-1}b\]
 This is also used to create approximations for the true value of x by starting at a guessing vector.
-\[x^{(k+1)}=-(D+L)^{-1}Ux^{k}+(D+L)^{-1}b\]
+\[x^{k+1}=-(D+L)^{-1}Ux^{k}+(D+L)^{-1}b\]
 The Gauss-Seidel Method is:
 \\\\
 $$x_{i}^{(k+1)} = \frac{1}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n$$
@@ -464,19 +464,13 @@ The Gauss-Seidel function also had to be altered to account for the different st
 \end{figure}
 
 \subsubsection{The Successive Over-relaxation Method}
-The third iterative method that is used to solve for $x$ using CSR storage is the Successive Over-relaxation (SOR) method. This method is very similar to the Gauss-Seidel method.
-\[b=Ax\]
-\[0=Ax-b\]
-\[0=\bigg(D\frac{\omega}{\omega}+L+U\bigg)x-b\]
-\[0=\bigg(\frac{D-D(1-\omega)}{\omega}+L\bigg)x+Ux-b\]
-\[-\bigg(\frac{D}{\omega}+L\bigg)x=\bigg(D\frac{1-\omega}{\omega}+U\bigg)x+b\]
-\[x=\bigg(\frac{D}{\omega}+L\bigg)^{-1}\bigg(D\frac{1-\omega}{\omega}+U\bigg)x+\bigg(\frac{D}{\omega}+L\bigg)^{-1}b\]
-The SOR method has much faster convergence than Jacobi and Gauss-Seidel method, provided an optimal value for $\omega$ is selected. This is because SOR is designed so that $\omega$ minimises the spectral radius $\rho(T_{SOR})$. 
-\[\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}.\]
-$\rho(T_{J})$ is the maximum absolute value from the eigenvalues of the matrix T (the matrix in front of x$^{k}$) used in the Jacobi method.
-\[\rho(T_{J}) = \text{max}(\text{abs}(T_J)).\]
+The third iterative method that is used to solve for $x$ using CSR storage is the Successive Over-relaxation (SOR) method. The SOR method has much faster convergence than Jacobi and Gauss-Seidel method, provided the $\omega$ selected is the optimal value. This is because SOR is designed so that $\omega$ minimises the spectral radius $\rho(T_{SOR})$. For solving this solution, the formula for finding the optimal $\omega$ was used as the $\omega$ value.
+$$\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$$
+\\
 The SOR Method is: 
-\[x_{i}^{(k+1)} = (1-\omega)x_{i}^{(k)}+\frac{\omega}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n\]
+\\\\
+$$x_{i}^{(k+1)} = (1-\omega)x_{i}^{(k)}+\frac{\omega}{a_{ii}}\bigg(b_i-\sum_{j=1}^{i-1}a_{ij}x_{j}^{(k+1)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{(k)}\bigg), i = 1, 2, ..., n$$
+\\\\
 The SOR function was also altered to account for the change in storage.
 
 \begin{figure}[H]
