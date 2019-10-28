@@ -1,4 +1,6 @@
 function a = packed_storage(A)
+% Stores A as packed storage
+
 [~,n] = size(A);
 a = zeros(1,nchoosek(n + 1,2));
 for j = 1:n
