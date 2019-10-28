@@ -154,7 +154,7 @@ plot(0:SOR_k, SOR_res, 'y.');
 title('Residual Norm', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
-lgd = legend('Jacobi', 'Gauss-Seidel', 'SOR(optimal $\omega$)', 'Conjugate gradient');
+lgd = legend('Jacobi', 'Gauss-Seidel', 'Conjugate gradient', 'SOR(optimal $\omega$)');
 lgd.Interpreter = 'latex';
 
 ylabel('$||b-A*x^{(k)}|| / ||b||$', 'Interpreter','latex')
