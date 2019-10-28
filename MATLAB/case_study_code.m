@@ -1,6 +1,18 @@
 format long
 format compact
 %%
+%Check SPD
+load full_storage
+spy(A-A')
+title('A-A''')
+
+eigens = eig(A);
+plot(eigens)
+title('nth Eigenvalues of A')
+xlabel('n')
+ylabel('Eigenvalue')
+
+%%
 % Storage and Solution
 % Full Storage
 load full_storage
@@ -18,20 +30,20 @@ set(gca,'TickLabelInterpreter','latex')
 % Full Storage (solved using Cholesky)
 [temperatures, full_flops, ~, A_cholesky] = full_storage_solution;
 visualisation(temperatures, 'Full Storage Solution')
-
+fill_in_full = nnz(A_cholesky) - nnz(A);
 figure
 spy(A_cholesky)
 title('chol($A$)', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 % Packed Storage (solved using Cholesky) 
-[temperatures, packed_flops, ~, A_packed] =  packed_storage_solution;
+[temperatures, packed_flops, ~, A_packed, A_packed_chol] =  packed_storage_solution;
 visualisation(temperatures, 'Packed Storage Solution')
-
+fill_in_packed = nnz(A_packed_chol) - nnz(A_packed);
 [temperatures, band_flops, ~, A_RCM, A_band, cholBand] = band_storage_solution;
 % Banded Storage (solved using Cholesky)
 visualisation(temperatures, 'Band Storage Solution')
-
+fill_in_band = nnz(cholBand) - nnz(A_band);
 figure
 spy(A_band)
 title('$A_\mathrm{Band}$', 'Interpreter', 'latex')
@@ -47,18 +59,19 @@ spy(A_RCM)
 title('A$_\mathrm{RCM}$', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
-%%
+
 % Sparse Storage (solved using Cholesky)
-[temperatures, sparse_flops, ~, A_sparse, sparseBand] = sparse_storage_solution;
+[temperatures, sparse_flops, ~, A_sparse, sparseChol] = sparse_storage_solution;
 visualisation(temperatures, 'Sparse Storage Solution')
+fill_in_sparse = nnz(sparseChol) - nnz(A_sparse);
 figure
 spy(A_sparse)
 title('$A_\mathrm{Sparse}$', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 
 figure
-spy(sparseBand)
-title('chol($A_\mathrm{Sparse}$)', 'Interpreter', 'latex')
+spy(sparseChol)
+title('chol(A$_\mathrm{Sparse}$)', 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
 %%
 % CSR Storage (solved using Jacobi)
