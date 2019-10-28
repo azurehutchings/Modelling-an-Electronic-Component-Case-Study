@@ -1,14 +1,4 @@
-function visualisation(temperatures, graphTitle, subgraph, total_number, plot_number)
-
-if nargin == 2
-    subgraph = false;
-end
-
-if (subgraph)
-    column_number = 2;
-    row_number = total_number / column_number;
-end
-
+function visualisation(temperatures, graphTitle)
 %visualisation framework
 
 %temperatures = A\b;
@@ -42,11 +32,8 @@ tri(44,:) =[];
 tri(43,:) =[];
 tri(42,:) =[];
 
-if (subgraph)
-    subplot(row_number, column_number, plot_number)
-else
-    figure;
-end
+% Visualising the Temperatures
+figure;
 trisurf(tri, x, y, temperatures)
 view(2)
 shading interp
@@ -54,11 +41,5 @@ colormap hot
 axis image
 title(graphTitle, 'Interpreter', 'latex')
 set(gca,'TickLabelInterpreter','latex')
-if (subgraph)
-    if (plot_number == total_number)
-        colorbar
-    end
-else
-    colorbar
-end
+colorbar
 end
