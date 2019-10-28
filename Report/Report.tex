@@ -437,7 +437,7 @@ The following section investigates which numerical method or methods provide the
 
 
 \subsection{Memory (for Direct Methods)}
-Memory for the $A$ that were used to solve $x$ using direct methods was compared to see which storage had the least memory.
+Memory for the $A$ that were used to solve $x$ using direct methods was compared to see which storage required the least memory.
 \\\\
 \begin{center}
 \begin{tabular}{c c c c c}
@@ -457,12 +457,16 @@ $A$ Sparse Storage & $33 \times 33$ & $2528$ & double & sparse \\
 Full Storage was found to require the most memory (8712 Bytes), whereas Banded and Sparse storage were found to require the least amount of memory (1848 and 2528 respectively). 
 
 \subsection{Iterations (for Iterative Methods)}
-The efficiency of how many iterations it takes 
+The efficiency of how many iterations it takes for the iterative method to converge, given the tolerance and $\omega$. The tolerance was $1\times10^{-5}$ and the $\omega$ was the optimal $\omega$ for this $A$ matrix.
+\\\\
+The number of iterations for each iterative method (Jacobi, Gauss-Seidel, SOR, and Conjugate Gradient method) were recorded and graphed.
+\\\\
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/IterationsGraph.png}
 	\caption{Number of Iterations for each Iterative Method}
 	\label{fig:iterations}
 \end{figure}
+The Jacobi method required the most iterations to converge, followed by Gauss-Seidel, SOR, then Conjugate Gradient method.
 
 \subsection{Runtime (Direct and Iterative)}
 \begin{figure}[H]
@@ -472,6 +476,7 @@ The efficiency of how many iterations it takes
 \end{figure}
 
 \subsection{Floating Point Operations (Direct and Iterative)}
+\textbf{Floating point operation count} (flop count) is referred to as the number of arithmetic operations performed by an algorithm during its execution. For the direct and iterative methods, the flop count was calculated for every multiplication and addition. A flop was counted for every multiplication and addition in the nested for loops. However, this is only an estimation as some of the multiplications are performing more than one flop, but are only counted as one.
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/FlopsGraph.png}
 	\caption{Flops for each Direct and Iterative Methods.}
@@ -483,6 +488,7 @@ The efficiency of how many iterations it takes
 	\caption{Residual Norm for each Iterative Methods}
 	\label{fig:res}
 \end{figure}
+
 
 \subsection{Tolerance Required for Iterative Methods)}
 The following discusses the tolerance that is required for the iterative methods to produce a solution that is visually indistinguishable from that produced by the direct method. The tolerances: $1\times10^{-10}, 1\times10^{-5}, 1\times10^{-3}, 2\times10^{-3}, 1\times10^{-2}, 1\times10^{-1}, 0.5, 1$ were compared against the exact solution for each iterative method.
