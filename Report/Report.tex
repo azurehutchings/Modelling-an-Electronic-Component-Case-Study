@@ -530,11 +530,7 @@ The iterations are performed until the residual norm is less than the tolerance 
 	\caption{Residual Norm for each Iterative Methods}
 	\label{fig:res}
 \end{figure}
-In Figure \ref{fig:res} it can be seen that the Conjugate method has the least iterations. However, for the first few iterations the conjugate gradient got less accurate over the course of an iteration.
-
-Your SOR takes longer than Gauss-Seidel to run, which does not make much sense. I assume you also timed the calculation of optimal omega in your SOR, and this is why, but this makes for an unfair comparison.
-FLOPs in conjugate gradient method are severely underestimated, due to counting vector-vector multiplications as one FLOP (it is actually 2n-1).
-The omega plot is satisfactory.
+In Figure \ref{fig:res} it can be seen that the Conjugate method has the least iterations. However, it can be observed for the first few iterations the conjugate gradient method got less accurate over the course of an iteration.
 
 \subsection{Runtime (Direct and Iterative)}
 The runtime for solving $x$ using each type of storage was recorded using Matlab's built in functionality (tic and toc). The runtime was recorded between the time taken to solve for $x$ with the storage for $A$ already calculated. Calculations, for example, $\omega_{opt}$ were not counted towards the runtime. Cholesky factorisation, forward substitution, backwards substitution, Jacobi method, Gauss-Seidel method, SOR method, and Conjugate Gradient Method were the only calculations counted towards the runtime.
