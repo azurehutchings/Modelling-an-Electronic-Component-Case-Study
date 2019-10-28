@@ -319,9 +319,9 @@ In this section, direct and iterative methods are used to solve for the vector $
 \[Ax=b\]
 This vector will be the approximate final temperatures at the discrete points along the electronic component. \\\\Other factors will also be briefly mentioned, including fill-in, storage size, run time, flop count and residual norms.\\\\Fill-in is the number of zero elements that become non-zero when the matrix is changed (in this case, it will be when Cholesky factorisation is performed in the Direct Methods).
 \subsection{Direct Methods}
-Direct methods involve directly solving for the vector x by factorsing the matrix A and performing forward and backward substitution.
+Direct methods involve directly solving for the vector $x$ by factorising the matrix $A$ and performing forward and backward substitution.
 \subsubsection{Full Storage}
-The Full Storage solution is very simple. Because we have a linear system, we can just factorise the matrix into an upper and lower system, then perform forward and backward substitution to solve for the steady-state heat distribution. Because our coefficent matrix is symmetric positive definite, Cholesky factorisation can be used to factorise the coefficient matrix. Comparing the original matrix and the factorised matrix side by side, the fill-in can be found.
+The Full Storage solution is very simple. Because we have a linear system, we can just factorise the matrix into an upper and lower system, then perform forward and backward substitution to solve for the steady-state heat distribution. Because our coefficient matrix is symmetric positive definite, Cholesky factorisation can be used to factorise the coefficient matrix. Comparing the original matrix and the factorised matrix side by side, the fill-in can be found.
 \begin{figure}[H]
 	\hspace{-8mm}
 	\begin{subfigure}[b]{0.6\textwidth}
@@ -340,10 +340,17 @@ The packed storage is a linear direct method solution. That because we just need
 \\
 $A(i,j) \to a(i+j(j-1)/2)$. 
 \\
-After applying this mapping technique Cholesky algorithm will give us the solution of the steady-state heat distribution. 
+After applying this mapping technique Cholesky algorithm will give us the solution of the steady-state heat distribution.
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/packedsolution.png}
+	\caption{Packed Solution.}
+	\label{fig:packed}
+\end{figure}
 
 \subsubsection{Band Storage}
-A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. \\\\Using a technique called RCM ordering, the average bandwidth can be reduced, along with the level of fill in when Cholesky factorisation is performed. The b vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered A matrix using RCM ordering and the banded matrix B will look like
+A banded system is a matrix where all non-zero elements are within a certain distance of the main diagonal (which depends on the matrix). The matrix looked at previously is a banded system, however, it is not ordered in an efficient manner, as the fill-in is unnecessarily increased due to the number of 0-diagonals between the inner tridiagonal and the outer diagonals. 
+\\\\
+Using a technique called RCM ordering, the average bandwidth can be reduced, along with the level of fill in when Cholesky factorisation is performed. The $b$ vector is also reordered using the same reordering vector to keep the equation $Ax=b$ equivalent. The reordered $A$ matrix using RCM ordering and the banded matrix B will look like
 \begin{figure}[H]
 	\hspace{-8mm}
 	\begin{subfigure}[b]{0.79\textwidth}
@@ -376,7 +383,7 @@ It can be seen that the fill-in of this storage method is 81.\\To use this facto
 	\label{fig:bandsolution}
 \end{figure}
 \subsubsection{Sparse Storage}
-A sparse system is a matrix that has no structure to where the non-zero elements appear, but still has a large number of zero values. To pre-emptively reduce the fill-in from the Cholesky factorisation, Approximate Minimum Degree (AMD) is used to reorder the A matrix. An AMD permutation will change the ordering of the matrix such that it has when Cholesky factorisation is performed, many of the zero values will stay zero. This reduces storage space when the new factorised matrix is stored using sparse storage, and can reduce runtime when implemented properly. In this case, sparse storage was only used to demonstrate storage benefits.\\\\Using matlab's inbuilt \textbf{symamd} function, the following matrix is obtained
+A sparse system is a matrix that has no structure to where the non-zero elements appear, but still has a large number of zero values. To pre-emptively reduce the fill-in from the Cholesky factorisation, Approximate Minimum Degree (AMD) is used to reorder the $A$ matrix. An AMD permutation will change the ordering of the matrix such that it has when Cholesky factorisation is performed, many of the zero values will stay zero. This reduces storage space when the new factorised matrix is stored using sparse storage, and can reduce runtime when implemented properly. In this case, sparse storage was only used to demonstrate storage benefits.\\\\Using Matlab's inbuilt \textbf{symamd} function, the following matrix is obtained
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{images/A_SPARSE.png}
 	\caption{Spy of $A$ Sparse.}
