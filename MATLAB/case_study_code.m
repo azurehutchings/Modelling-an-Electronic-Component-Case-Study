@@ -161,3 +161,11 @@ tolerance_efficiency(A, b, tolVec)
 %%
 %Effect of w on the rate of convergence of the SOR method.
 w_efficiency(A, b)
+
+%%
+%Ambient temperature
+[lower_temp, lower_temp_vector, upper_temp, upper_temp_vector] = ambient_temperature;
+visualisation(lower_temp_vector, sprintf('%f degrees celsius ambient temperature', lower_temp))
+
+visualisation(upper_temp_vector, sprintf('%d degrees celsius ambient temperature', upper_temp))
+

@@ -804,5 +804,99 @@ The algorithm can then be refined to search finer values around the lower bound.
 	\caption{Varying tolerances for solving $x$ using the Conjugate Gradient Method.}
     \label{fig:tolerance}
 \end{figure}
+
+\subsection{Effect of $\omega$ on the Rate of Convergence of the SOR Method}
+The effect of $\omega$ on the rate of convergence of the SOR methods investigated. The tolerance, $10^{-5}$ was selected.
+\\\\
+For matrices that arise from finite difference discretisations of Laplace's equation, the value of $\omega$ that minimises the spectral radius $\rho(T_{SOR})$ is 
+\begin{center}
+$\omega_{opt} = \frac{2}{1+\sqrt{1-\rho(T_{J})^{2}}}$.
+\end{center}
+The Figure \ref{fig:omega1} compares the value of $\omega$ against $\rho(T_{SOR})$ to visually see what $\omega$ value has the least $\rho(T_{SOR})$. The theoretical optimal value of $\omega$ is $\omega_{opt}$.
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/omegaGraph1.png}
+	\caption{Omega.}
+	\label{fig:omega1}
+\end{figure}
+
+The effect of $\omega$ was explored on the number of iterations taken to converge. In Figure \ref{fig:omega2} it can be seen that the $\omega$ that had the least iterations to converge was $\omega_{opt}$. Thus, the $\omega$ that will result with the least amount of iterations is approximately $1.605$.
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{images/omegaGraph2.png}
+	\caption{Number of Iterations against different values of $\omega$.}
+	\label{fig:omega2}
+\end{figure}
+
+\section{Effect of Ambient Temperature} 
+The electronic component will only function if the temperature at the point (0.03, 0.03) is within $50-55\degree$C. This temperature could change depending on what the ambient air temperature is. Earlier in the model, we have assumed that this temperature is $20\degree$C. To find the affect of different ambient temperatures, we can run the model through a loop, changing the values of the ambient temperature from $0\degree$C to $60\degree$C in increments of $0.01\degree$C. Printing a value of the ambient temperature and the inner component temperature when the inner component temperature is within a tolerance of $0.001\degree$C, we can find rough estimates of the lower and upper bounds of the ambient temperature. These are found to be 
+\[\text{Lower bound }\approx 1.72\degree\text{C},\]
+\[\text{Upper bound }= 55\degree\text{C}.\]
+The algorithm can then be refined to search finer values around the lower bound. Searching within a tolerance of $10^{-6}$, the ambient temperature comes out to approximately 1.727406$\degree$C. As this is a very specific temperature, and the real world is not perfect, we can think of the lower bound as just being $2\degree$C. The heat distributions at the lower and upper bounds are \begin{figure}[H]
+
+	\begin{subfigure}[b]{0.49\textwidth}
+		\hspace{-8mm}
+		\includegraphics[width=\textwidth]{images/coldplate.png}
+	\end{subfigure}
+	\hspace{-8mm}
+	\begin{subfigure}[b]{0.49\textwidth}
+		\hspace{-8mm}
+		\includegraphics[width=\textwidth]{images/hotplate.png}
+	\end{subfigure}
+\end{figure}
+We recommend that the component only be deployed in locations with a temperature that never goes below $2\degree$C or above $55\degree$C.
+\section{Results}
+The heat distribution of the component is a smooth fan that goes from 70$\degree$C at the upper boundary to 40$\degree$C on the right boundary. The ambient temperature also affects the distribution of heat, as a lower ambient temperature causes the heat at the 70$\degree$C boundary to drop off much faster. \\\\A map of the world's yearly average temperatures show that the component show not be deployed in countries near the north pole, along with Antartica, some high altitude countries and space. 
+\begin{figure}[H]
+	\center
+	\includegraphics[width=0.9\linewidth]{images/Average_yearly_temperature_per_country.png}
+	\caption{By OchTom - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=83336830}
+\end{figure}
+The temperature does not go higher than 30$\degree$C on this map, but there may be local regions where the temperature does go this high. 
+\\\\
+Due to climate change, the low temperatures in many northern countries will rise in the following decades. This means that the component may be able to be deployed up north. 
+\section{Conclusions}
+
+\pagebreak
+\section{Appendices}
+\subsection*{Appendix A}
+\begin{align*}
+2\text{T}_0-\text{T}_1-\text{T}_6              & =0\\
+3\text{T}_1-\text{T}_0-\text{T}_2-\text{T}_7          & =0\\
+3\text{T}_2-\text{T}_1-\text{T}_3-\text{T}_8          & =0\\
+3\text{T}_3-\text{T}_2-\text{T}_4-\text{T}_9          & =0\\
+3\text{T}_4-\text{T}_3-\text{T}_5-\text{T}_{10}       & =0\\
+3\text{T}_5-\text{T}_4-\text{T}_{11}           & =40\\
+3\text{T}_6-\text{T}_0-\text{T}_7-\text{T}_{12}       & =0\\
+4\text{T}_7-\text{T}_8-\text{T}_1-\text{T}_6-\text{T}_{13}   & =0\\
+4\text{T}_8-\text{T}_7-\text{T}_2-\text{T}_9-\text{T}_{14}   & =0\\
+4\text{T}_9-\text{T}_8-\text{T}_3-\text{T}_{10}-\text{T}_{15}& =0\\
+4\text{T}_{10}-\text{T}_9-\text{T}_4-\text{T}_{11}-\text{T}_{16} & =0\\
+4\text{T}_{11}-\text{T}_{10}-\text{T}_5-\text{T}_{17} & =40\\
+3\text{T}_{12}-\text{T}_6-\text{T}_{16}-\text{T}_{13} & =0\\
+4\text{T}_{13}-\text{T}_{12}-\text{T}_{14}-\text{T}_{7}-\text{T}_{19} & =0\\
+4\text{T}_{14}-\text{T}_{13}-\text{T}_{15}-\text{T}_{8}-\text{T}_{20} & =0\\
+4\text{T}_{15}-\text{T}_{14}-\text{T}_{16}-\text{T}_{9}-\text{T}_{21} & =0\\
+4\text{T}_{16}-\text{T}_{15}-\text{T}_{17}-\text{T}_{10}-\text{T}_{22}& =0\\
+4\text{T}_{17}-\text{T}_{16}-\text{T}_{11}-\text{T}_{23} & =40\\
+3\text{T}_{18}-\text{T}_{12}-\text{T}_{24}-\text{T}_{19} & =0\\
+4\text{T}_{19}-\text{T}_{18}-\text{T}_{20}-\text{T}_{13}-\text{T}_{25} & =0\\
+4\text{T}_{20}-\text{T}_{19}-\text{T}_{21}-\text{T}_{14}-\text{T}_{26} & =0\\
+4\text{T}_{21}-\text{T}_{20}-\text{T}_{22}-\text{T}_{15}-\text{T}_{27} & =0\\
+4\text{T}_{22}-\text{T}_{21}-\text{T}_{23}-\text{T}_{16}-\text{T}_{28} & =0\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{23}-\text{T}_{22}-\text{T}_{17} & =\frac{4\sqrt{2}}{3}\\
+3\text{T}_{24}-\text{T}_{18}-\text{T}{30}-\text{T}_{25} &=0\\
+4\text{T}_{25}-\text{T}_{24}-\text{T}_{26}-\text{T}_{19}-\text{T}_{31} & =0\\
+4\text{T}_{26}-\text{T}_{25}-\text{T}_{27}-\text{T}_{20}-\text{T}_{32} & =0\\
+4\text{T}_{27}-\text{T}_{26}-\text{T}_{28}-\text{T}_{21}-\text{T}_{33} & =0\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{28}-\text{T}_{27}-\text{T}_{22} & =\frac{4\sqrt{2}}{3}\\
+\text{T}_{29} \text{ is null}\\
+3\text{T}_{30}-\text{T}_{24}-\text{T}_{31} &=70\\
+4\text{T}_{31}-\text{T}_{30}-\text{T}_{32}-\text{T}_{25} &=70\\
+4\text{T}_{32}-\text{T}_{31}-\text{T}_{33}-\text{T}_{26} &=70\\
+\bigg(2+\frac{0.2\sqrt{2}}{3}\bigg)\text{T}_{33}-\text{T}_{32}-\text{T}_{27} & =\frac{4\sqrt{2}}{3}\\
+\text{T}_{34} \text{ is null}\\
+\text{T}_{35} \text{ is null}
+\end{align*}
  
 \end{document}
