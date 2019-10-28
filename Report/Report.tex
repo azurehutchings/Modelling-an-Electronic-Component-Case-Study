@@ -434,7 +434,16 @@ $\textbf{r}^{(0)}=\textbf{b-Ax}^{(0)}, \textbf{d}^{(0)}=\textbf{r}^{(0)}$.
 The following section investigates which numerical method or methods provide the greatest efficiency in solving problems similar to the electronic component. This involves the storage size of the coefficent matrix and the time it takes to find the solution for each method.
 
 \subsection{Bandwidth and Level of Fill-in for each different Node Ordering}
-Because memory is a key concern when working with large data structures, it is important to choose a method that reduces the storage size. The bandwidth and fill-in are both components that determine how much memory the factorised matrix will take up. Fill-in is the number of zero elements in the matrix that turn into non-zero elements after factorisation is completed. 
+Because memory is a key concern when working with large data structures, it is important to choose a method that reduces the storage size. The bandwidth and fill-in are both components that determine how much memory the factorised matrix will take up. Fill-in is the number of zero elements in the matrix that turn into non-zero elements after factorisation is completed. It it important to note that the factorised matrices non-zero elements will all be within the average bandwidth of the unfactorised matrix. As Cholesky factorisation is symmetric and only the upper matrix is being stored, only the upper bandwidth will be looked at.
+
+\subsubsection{Ascending Order}
+The upper bandwidth of the full storage matrix is 6. When Cholesky factorisation is performed, the number of elements that are filled in are 109. As a proportion of the total number of elements in the upper matrix, this is $\frac{109}{561}$ or approximately 20\%. 
+
+\subsubsection{RCM Ordering}
+Using RCM ordering, the bandwidth of the new matrix is still 6. However, the average bandwidth is much lower. The fill-in for RCM Ordering in this scenario is 81. The band storage also reduces the size of the matrix, which makes the percentage of filled in elements only 35\%.
+
+\subsubsection{AMD Ordering}
+AMD ordering is designed to reduce fill-in the most. With AMD ordering, the bandwidth is increased to 29. However, the fill-in of this is only 53 elements. This is a much lower percentage increase, at only 9\%.
 
 \subsection{Memory (for Direct Methods)}
 Memory for the $A$ that were used to solve $x$ using direct methods was compared to see which storage had the least memory.

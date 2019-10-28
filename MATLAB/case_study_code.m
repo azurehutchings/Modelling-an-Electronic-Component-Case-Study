@@ -58,6 +58,7 @@ set(gca,'TickLabelInterpreter','latex')
 [temperatures, sparse_flops, ~, A_sparse, sparseChol] = sparse_storage_solution;
 visualisation(temperatures, 'Sparse Storage Solution')
 fill_in_sparse = nnz(sparseChol) - nnz(A_sparse);
+bandwidth_sparse = bandwidth(sparse);
 figure
 spy(A_sparse)
 title('A$_\mathrm{Sparse}$', 'Interpreter', 'latex')
